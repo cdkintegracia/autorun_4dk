@@ -175,7 +175,7 @@ def update_bitrix_list(report_type):
                                                   'select': ['*', 'UF_*'],
                                                   'filter': {'UF_CRM_1656070716': inn}
                                               }
-                                              )
+                                          )
 
                     # Перебор компаний, сделок, элементов списки
 
@@ -218,11 +218,27 @@ def update_bitrix_list(report_type):
 
                                             element_startDate = bitrix_element['PROPERTY_1285'][field_value]
 
+                                        for field_value in bitrix_element['PROPERTY_1277']:
+
+                                            # Максимальное значение из элемента списка
+
+                                            element_maxVolume = bitrix_element['PROPERTY_1277'][field_value]
+
+                                            # Код подписчика из элемента списка
+
+                                        for field_value in bitrix_element['PROPERTY_1289']:
+
+                                            element_subscriberCode = bitrix_element['PROPERTY_1289'][field_value]
+
+                                        subscriberCode = element['subscriberCode']
+
                                         # Обновление элемента списка если найден соответствующий для компании
 
                                         if element_company_id == company['ID'] and\
                                                 element_startDate == startDate and\
-                                                 bitrix_element['NAME'] == name_element_type:
+                                                 bitrix_element['NAME'] == name_element_type and\
+                                                str(maxVolume) == str(element_maxVolume) and\
+                                                subscriberCode == element_subscriberCode:
 
                                             element_id = bitrix_element['ID']   # ID элемента списка
 
@@ -237,7 +253,8 @@ def update_bitrix_list(report_type):
                                                                'PROPERTY_1279': usedVolume,
                                                                'NAME': name_element_type,
                                                                'PROPERTY_1283': company['ID'],
-                                                               'PROPERTY_1285': startDate
+                                                               'PROPERTY_1285': startDate,
+                                                               'PROPERTY_1289': subscriberCode
                                                            }
                                                    }
                                                    )
@@ -260,7 +277,11 @@ def update_bitrix_list(report_type):
                                                            'PROPERTY_1279': usedVolume,
                                                            'NAME': name_element_type,
                                                            'PROPERTY_1283': company['ID'],
-                                                           'PROPERTY_1285': startDate}})
+                                                           'PROPERTY_1285': startDate,
+                                                           'PROPERTY_1289': subscriberCode,
+                                                       }
+                                               }
+                                               )
 
                                         # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
@@ -304,6 +325,7 @@ report_types = {
         ]
     ],
 }
+
 
 def main():
     for report_type in report_types:
