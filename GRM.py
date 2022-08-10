@@ -61,6 +61,14 @@ def get_config(_id):
 
 def main():
 
+    # Список ID 1C компаний, которые нужно игнорировать при создании задачи
+
+    ignore_companies = [
+        'ef26acee-0553-43fd-ab6d-e34841486d46',     # ООО "АУРИГА"
+        '400762b4-fb29-4ff6-a566-62c843202dd4',     # ООО "ЛЕНИНГРАДСКИЙ ЗАВОД МЕТАЛЛОКОНСТРУКЦИЙ МЕТАЛЛГАРАНТ"
+        '0e09e942-3536-4ef8-bf99-c4e3738895d9',     # ИП Дурускар Марина Викторовна
+    ]
+
     # Сделки с типами ГРМ, ГРМ Спец, ГРМ Бизнес
 
     deals = b.get_all(
@@ -338,9 +346,9 @@ def main():
             if client['id'] == company['UF_CRM_1659520257149']:
                 flag = True
 
-        # Если клиент из 1С не найден в Битриксе
+        # Если клиент из 1С не найден в Битриксе и компанию не нужно игнорировать
 
-        if flag is False:
+        if flag is False and client['id'] not in ignore_companies:
             task_text += f'ID 1C: {client["id"]}\n' \
                          f'email: {client["email"]}\n' \
                          f'Логин: {client["login"]}\n' \
