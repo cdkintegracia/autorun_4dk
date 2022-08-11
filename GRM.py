@@ -348,7 +348,7 @@ def main():
 
         # Если клиент из 1С не найден в Битриксе и компанию не нужно игнорировать
 
-        if flag is False and client['id'] not in ignore_companies:
+        if flag is False and str(client['id']) not in ignore_companies:
             task_text += f'ID 1C: {client["id"]}\n' \
                          f'email: {client["email"]}\n' \
                          f'Логин: {client["login"]}\n' \
