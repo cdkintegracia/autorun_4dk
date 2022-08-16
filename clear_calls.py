@@ -11,3 +11,7 @@ def main():
     if len(activities) != 0:
         for activity in activities:
             b.get_all('crm.activity.update', {'id': activity['ID'], 'fields': {'COMPLETED': 'Y'}})
+
+
+if __name__ == '__main__':
+    main()

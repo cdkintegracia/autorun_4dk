@@ -330,3 +330,7 @@ report_types = {
 def main():
     for report_type in report_types:
         update_bitrix_list(report_type)
+
+
+if __name__ == '__main__':
+    main()
