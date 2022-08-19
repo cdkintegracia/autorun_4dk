@@ -7,8 +7,18 @@ from time import time
 token_1c = 'Bearer ' \
            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MzgyIiwiaWF0IjoxNjU5MDk0MDYwfQ.USrZrC_uQqxZDhmMJJAMPKBt4cCWlMFVc4nzAJqMrM8'
 
+# Считывание файла authentication.txt
+
+with open('authentication.txt') as file:
+    lines = file.readlines()
+    authentication = {}
+    for line in lines:
+        lst = line.split(': ')
+        authentication.setdefault(lst[0], lst[1].strip())
+
 # Вебхук для доступа к Bitrix24
-webhook = "https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/"
+
+webhook = authentication['Bitrix']
 b = Bitrix(webhook)
 
 

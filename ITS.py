@@ -16,8 +16,18 @@ import requests
 https://reqbin.com/req/o3vugw0p/post-json-string-with-basic-authentication
 """
 
+# Считывание файла authentication.txt
+
+with open('authentication.txt') as file:
+    lines = file.readlines()
+    authentication = {}
+    for line in lines:
+        lst = line.split(': ')
+        authentication.setdefault(lst[0], lst[1].strip())
+
 # Вебхук для доступа к Bitrix24
-webhook = "https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/"
+
+webhook = authentication['Bitrix']
 b = Bitrix(webhook)
 
 '''
