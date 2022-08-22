@@ -10,6 +10,7 @@ from time import asctime
 from time import sleep
 from fast_bitrix24 import Bitrix
 import requests
+from authentication import authentication
 
 """
 Спас меня этот сайт
@@ -18,16 +19,7 @@ https://reqbin.com/req/o3vugw0p/post-json-string-with-basic-authentication
 
 # Считывание файла authentication.txt
 
-with open('authentication.txt') as file:
-    lines = file.readlines()
-    authentication = {}
-    for line in lines:
-        lst = line.split(': ')
-        authentication.setdefault(lst[0], lst[1].strip())
-
-# Вебхук для доступа к Bitrix24
-
-webhook = authentication['Bitrix']
+webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
 '''

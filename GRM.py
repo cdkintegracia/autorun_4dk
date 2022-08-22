@@ -1,26 +1,19 @@
 from fast_bitrix24 import Bitrix
 import requests
 from time import time
+from authentication import authentication
 
 
 # Токен доступа 1С
 token_1c = 'Bearer ' \
            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0MzgyIiwiaWF0IjoxNjU5MDk0MDYwfQ.USrZrC_uQqxZDhmMJJAMPKBt4cCWlMFVc4nzAJqMrM8'
 
+
+
 # Считывание файла authentication.txt
 
-with open('authentication.txt') as file:
-    lines = file.readlines()
-    authentication = {}
-    for line in lines:
-        lst = line.split(': ')
-        authentication.setdefault(lst[0], lst[1].strip())
-
-# Вебхук для доступа к Bitrix24
-
-webhook = authentication['Bitrix']
+webhook = authentication('Bitrix')
 b = Bitrix(webhook)
-
 
 def get_id(_inn):
 
