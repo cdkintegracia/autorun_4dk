@@ -6,8 +6,8 @@ import GRM
 
 
 def main():
-    clear_calls.main()
+    #clear_calls.main()
     ITS.main()
-    GRM.main()
+    #GRM.main()
 
 main()
