@@ -140,7 +140,12 @@ def update_bitrix_list(report_type):
     name_element_type = report_types[report_type][0]     # Название типа для элемента списка
     deal_type = report_types[report_type][1]    # Тип сделки для получения массива сделок
     name_report_type = report_types[report_type][2]     # Название услуги для фильтрации в отчете
-
+    element_type_fields = {
+        'Кабинет сотрудника': '2187',
+        'Автозаполнение реквизитов контрагентов ': '2191',
+        'Досье контрагента': '2193',
+        'РПД': '2189',
+    }
     # Получение массива сделок по фильтру
 
     deals = b.get_all('crm.deal.list',
@@ -256,7 +261,8 @@ def update_bitrix_list(report_type):
                                                                'NAME': name_element_type,
                                                                'PROPERTY_1283': company['ID'],
                                                                'PROPERTY_1285': startDate,
-                                                               'PROPERTY_1289': subscriberCode
+                                                               'PROPERTY_1289': subscriberCode,
+                                                               'PROPERTY_1293': element_type_fields[name_element_type],
                                                            }
                                                    }
                                                    )
@@ -281,6 +287,7 @@ def update_bitrix_list(report_type):
                                                            'PROPERTY_1283': company['ID'],
                                                            'PROPERTY_1285': startDate,
                                                            'PROPERTY_1289': subscriberCode,
+                                                           'PROPERTY_1293': element_type_fields[name_element_type],
                                                        }
                                                }
                                                )

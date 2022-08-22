@@ -24,15 +24,19 @@ contacts = b.get_all('crm.contact.list', {
         'NAME',
         'SECOND_NAME',
         'LAST_NAME',
-        'UF_CRM_1660897963722',
+        'UF_CRM_1660897963722',     # Вес сделок в связанных компаниях
     ]
 }
                      )
+
+field_names = {'UF_CRM_1660897963722': 'Вес сделок в связанных компаниях'}
 
 # Формирование заголовков таблицы
 
 contacts_title = []
 for name_field in contacts[0]:
+    if name_field in field_names:
+        name_field = field_names[name_field]
     if name_field in ['LAST_NAME', 'SECOND_NAME']:
         continue
     contacts_title.append(name_field)

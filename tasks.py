@@ -32,14 +32,16 @@ def create_task(deals, task_type):
 
     # Создание задачи
 
-    b.call('tasks.task.add', {'fields': {
-        'TITLE': f'{task_types[task_type]} ({time_task})',
-        'GROUP_ID': '13',
-        'DESCRIPTION': task_text,
-        'RESPONSIBLE_ID': '311'
-    }
-    }
-           )
+    if task_text != '':
+
+        b.call('tasks.task.add', {'fields': {
+            'TITLE': f'{task_types[task_type]} ({time_task})',
+            'GROUP_ID': '13',
+            'DESCRIPTION': task_text,
+            'RESPONSIBLE_ID': '311'
+        }
+        }
+               )
 
 time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
 time_task = time.strftime('%d.%m.%Y')   # Время для названия задачи
