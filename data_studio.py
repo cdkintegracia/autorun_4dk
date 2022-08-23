@@ -43,6 +43,8 @@ for name_field in contacts[0]:
 
 companies_title = []
 for name_field in companies[0]:
+    if name_field == 'UF_CRM_1660818061808':
+        name_field = 'Вес сделок'
     companies_title.append(name_field)
 
 
@@ -52,12 +54,24 @@ contacts_list = list(map(lambda x: [x['ID'], f"{x['NAME']} {x['SECOND_NAME']} {x
                          x['UF_CRM_1660897963722']], contacts))
 contacts_list.insert(0, contacts_title)
 
+companies_list = list(map(lambda x: [x['TITLE'],x['ID'], x['UF_CRM_1660818061808']], companies))
+companies_list.insert(0, companies_title)
+
 """
 Google sheets
 """
 
 access = gspread.service_account(filename=authentication('Google Data Studio'))
 spreadsheet = access.open('bitrix_data')
+
+# Запись контактов
+
 worksheet = spreadsheet.worksheet('contacts')
 worksheet.clear()
 worksheet.update('A1', contacts_list)
+
+# Запись компаний
+
+worksheet = spreadsheet.worksheet('companies')
+worksheet.clear()
+worksheet.update('A1', companies_list)
