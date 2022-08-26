@@ -6,15 +6,6 @@ from authentication import authentication
 
 def main():
 
-    def get_deal(id):
-        pass
-
-    def get_smart_process(id):
-        pass
-
-    def get_company(id):
-        pass
-
     """
     Bitrix
     """
@@ -57,12 +48,7 @@ def main():
         'deal': 2,
         'company': 3,
     }
-    '''
-    for task in tasks:
-        print(task)
-        print(task['DOCUMENT_URL'].split('/'))
-        exit()
-    '''
+
     tasks_data = list(map(lambda x: [x['DOCUMENT_ID'],
                                      x['NAME'],
                                      user_names[x['USER_ID']],
