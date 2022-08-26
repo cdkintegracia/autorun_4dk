@@ -43,12 +43,15 @@ def create_task(deals, task_type):
         }
                )
 
-time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
-time_task = time.strftime('%d.%m.%Y')   # Время для названия задачи
 
-# Сделки ДК == сегодня
+def main():
 
-deals_dk = b.get_all('crm.deal.list', {
+    time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
+    time_task = time.strftime('%d.%m.%Y')   # Время для названия задачи
+
+    # Сделки ДК == сегодня
+
+    deals_dk = b.get_all('crm.deal.list', {
     'select': [
         'TITLE',
         'TYPE_ID',
@@ -69,14 +72,14 @@ deals_dk = b.get_all('crm.deal.list', {
         ],
         'CLOSED': 'N',  # Сделка не закрыта
     }
-}
+    }
                   )
 
-create_task(deals_dk, 'ДК')
+    create_task(deals_dk, 'ДК')
 
-# Сделки ДПО == сегодня
+    # Сделки ДПО == сегодня
 
-deals_dpo = b.get_all('crm.deal.list', {
+    deals_dpo = b.get_all('crm.deal.list', {
     'select': [
         'TITLE',
         'TYPE_ID',
@@ -97,7 +100,11 @@ deals_dpo = b.get_all('crm.deal.list', {
         ],
         'CLOSED': 'N',  # Сделка не закрыта
     }
-}
+    }
                   )
 
-create_task(deals_dpo, 'ДПО')
+    create_task(deals_dpo, 'ДПО')
+
+
+if __name__ == '__main__':
+    main()
