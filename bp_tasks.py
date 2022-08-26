@@ -5,6 +5,16 @@ from authentication import authentication
 
 
 def main():
+
+    def get_deal(id):
+        pass
+
+    def get_smart_process(id):
+        pass
+
+    def get_company(id):
+        pass
+
     """
     Bitrix
     """
@@ -12,6 +22,7 @@ def main():
     # Считывание файла authentication.txt
 
     webhook = authentication('Bitrix')
+    #webhook = 'https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/'
     b = Bitrix(webhook)
 
     tasks = b.get_all('bizproc.task.list', {
@@ -19,13 +30,14 @@ def main():
             'NAME',
             'USER_ID',
             'WORKFLOW_STARTED',
+            'ID',
         ],
         'filter': {
             'STATUS': '0'
         }
     }
                       )
-    print(tasks)
+
     # Поиск имени и фамилии по ID
 
     user_names = {}
@@ -40,12 +52,25 @@ def main():
             continue
         titles.append(key)
 
-
+    bitrix_methods = {
+        'type': 1,
+        'deal': 2,
+        'company': 3,
+    }
+    '''
+    for task in tasks:
+        print(task)
+        print(task['DOCUMENT_URL'].split('/'))
+        exit()
+    '''
     tasks_data = list(map(lambda x: [x['DOCUMENT_ID'],
                                      x['NAME'],
                                      user_names[x['USER_ID']],
                                      x['WORKFLOW_STARTED'][:10].replace('-', '.'),
-                                     'https://vc4dk.bitrix24.ru' + x['DOCUMENT_URL']], tasks))
+                                     f'https://vc4dk.bitrix24.ru/company/personal/bizproc/{x["ID"]}/?back_url=%2Fcompany%2Fpersonal%2Fbizproc%2F&USER_ID={x["USER_ID"]}',
+                                     'https://vc4dk.bitrix24.ru' + x['DOCUMENT_URL'],
+                                     ],
+                          tasks))
     tasks_data.insert(0, titles)
 
 
@@ -53,7 +78,8 @@ def main():
     Google sheets
     """
 
-    access = gspread.service_account(filename=authentication('Google Data Studio'))
+    access = gspread.service_account(filename=f"/root/autorun_4dk/{authentication('Google Data Studio')}")
+    #access = gspread.service_account(filename='bitrix24-data-studio-2278c7bfb1a7.json')
     spreadsheet = access.open('bitrix_data')
     worksheet = spreadsheet.worksheet('bp_tasks')
 
