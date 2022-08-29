@@ -32,6 +32,8 @@ def create_task(deals, task_type):
 
     # Создание задачи
 
+    time_task = time.strftime('%d.%m.%Y')  # Время для названия задачи
+
     if task_text != '':
 
         b.call('tasks.task.add', {'fields': {
@@ -47,7 +49,6 @@ def create_task(deals, task_type):
 def main():
 
     time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
-    time_task = time.strftime('%d.%m.%Y')   # Время для названия задачи
 
     # Сделки ДК == сегодня
 
