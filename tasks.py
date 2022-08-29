@@ -40,7 +40,8 @@ def create_task(deals, task_type):
             'TITLE': f'{task_types[task_type]} ({time_task})',
             'GROUP_ID': '11',
             'DESCRIPTION': task_text,
-            'RESPONSIBLE_ID': '311'
+            'RESPONSIBLE_ID': '311',
+            'CREATED_BY': '173'
         }
         }
                )
