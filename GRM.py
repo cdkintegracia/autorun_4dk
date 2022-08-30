@@ -201,6 +201,7 @@ def main():
                                         'PROPERTY_1269': config['deleted'],
                                         'PROPERTY_1271': config['customerId'],
                                         'PROPERTY_1273': company['ID'],
+                                        'PROPERTY_1313': '2201',
                                         # Расхождение - найдена в 1С, нет в Битриксе
                                         'PROPERTY_1275': '',
                                     }
@@ -233,6 +234,7 @@ def main():
                                                      'PROPERTY_1269': config['deleted'],
                                                      'PROPERTY_1271': config['customerId'],
                                                      'PROPERTY_1273': company['ID'],
+                                                     'PROPERTY_1313': '2201',
                                                      # Расхождение - найдена в 1С, нет в Битриксе
                                                      'PROPERTY_1275': '2183',
                                                  }
@@ -306,10 +308,15 @@ def main():
                     for i in element["PROPERTY_1243"]:
                         config_id = element["PROPERTY_1243"][i]
 
-                    task_text += f'{company_name["TITLE"]}\n' \
-                                 f'Конфигурация: {config_name}\n' \
-                                 f'ID: {config_id}\n' \
-                                 f'-----------------------------------\n'
+                    for i in element['PROPERTY_1313']:
+                        element_status = element['PROPERTY_1313'][i]
+
+                    if element_status != '2199':
+
+                        task_text += f'{company_name["TITLE"]}\n' \
+                                     f'Конфигурация: {config_name}\n' \
+                                     f'ID: {config_id}\n' \
+                                     f'-----------------------------------\n'
 
     # Постановление задачи, если были найдены рассхождения
 
