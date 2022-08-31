@@ -1,10 +1,16 @@
+import requests
 from requests import request
 from fast_bitrix24 import Bitrix
 from authentication import authentication
 
-r = request(method='GET', url='http://141.8.194.146:5000')
-
-if r.status_code != 200:
+try:
+    r = request(method='GET', url='http://141.8.194.146:5000')
+    with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
+        status = file.read().split(': ')[-1]
+    if status == 'offline':
+        with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
+            file.write('Status_web_app: online')
+except requests.ConnectionError:
     with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
     if status == 'online':
@@ -20,9 +26,4 @@ if r.status_code != 200:
                 'TITLE': 'Работа веб-приложения остановлена',
             }
         })
-else:
-    with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
-        status = file.read().split(': ')[-1]
-    if status == 'offline':
-        with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
-            file.write('Status_web_app: online')
+
