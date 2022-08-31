@@ -24,6 +24,7 @@ except requests.ConnectionError:
                 'AUDITORS': '1',
                 'GROUP_ID': '13',
                 'TITLE': 'Работа веб-приложения остановлена',
+                'CREATED_BY': '173',
             }
         })
 
