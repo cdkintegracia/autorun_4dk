@@ -96,12 +96,12 @@ def main():
         lst_companies = b.get_all('crm.company.list', {
             'select': [
                 'UF_CRM_1659520257149',     # id ГРМ
-                'UF_CRM_1656070716'      # СлужИНН
+                'UF_CRM_1656070716',      # СлужИНН
             ],
             'filter': {
                 'ID': deal['COMPANY_ID'],
-                '!UF_CRM_1656070716': 'None',   # СлужИНН != None
-                'UF_CRM_1659520257149': 'None'  # id ГРМ == None
+                '!UF_CRM_1656070716': None,   # СлужИНН != None
+                'UF_CRM_1659520257149': None  # id ГРМ == None
             }
         }
                               )
@@ -114,7 +114,7 @@ def main():
     # Заполнение поля id ГРМ в компаниях
 
     for company in companies:
-        if company['UF_CRM_1659520257149'] == 'None':
+        if company['UF_CRM_1659520257149'] is None:
 
             inn = company['UF_CRM_1656070716']      # ИНН компании, полученный из Битрикса
             id_1c = get_id(inn)     # ID 1С, полученный через GET запрос
@@ -141,8 +141,8 @@ def main():
             ],
             'filter': {
                 'ID': deal['COMPANY_ID'],
-                '!UF_CRM_1656070716': 'None',   # СлужИНН != None
-                '!UF_CRM_1659520257149': 'None',
+                '!UF_CRM_1656070716': None,   # СлужИНН != None
+                '!UF_CRM_1659520257149': None,
             }
         }
                               )
