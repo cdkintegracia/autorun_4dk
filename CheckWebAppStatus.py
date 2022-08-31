@@ -21,7 +21,7 @@ except requests.ConnectionError:
         b.call('tasks.task.add', {
             'fields': {
                 'RESPONSIBLE_ID': '311',
-                'ACCOMPLICES': '1',
+                'AUDITORS': '1',
                 'GROUP_ID': '13',
                 'TITLE': 'Работа веб-приложения остановлена',
             }
