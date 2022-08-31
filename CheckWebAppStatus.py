@@ -5,10 +5,10 @@ from authentication import authentication
 r = request(method='GET', url='http://141.8.194.146:5000')
 
 if r.status_code != 200:
-    with open('status_web_app.txt', 'r') as file:
+    with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
     if status == 'online':
-        with open('status_web_app.txt', 'w') as file:
+        with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
             file.write('Status_web_app: offline')
 
         b = Bitrix(authentication('Bitrix'))
@@ -21,8 +21,8 @@ if r.status_code != 200:
             }
         })
 else:
-    with open('status_web_app.txt', 'r') as file:
+    with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
     if status == 'offline':
-        with open('status_web_app.txt', 'w') as file:
+        with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
             file.write('Status_web_app: online')
