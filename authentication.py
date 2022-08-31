@@ -20,4 +20,5 @@ def authentication(key):
             dct.setdefault(lst[0], lst[1].strip())
 
     return dct[key]
+
     
