@@ -12,7 +12,7 @@ def authentication(key):
 
     # Считывание файла authentication.txt
 
-    with open('/root/autorun_4dk/authentications.txt') as file:
+    with open('/root/autorun_4dk/credentials/authentications.txt') as file:
         lines = file.readlines()
         dct = {}
         for line in lines:
