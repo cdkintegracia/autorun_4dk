@@ -1,7 +1,7 @@
 from fast_bitrix24 import Bitrix
 import requests
 from time import time
-from authentication import authentication
+#from authentication import authentication
 
 
 # Токен доступа 1С
@@ -12,7 +12,8 @@ token_1c = 'Bearer ' \
 
 # Считывание файла authentication.txt
 
-webhook = authentication('Bitrix')
+#webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/'
 b = Bitrix(webhook)
 
 def get_id(_inn):
@@ -170,6 +171,10 @@ def main():
         configs = get_config(company['UF_CRM_1659520257149'])    # Получение конфигураций компании из 1С
 
         for config in configs:  # Итерация списка конфигураций компании
+
+            if 'id' not in config:
+                continue
+
             flag = False
 
             for element in elements:    # Итерация списка
@@ -283,6 +288,9 @@ def main():
             for configs in lst_configs:
 
                 for config in configs:
+
+                    if 'id' not in config:
+                        continue
 
                     if element['PROPERTY_1243'][key] == config['id']:
                         flag = True
