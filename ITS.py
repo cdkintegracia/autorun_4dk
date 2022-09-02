@@ -10,7 +10,7 @@ from time import asctime
 from time import sleep
 from fast_bitrix24 import Bitrix
 import requests
-from authentication import authentication
+#from authentication import authentication
 
 """
 Спас меня этот сайт
@@ -19,7 +19,8 @@ https://reqbin.com/req/o3vugw0p/post-json-string-with-basic-authentication
 
 # Считывание файла authentication.txt
 
-webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/'
+#webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
 '''
@@ -151,7 +152,6 @@ def update_bitrix_list(report_type):
     deals = b.get_all('crm.deal.list',
                       {
                           'select': ['COMPANY_ID'],
-                          'filter': {'TYPE_ID': deal_type}
                       }
                       )
 
@@ -169,8 +169,6 @@ def update_bitrix_list(report_type):
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
 
             if 'userOrganizationInn' in tariff:     # Если есть ИНН в элементе отчета, если нет - компания неопознана
-
-                if name_report_type in tariff['name']:  # Если в отчете найдена нужная услуга
 
                     startDate = tariff['startDate']     # Дата начала из отчета
                     inn = tariff['userOrganizationInn']     # ИНН компании из отчета
