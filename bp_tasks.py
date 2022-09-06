@@ -13,7 +13,6 @@ def main():
     # Считывание файла authentication.txt
 
     webhook = authentication('Bitrix')
-    #webhook = 'https://vc4dk.bitrix24.ru/rest/311/r1oftpfibric5qym/'
     b = Bitrix(webhook)
 
     tasks = b.get_all('bizproc.task.list', {
