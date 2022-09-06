@@ -7,7 +7,7 @@ from authentication import authentication
 b = Bitrix(authentication('Bitrix'))
 
 
-def check_mail_status():
+def main():
     crm_dct = {
         '1': ['Лид:', 'lead'],
         '2': ['Сделка:', 'deal'],
@@ -37,4 +37,4 @@ def check_mail_status():
                         f'{crm_dct[mail["OWNER_TYPE_ID"]][0]} https://vc4dk.bitrix24.ru/crm/{crm_dct[mail["OWNER_TYPE_ID"]][1]}/details/{mail["OWNER_ID"]}/'})
 
 if __name__ == '__main__':
-    check_mail_status()
+    main()
