@@ -90,7 +90,7 @@ for values in deal_values:
 
 access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
 worksheet_date = month_string[strftime('%m')]
-with open('X-Report config.txt', 'r') as file:
+with open('/root/autorun_4dk/X-Report config.txt', 'r') as file:
     file_name = file.read()
 spreadsheet = access.open(file_name)
 try:
