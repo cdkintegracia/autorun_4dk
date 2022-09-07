@@ -2,10 +2,11 @@ from time import strftime
 
 from fast_bitrix24 import Bitrix
 import gspread
-"""
+
 from authentication import authentication
-webhook = authentication('Bitrix')
-"""
+
+b = Bitrix(authentication('Bitrix'))
+
 
 
 
@@ -24,7 +25,9 @@ month_string = {
         '12': 'Декабрь'
     }
 
+
 deals = b.get_all('crm.deal.list', {
+
     'select': [
         'TITLE',    # Название
         'TYPE_ID',  # Тип
@@ -32,7 +35,9 @@ deals = b.get_all('crm.deal.list', {
         'UF_CRM_1657878818384',     # Группа
         'ASSIGNED_BY_ID',       # Ответственный
         'COMPANY_ID',       # Компания
+        'UF_CRM_1657533812',    # Продавец
     ],
+
     'filter': {
         'CATEGORY_ID': '1'
     }
@@ -40,20 +45,37 @@ deals = b.get_all('crm.deal.list', {
                   )
 
 count = 0
+
+user_names = {}
 for deal in deals:
 
-    # Сущность
-    deal.setdefault('entity', 'Сделка')
-
-
     # Название компании
-    company_name = b.get_all('crm.company.list', {'select': ['TITLE'], 'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
-    deal['COMPANY_ID'] = company_name
+    try:
+        company_name = b.get_all('crm.company.list', {'select': ['TITLE'], 'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
+        deal['COMPANY_ID'] = company_name
+    except:
+        pass
 
     # Ответственный
-    user_data = b.get_all('user.get', {'ID': deal['ASSIGNED_BY_ID']})[0]
-    user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
-    deal['ASSIGNED_BY_ID'] = user_name
+    if deal['ASSIGNED_BY_ID'] not in user_names:
+        user_data = b.get_all('user.get', {'select': ['UF_DEPARTMENT', 'NAME', 'LAST_NAME'], 'ID': deal['ASSIGNED_BY_ID']})[0]
+        user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
+        user_department = user_data['UF_DEPARTMENT'][0]
+        user_names.setdefault(deal['ASSIGNED_BY_ID'], [user_name, user_department])
+    deal.setdefault('Подразделение', user_names[deal['ASSIGNED_BY_ID']][1])
+    deal['ASSIGNED_BY_ID'] = user_names[deal['ASSIGNED_BY_ID']][0]
+
+    # Продавец
+    try:
+        if deal['UF_CRM_1657533812'] not in user_names:
+            user_data = b.get_all('user.get', {'ID': deal['UF_CRM_1657533812']})[0]
+            user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
+            user_department = user_data['UF_DEPARTMENT'][0]
+            user_names.setdefault(deal['UF_CRM_1657533812'], [user_name, user_department])
+        deal['UF_CRM_1657533812'] = user_names[deal['UF_CRM_1657533812']][0]
+    except:
+        pass
+
     count += 1
     print(f"{count} | {len(deals)}")
 
@@ -61,28 +83,15 @@ for deal in deals:
 titles = list(deals[0].keys())
 data_list = [titles]
 deal_values = list(map(lambda x: x.values(), deals))
+
 for values in deal_values:
     data_list.append(list(values))
 
 
-
-
-
-
-
-
-
-
-
-
-
-"""
 access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
-"""
 worksheet_date = month_string[strftime('%m')]
 with open('X-Report config.txt', 'r') as file:
     file_name = file.read()
-access = gspread.service_account("bitrix24-data-studio-2278c7bfb1a7.json")
 spreadsheet = access.open(file_name)
 try:
     worksheet = spreadsheet.add_worksheet(title=worksheet_date, rows=1, cols=1)
