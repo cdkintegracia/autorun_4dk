@@ -3,12 +3,28 @@ from time import strftime
 from fast_bitrix24 import Bitrix
 import gspread
 
-from authentication import authentication
+#from authentication import authentication
 
-b = Bitrix(authentication('Bitrix'))
-
+#b = Bitrix(authentication('Bitrix'))
+b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
 def main():
 
+    group_string = {
+        '859': 'ИТС',
+        '905': 'Отчетность',
+        '907': 'Сервисы ИТС',
+        '903': 'Товар',
+    }
+
+    department_string = {
+        '1': '4DK',
+        '5': 'ЦС',
+        '27': 'ГО3',
+        '29': 'ГО4',
+        '225': 'ОВ',
+        '231': 'ЛК',
+        '235': 'Битрикс',
+    }
 
     month_string = {
             '01': 'Январь',
@@ -60,7 +76,7 @@ def main():
         if deal['ASSIGNED_BY_ID'] not in user_names:
             user_data = b.get_all('user.get', {'select': ['UF_DEPARTMENT', 'NAME', 'LAST_NAME'], 'ID': deal['ASSIGNED_BY_ID']})[0]
             user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
-            user_department = user_data['UF_DEPARTMENT'][0]
+            user_department = department_string[user_data['UF_DEPARTMENT'][0]]
             user_names.setdefault(deal['ASSIGNED_BY_ID'], [user_name, user_department])
         deal.setdefault('Подразделение', user_names[deal['ASSIGNED_BY_ID']][1])
         deal['ASSIGNED_BY_ID'] = user_names[deal['ASSIGNED_BY_ID']][0]
@@ -70,11 +86,14 @@ def main():
             if deal['UF_CRM_1657533812'] not in user_names:
                 user_data = b.get_all('user.get', {'ID': deal['UF_CRM_1657533812']})[0]
                 user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
-                user_department = user_data['UF_DEPARTMENT'][0]
+                user_department = department_string[user_data['UF_DEPARTMENT'][0]]
                 user_names.setdefault(deal['UF_CRM_1657533812'], [user_name, user_department])
             deal['UF_CRM_1657533812'] = user_names[deal['UF_CRM_1657533812']][0]
         except:
             pass
+
+        # Группа
+        deal['UF_CRM_1657878818384'] = group_string[deal['UF_CRM_1657878818384']]
 
         count += 1
         print(f"{count} | {len(deals)}")
