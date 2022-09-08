@@ -55,6 +55,7 @@ def main():
             'UF_CRM_1657533812',    # Продавец
             'UF_CRM_1657549699',    # Дата перехода в отвал
             'UF_CRM_1656426746',    # СсылкаНаИсточникПродажи
+            'OPPORTUNITY',
         ],
 
         'filter': {
@@ -64,9 +65,9 @@ def main():
                       )
 
     count = 0
-    errors = []
     user_names = {}
     for deal in deals:
+
         # Дата продажи
         if deal['UF_CRM_1656426746']:
             try:
@@ -128,7 +129,6 @@ def main():
     for values in deal_values:
         data_list.append(list(values))
 
-
     access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
     worksheet_date = month_string[strftime('%m')]
     with open('/root/autorun_4dk/X_Report config.txt', 'r') as file:
@@ -140,6 +140,6 @@ def main():
         worksheet = spreadsheet.worksheet(worksheet_date)
     worksheet.clear()
     worksheet.update('A1', data_list)
-    print(errors)
+
 if __name__ == '__main__':
     main()
