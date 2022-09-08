@@ -24,6 +24,7 @@ def main():
         '225': 'ОВ',
         '231': 'ЛК',
         '235': 'Битрикс',
+        '233': 'Служебные',
     }
 
     month_string = {
@@ -52,6 +53,8 @@ def main():
             'ASSIGNED_BY_ID',       # Ответственный
             'COMPANY_ID',       # Компания
             'UF_CRM_1657533812',    # Продавец
+            'UF_CRM_1657549699',    # Дата перехода в отвал
+            'UF_CRM_1656426746',    # СсылкаНаИсточникПродажи
         ],
 
         'filter': {
@@ -61,9 +64,20 @@ def main():
                       )
 
     count = 0
-
+    errors = []
     user_names = {}
     for deal in deals:
+        # Дата продажи
+        if deal['UF_CRM_1656426746']:
+            try:
+                smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1656426746']}})[0]
+                deal['UF_CRM_1656426746'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
+            except:
+                pass
+
+        # Дата отвала
+        if deal['UF_CRM_1657549699']:
+            deal['UF_CRM_1657549699'] = f"{deal['UF_CRM_1657549699'][8:10]}.{deal['UF_CRM_1657549699'][5:7]}.{deal['UF_CRM_1657549699'][:4]}"
 
         # Название компании
         try:
@@ -77,7 +91,7 @@ def main():
             user_data = b.get_all('user.get', {'select': ['UF_DEPARTMENT', 'NAME', 'LAST_NAME'], 'ID': deal['ASSIGNED_BY_ID']})[0]
             user_name = f"{user_data['NAME']} {user_data['LAST_NAME']}"
             try:
-                user_department = department_string[user_data['UF_DEPARTMENT'][0]]
+                user_department = department_string[str(user_data['UF_DEPARTMENT'][0])]
             except:
                 user_department = user_data['UF_DEPARTMENT'][0]
             user_names.setdefault(deal['ASSIGNED_BY_ID'], [user_name, user_department])
@@ -107,7 +121,6 @@ def main():
         count += 1
         print(f"{count} | {len(deals)}")
 
-
     titles = list(deals[0].keys())
     data_list = [titles]
     deal_values = list(map(lambda x: x.values(), deals))
@@ -127,6 +140,6 @@ def main():
         worksheet = spreadsheet.worksheet(worksheet_date)
     worksheet.clear()
     worksheet.update('A1', data_list)
-
+    print(errors)
 if __name__ == '__main__':
     main()
