@@ -246,11 +246,14 @@ def update_bitrix_list(report_type):
 
                                     element_subscriberCode = bitrix_element['PROPERTY_1289'][field_value]
 
-                                for field_value in bitrix_element['PROPERTY_1331']:
+                                try:
+                                    for field_value in bitrix_element['PROPERTY_1331']:
 
-                                    # 95% задача
+                                        # 95% задача
 
-                                    task_95 = bitrix_element['PROPERTY_1331'][field_value]
+                                        task_95 = bitrix_element['PROPERTY_1331'][field_value]
+                                except:
+                                    task_95 = '2213'
 
                                 subscriberCode = element['subscriberCode']
 
