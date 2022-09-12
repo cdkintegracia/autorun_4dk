@@ -3,9 +3,10 @@ from time import strftime
 from fast_bitrix24 import Bitrix
 import gspread
 
-from authentication import authentication
+#from authentication import authentication
 
-b = Bitrix(authentication('Bitrix'))
+#b = Bitrix(authentication('Bitrix'))
+b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
 
 def main():
 
@@ -54,7 +55,7 @@ def main():
             'COMPANY_ID',       # Компания
             'UF_CRM_1657533812',    # Продавец
             'UF_CRM_1657549699',    # Дата перехода в отвал
-            'UF_CRM_1656426746',    # СсылкаНаИсточникПродажи
+            'UF_CRM_1662714299',    # СсылкаНаИсточникПродажи
             'OPPORTUNITY',
         ],
 
@@ -69,10 +70,10 @@ def main():
     for deal in deals:
 
         # Дата продажи
-        if deal['UF_CRM_1656426746']:
+        if deal['UF_CRM_1662714299']:
             try:
-                smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1656426746']}})[0]
-                deal['UF_CRM_1656426746'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
+                smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
+                deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
             except:
                 pass
 
@@ -129,7 +130,8 @@ def main():
     for values in deal_values:
         data_list.append(list(values))
 
-    access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
+    #access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
+    access = gspread.service_account(f"bitrix24-data-studio-2278c7bfb1a7.json")
     worksheet_date = month_string[strftime('%m')]
     with open('/root/autorun_4dk/X_Report config.txt', 'r') as file:
         file_name = file.read()
