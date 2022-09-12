@@ -234,6 +234,12 @@ def update_bitrix_list(report_type):
 
                                             element_subscriberCode = bitrix_element['PROPERTY_1289'][field_value]
 
+                                            # 95% задача
+
+                                        for field_value in bitrix_element['PROPERTY_1331']:
+
+                                            task_95_checkbox = bitrix_element['PROPERTY_1331'][field_value]
+
                                         subscriberCode = element['subscriberCode']
 
                                         # Обновление элемента списка если найден соответствующий для компании
@@ -260,6 +266,7 @@ def update_bitrix_list(report_type):
                                                                'PROPERTY_1285': startDate,
                                                                'PROPERTY_1289': subscriberCode,
                                                                'PROPERTY_1293': element_type_fields[name_element_type],
+                                                               'PROPERTY_1331': task_95_checkbox,
                                                            }
                                                    }
                                                    )
@@ -285,6 +292,7 @@ def update_bitrix_list(report_type):
                                                            'PROPERTY_1285': startDate,
                                                            'PROPERTY_1289': subscriberCode,
                                                            'PROPERTY_1293': element_type_fields[name_element_type],
+                                                           'PROPERTY_1331': '2213',
                                                        }
                                                }
                                                )
