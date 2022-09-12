@@ -3,10 +3,9 @@ from time import strftime
 from fast_bitrix24 import Bitrix
 import gspread
 
-#from authentication import authentication
+from authentication import authentication
 
-#b = Bitrix(authentication('Bitrix'))
-b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
+b = Bitrix(authentication('Bitrix'))
 
 def main():
 
@@ -130,8 +129,7 @@ def main():
     for values in deal_values:
         data_list.append(list(values))
 
-    #access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
-    access = gspread.service_account(f"bitrix24-data-studio-2278c7bfb1a7.json")
+    access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
     worksheet_date = month_string[strftime('%m')]
     with open('/root/autorun_4dk/X_Report config.txt', 'r') as file:
         file_name = file.read()
