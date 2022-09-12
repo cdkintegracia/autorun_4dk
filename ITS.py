@@ -308,6 +308,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1285': startDate,
                                                    'PROPERTY_1289': subscriberCode,
                                                    'PROPERTY_1293': element_type_fields[name_element_type],
+                                                   'PROPERTY_1331': '2213',
                                                }
                                        }
                                        )
