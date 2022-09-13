@@ -66,13 +66,16 @@ def main():
 
     count = 0
     user_names = {}
+    error_task_text = ''
     for deal in deals:
-
-        # Дата продажи
-        if deal['UF_CRM_1662714299']:
-                print(deal['ID'])
-                smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
-                deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
+        try:
+            # Дата продажи
+            if deal['UF_CRM_1662714299']:
+                    print(deal['ID'])
+                    smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
+                    deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
+        except:
+            error_task_text += f"{deal['ID']} - проблема с источником продаж"
 
         # Дата отвала
         if deal['UF_CRM_1657549699']:
@@ -138,6 +141,14 @@ def main():
         worksheet = spreadsheet.worksheet(worksheet_date)
     worksheet.clear()
     worksheet.update('A1', data_list)
+
+    b.call('tasks.task.add', {'fields': {
+        'TITLE': f"X-отчет обновлен с ошибками",
+        'DESCRIPTION': error_task_text,
+        'GROUP_ID': '13',
+        'CREATED_BY': '173',
+        'RESPONSIBLE_ID': '311',
+    }})
 
 if __name__ == '__main__':
     main()
