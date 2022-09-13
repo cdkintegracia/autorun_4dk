@@ -70,6 +70,7 @@ def main():
 
         # Дата продажи
         if deal['UF_CRM_1662714299']:
+                print(deal['ID'])
                 smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
                 deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
 
