@@ -3,10 +3,10 @@ from time import strftime
 from fast_bitrix24 import Bitrix
 import gspread
 
-from authentication import authentication
+#from authentication import authentication
 
-b = Bitrix(authentication('Bitrix'))
-
+#b = Bitrix(authentication('Bitrix'))
+b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
 def main():
 
     group_string = {
@@ -67,14 +67,14 @@ def main():
     count = 0
     user_names = {}
     for deal in deals:
+        if deal['ID'] != '106613':
+            continue
 
         # Дата продажи
         if deal['UF_CRM_1662714299']:
-            try:
                 smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
                 deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
-            except:
-                pass
+                print(deal['UF_CRM_1662714299'])
 
         # Дата отвала
         if deal['UF_CRM_1657549699']:
