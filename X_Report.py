@@ -75,7 +75,7 @@ def main():
                     smart = b.get_all('crm.item.list', {'entityTypeId': '133', 'filter': {'ID': deal['UF_CRM_1662714299']}})[0]
                     deal['UF_CRM_1662714299'] = f"{smart['createdTime'][8:10]}.{smart['createdTime'][5:7]}.{smart['createdTime'][:4]}"
         except:
-            error_task_text += f"{deal['ID']} - проблема с источником продаж"
+            error_task_text += f"{deal['ID']} - проблема с источником продаж\n"
 
         # Дата отвала
         if deal['UF_CRM_1657549699']:
