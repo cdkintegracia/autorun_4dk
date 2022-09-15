@@ -142,13 +142,14 @@ def main():
     worksheet.clear()
     worksheet.update('A1', data_list)
 
-    b.call('tasks.task.add', {'fields': {
-        'TITLE': f"X-отчет обновлен с ошибками",
-        'DESCRIPTION': error_task_text,
-        'GROUP_ID': '13',
-        'CREATED_BY': '173',
-        'RESPONSIBLE_ID': '311',
-    }})
+    if error_task_text:
+        b.call('tasks.task.add', {'fields': {
+            'TITLE': f"X-отчет обновлен с ошибками",
+            'DESCRIPTION': error_task_text,
+            'GROUP_ID': '13',
+            'CREATED_BY': '173',
+            'RESPONSIBLE_ID': '311',
+        }})
 
 if __name__ == '__main__':
     main()
