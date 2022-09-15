@@ -21,7 +21,7 @@ def main():
     date_filter = current_date - timedelta(days=1)
     date_filter = date_filter.strftime('%Y-%m-%d')
 
-    mails = b.get_all('crm.activity.list', {'filter': {'OWNER_TYPE_ID': '4', 'PROVIDER_TYPE_ID': 'EMAIL', '>CREATED': date_filter}})
+    mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter}})
 
     current_date = datetime.utcnow().strftime('%Y %m %d')
     current_date = datetime.strptime(current_date, '%Y %m %d')
