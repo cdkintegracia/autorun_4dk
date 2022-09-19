@@ -57,7 +57,9 @@ def main():
 
     # Удаление элементов
     date_filter = current_date - timedelta(days=4)
+    date_filter = date_filter.strftime('%Y-%m-%d')
     mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'CREATED': date_filter}})
+
     date_filter_create = date_filter.split('-')
     date_filter_create = f"{date_filter_create[2]}.{date_filter_create[1]}.{date_filter_create[0]}"
     elements = b.get_all('lists.element.get', {'IBLOCK_TYPE_ID': 'lists', 'IBLOCK_ID': '185',})
