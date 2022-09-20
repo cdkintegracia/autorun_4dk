@@ -1,13 +1,12 @@
 from fast_bitrix24 import Bitrix
 import time
-#from authentication import authentication
+from authentication import authentication
 
 
 # Считывание файла authentication.txt
 
-#webhook = authentication('Bitrix')
-#b = Bitrix(webhook)
-b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
+webhook = authentication('Bitrix')
+b = Bitrix(webhook)
 
 
 def create_task(deals, task_type):
@@ -16,11 +15,11 @@ def create_task(deals, task_type):
         'ДК': 'Эти сделки завершаются сегодня',
         'ДПО': 'Внимание! Наступила дата проверки оплаты для сделок'
     }
-    task_text = ''  # Текст для задачи
+
     autoprolongation_deals = []
     no_autoprolongation_deals = []
 
-    for number, deal in enumerate(deals, start=1):
+    for deal in deals:
 
         # Получение названия компании
 
@@ -28,12 +27,12 @@ def create_task(deals, task_type):
 
         # Формирование текста для задачи
         if deal['UF_CRM_1637933869479'] == '0':
-            no_autoprolongation_deals.append(f"{number}. "
+            no_autoprolongation_deals.append(f""
                          f"{deal['TITLE']} - "
                          f"{company['TITLE']} "
                          f"https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n")
         else:
-            autoprolongation_deals.append(f"{number}. "
+            autoprolongation_deals.append(f""
                          f"{deal['TITLE']} - "
                          f"{company['TITLE']} "
                          f"https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n")
@@ -42,38 +41,29 @@ def create_task(deals, task_type):
 
     time_task = time.strftime('%d.%m.%Y')  # Время для названия задачи
 
-    if task_text != '':
-        '''
+    if autoprolongation_deals or no_autoprolongation_deals:
+
         task = b.call('tasks.task.add', {'fields': {
             'TITLE': f'{task_types[task_type]} ({time_task})',
             'GROUP_ID': '11',
-            'DESCRIPTION': task_text,
             'RESPONSIBLE_ID': '311',
             'CREATED_BY': '173'
         }
         }
                )
-        '''
-        task = b.call('tasks.task.add', {'fields': {
-            'TITLE': f'{task_types[task_type]} ({time_task})',
-            'GROUP_ID': '13',
-            'RESPONSIBLE_ID': '311',
-            'CREATED_BY': '173'
-        }
-        }
-                      )
+
         main_checklist = b.call('task.checklistitem.add', [
             task['task']['id'], {
                 # <Название компании> <Название сделки> <Ссылка на сделку>
-                'TITLE': f"Сделки с автопролонгацией",
+                'TITLE': f"Сделки с автопролонгацией", 'PARENT_ID': task['task']['id'],
             }
         ], raw=True
                )
 
         for text in autoprolongation_deals:
             b.call('task.checklistitem.add', [
-                main_checklist['result'], {
-                    'TITLE': text,
+                task['task']['id'], {
+                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
                 }
             ], raw=True
                    )
@@ -81,15 +71,15 @@ def create_task(deals, task_type):
         main_checklist = b.call('task.checklistitem.add', [
             task['task']['id'], {
                 # <Название компании> <Название сделки> <Ссылка на сделку>
-                'TITLE': f"Сделки без автопролонгации",
+                'TITLE': f"Сделки без автопролонгации", 'PARENT_ID': task['task']['id'],
             }
         ], raw=True
                                 )
 
         for text in no_autoprolongation_deals:
             b.call('task.checklistitem.add', [
-                main_checklist['result'], {
-                    'TITLE': text,
+                task['task']['id'], {
+                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
                 }
             ], raw=True
                    )
