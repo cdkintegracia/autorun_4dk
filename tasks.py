@@ -42,31 +42,25 @@ def create_task(deals, task_type):
     time_task = time.strftime('%d.%m.%Y')  # Время для названия задачи
 
     if autoprolongation_deals or no_autoprolongation_deals:
-
+        '''
         task = b.call('tasks.task.add', {'fields': {
             'TITLE': f'{task_types[task_type]} ({time_task})',
             'GROUP_ID': '11',
+            'DESCRIPTION': task_text,
             'RESPONSIBLE_ID': '311',
             'CREATED_BY': '173'
         }
         }
                )
-
-        main_checklist = b.call('task.checklistitem.add', [
-            task['task']['id'], {
-                # <Название компании> <Название сделки> <Ссылка на сделку>
-                'TITLE': f"Сделки с автопролонгацией", 'PARENT_ID': task['task']['id'],
-            }
-        ], raw=True
-               )
-
-        for text in autoprolongation_deals:
-            b.call('task.checklistitem.add', [
-                task['task']['id'], {
-                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
-                }
-            ], raw=True
-                   )
+        '''
+        task = b.call('tasks.task.add', {'fields': {
+            'TITLE': f'{task_types[task_type]} ({time_task})',
+            'GROUP_ID': '13',
+            'RESPONSIBLE_ID': '311',
+            'CREATED_BY': '173'
+        }
+        }
+                      )
 
         main_checklist = b.call('task.checklistitem.add', [
             task['task']['id'], {
@@ -84,13 +78,28 @@ def create_task(deals, task_type):
             ], raw=True
                    )
 
+        main_checklist = b.call('task.checklistitem.add', [
+            task['task']['id'], {
+                # <Название компании> <Название сделки> <Ссылка на сделку>
+                'TITLE': f"Сделки с автопролонгацией", 'PARENT_ID': task['task']['id'],
+            }
+        ], raw=True
+               )
+
+        for text in autoprolongation_deals:
+            b.call('task.checklistitem.add', [
+                task['task']['id'], {
+                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
+                }
+            ], raw=True
+                   )
+
 
 
 
 def main():
 
     time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
-
     # Сделки ДК == сегодня
 
     deals_dk = b.get_all('crm.deal.list', {
