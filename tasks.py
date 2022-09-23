@@ -10,11 +10,6 @@ from fast_bitrix24 import Bitrix
 webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
 b = Bitrix(webhook)
 
-"""
-***************************************
-ДОБАВИТЬ В ПОДЗАДАЧИ ГРУППУ АДМ
-***************************************
-"""
 
 def create_sub_task(main_task_id: str, deal_name, company_name, deal_id, task_type: str, company_id: str):
 
