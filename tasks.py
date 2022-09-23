@@ -1,12 +1,62 @@
-from fast_bitrix24 import Bitrix
 import time
-from authentication import authentication
+
+from fast_bitrix24 import Bitrix
+#from authentication import authentication
 
 
 # Считывание файла authentication.txt
 
-webhook = authentication('Bitrix')
+#webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
 b = Bitrix(webhook)
+
+"""
+***************************************
+ДОБАВИТЬ В ПОДЗАДАЧИ ГРУППУ АДМ
+***************************************
+"""
+
+def create_sub_task(main_task_id: str, deal_name, company_name, deal_id, task_type: str, company_id: str):
+
+    task_type_description = {
+        'ДК': 'Дата завершения',
+        'ДПО': 'Дата проверки оплаты'
+    }
+
+    b.call('tasks.task.add', {
+        'fields': {
+            'TITLE': f"Что делать со сделкой {deal_name} {company_name}",
+            'DESCRIPTION': f"Сегодня, {time.strftime('%d.%m.%Y')} - {task_type_description[task_type]} для {deal_name}. Свяжитесь с менеджером или с клиентом и укажите в комментарии к задаче, что нужно сделать с сделкой",
+            'DEADLINE': time.strftime('%d.%m.%Y') + ' ' + '17:00',
+            'RESPONSIBLE_ID': '173',
+            'PARENT_ID': main_task_id,
+            'UF_CRM_TASK': [f"D_{deal_id}", f"CO_{company_id}"],
+            'GROUP_ID': '11'
+        }})
+
+
+def create_check_list(data: dict, main_task_id: str, task_type: str):
+    if not data:
+        return
+
+    main_checklist = b.call('task.checklistitem.add', [
+        main_task_id, {
+            # <Название компании> <Название сделки> <Ссылка на сделку>
+            'TITLE': f"Сделки без автопролонгации", 'PARENT_ID': main_task_id,
+        }
+    ], raw=True
+                            )
+
+    for deal_id in data:
+        b.call('task.checklistitem.add', [
+            main_task_id, {
+                'TITLE': f"{data[deal_id][0]} - {data[deal_id][1]} https://vc4dk.bitrix24.ru/crm/deal/details/{deal_id}/",
+                'PARENT_ID': main_checklist['result'],
+            }
+        ], raw=True
+               )
+
+        create_sub_task(main_task_id, data[deal_id][0], data[deal_id][1], deal_id, task_type, data[deal_id][2])
 
 
 def create_task(deals, task_type):
@@ -16,26 +66,19 @@ def create_task(deals, task_type):
         'ДПО': 'Внимание! Наступила дата проверки оплаты для сделок'
     }
 
-    autoprolongation_deals = []
-    no_autoprolongation_deals = []
+    autoprolongation_deals = {}
+    no_autoprolongation_deals = {}
 
     for deal in deals:
 
         # Получение названия компании
-
         company = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]
 
-        # Формирование текста для задачи
+        # Формирование массива для чек-листа, подзадач
         if deal['UF_CRM_1637933869479'] == '0':
-            no_autoprolongation_deals.append(f""
-                         f"{deal['TITLE']} - "
-                         f"{company['TITLE']} "
-                         f"https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n")
+            no_autoprolongation_deals.setdefault(deal['ID'], [deal['TITLE'], company['TITLE'], deal['COMPANY_ID']])
         else:
-            autoprolongation_deals.append(f""
-                         f"{deal['TITLE']} - "
-                         f"{company['TITLE']} "
-                         f"https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n")
+            autoprolongation_deals.setdefault(deal['ID'], [deal['TITLE'], company['TITLE'], deal['COMPANY_ID']])
 
     # Создание задачи
 
@@ -62,39 +105,8 @@ def create_task(deals, task_type):
         }
                       )
 
-        main_checklist = b.call('task.checklistitem.add', [
-            task['task']['id'], {
-                # <Название компании> <Название сделки> <Ссылка на сделку>
-                'TITLE': f"Сделки без автопролонгации", 'PARENT_ID': task['task']['id'],
-            }
-        ], raw=True
-                                )
-
-        for text in no_autoprolongation_deals:
-            b.call('task.checklistitem.add', [
-                task['task']['id'], {
-                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
-                }
-            ], raw=True
-                   )
-
-        main_checklist = b.call('task.checklistitem.add', [
-            task['task']['id'], {
-                # <Название компании> <Название сделки> <Ссылка на сделку>
-                'TITLE': f"Сделки с автопролонгацией", 'PARENT_ID': task['task']['id'],
-            }
-        ], raw=True
-               )
-
-        for text in autoprolongation_deals:
-            b.call('task.checklistitem.add', [
-                task['task']['id'], {
-                    'TITLE': text, 'PARENT_ID': main_checklist['result'],
-                }
-            ], raw=True
-                   )
-
-
+        create_check_list(no_autoprolongation_deals, task['task']['id'], task_type)
+        create_check_list(autoprolongation_deals, task['task']['id'], task_type)
 
 
 def main():
