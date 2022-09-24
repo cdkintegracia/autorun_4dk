@@ -8,7 +8,6 @@ from authentication import authentication
 
 b = Bitrix(authentication('Bitrix'))
 
-
 def main():
     crm_dct = {
         '1': ['Лид:', 'lead', 'L'],
@@ -21,7 +20,12 @@ def main():
     date_filter = current_date - timedelta(days=3)
     date_filter = date_filter.strftime('%Y-%m-%d')
 
-    mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'CREATED': date_filter}})
+
+    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter}})
+    mails = []
+    for mail in not_filtred_mails:
+        if date_filter in mail['CREATED']:
+            mails.append(mail)
 
     current_date = datetime.utcnow().strftime('%Y %m %d')
     current_date = datetime.strptime(current_date, '%Y %m %d')
@@ -58,7 +62,11 @@ def main():
     # Удаление элементов
     date_filter = current_date - timedelta(days=4)
     date_filter = date_filter.strftime('%Y-%m-%d')
-    mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'CREATED': date_filter}})
+    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'CREATED': date_filter}})
+    mails = []
+    for mail in not_filtred_mails:
+        if date_filter in mail['CREATED']:
+            mails.append(mail)
 
     date_filter_create = date_filter.split('-')
     date_filter_create = f"{date_filter_create[2]}.{date_filter_create[1]}.{date_filter_create[0]}"
