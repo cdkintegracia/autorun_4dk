@@ -80,7 +80,7 @@ def create_task(deals, task_type):
     time_task = time.strftime('%d.%m.%Y')  # Время для названия задачи
 
     if autoprolongation_deals or no_autoprolongation_deals:
-        '''
+
         task = b.call('tasks.task.add', {'fields': {
             'TITLE': f'{task_types[task_type]} ({time_task})',
             'GROUP_ID': '11',
@@ -90,15 +90,6 @@ def create_task(deals, task_type):
         }
         }
                )
-        '''
-        task = b.call('tasks.task.add', {'fields': {
-            'TITLE': f'{task_types[task_type]} ({time_task})',
-            'GROUP_ID': '13',
-            'RESPONSIBLE_ID': '311',
-            'CREATED_BY': '173'
-        }
-        }
-                      )
 
         create_check_list(no_autoprolongation_deals, task['task']['id'], task_type)
         create_check_list(autoprolongation_deals, task['task']['id'], task_type)
