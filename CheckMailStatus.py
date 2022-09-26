@@ -19,6 +19,7 @@ def main():
     current_date = datetime.strptime(current_date, '%Y %m %d')
     date_filter = current_date - timedelta(days=3)
     date_filter = date_filter.strftime('%Y-%m-%d')
+    read_check_date = current_date.strftime('%Y-%m-%d')
 
 
     not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter}})
@@ -59,29 +60,31 @@ def main():
                             'PROPERTY_1329': assigned,
                         }})
 
-    # Удаление элементов
-    date_filter = current_date - timedelta(days=4)
-    date_filter = date_filter.strftime('%Y-%m-%d')
-    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'CREATED': date_filter}})
-    mails = []
-    for mail in not_filtred_mails:
-        if date_filter in mail['CREATED']:
-            mails.append(mail)
-
-    date_filter_create = date_filter.split('-')
-    date_filter_create = f"{date_filter_create[2]}.{date_filter_create[1]}.{date_filter_create[0]}"
-    elements = b.get_all('lists.element.get', {'IBLOCK_TYPE_ID': 'lists', 'IBLOCK_ID': '185',})
+    # Прочтение письма
+    elements = b.get_all('lists.element.get', {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_ID': '185',
+        'filter': {'PROPERTY_1343': 'None'}})
     for element in elements:
-        for value in element['PROPERTY_1321'].values():
-            element_date_create = value
-        if element_date_create != date_filter_create:
-            continue
-        flag = False
-        for mail in mails:
-            if mail['ID'] == element['NAME'] and 'READ_CONFIRMED' not in mail['SETTINGS']:
-                flag = True
-        if flag is False:
-            b.call('lists.element.delete', {'IBLOCK_TYPE_ID': 'lists', 'IBLOCK_ID': '185', 'ELEMENT_ID': element['ID']})
+        mail = b.get_all('crm.activity.list', {
+            'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': element['NAME']}})
+
+        if 'READ_CONFIRMED' in mail:
+            b.call('lists.element.update', {
+                'IBLOCK_TYPE_ID': 'lists',
+                'IBLOCK_ID': '185',
+                'ELEMENT_ID': element['ID'],
+                'fields': {
+                    'NAME': element['NAME'],
+                    'PROPERTY_1319': element['PROPERTY_1319'],
+                    'PROPERTY_1321': element['PROPERTY_1321'],
+                    'PROPERTY_1325': element['PROPERTY_1325'],
+                    'PROPERTY_1327': element['PROPERTY_1327'],
+                    'PROPERTY_1329': element['PROPERTY_1329'],
+                    'PROPERTY_1343': read_check_date,
+                }
+            }
+                   )
 
 if __name__ == '__main__':
     main()

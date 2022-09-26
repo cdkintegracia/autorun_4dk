@@ -1,13 +1,13 @@
 import time
 
 from fast_bitrix24 import Bitrix
-#from authentication import authentication
+from authentication import authentication
 
 
 # Считывание файла authentication.txt
 
-#webhook = authentication('Bitrix')
-webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
+webhook = authentication('Bitrix')
+
 b = Bitrix(webhook)
 
 
