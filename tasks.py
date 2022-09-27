@@ -26,7 +26,8 @@ def create_sub_task(main_task_id: str, deal_name, company_name, deal_id, task_ty
             'RESPONSIBLE_ID': '173',
             'PARENT_ID': main_task_id,
             'UF_CRM_TASK': [f"D_{deal_id}", f"CO_{company_id}"],
-            'GROUP_ID': '11'
+            'GROUP_ID': '11',
+            'CREATED_BY': '173'
         }})
 
 
@@ -84,8 +85,9 @@ def create_task(deals, task_type):
         task = b.call('tasks.task.add', {'fields': {
             'TITLE': f'{task_types[task_type]} ({time_task})',
             'GROUP_ID': '11',
-            'RESPONSIBLE_ID': '311',
-            'CREATED_BY': '173'
+            'RESPONSIBLE_ID': '173',
+            'CREATED_BY': '173',
+
         }
         }
                )
