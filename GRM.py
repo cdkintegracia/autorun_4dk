@@ -264,8 +264,9 @@ def main():
     if task_text != '':
         b.call('tasks.task.add', {
                         'fields': {
-                            'TITLE': f'Обнаружены новые конфигурации ГРМ в 1С',
-                            'DESCRIPTION': task_text,
+                            'TITLE': f'Обнаружены новые конфигурации ГРМ в 1С (инфо)',
+                            'DESCRIPTION': f"Задача является информирующей, ничего делать не надо\n"
+                                           f"{task_text}",
                             'CREATED_BY': '173',
                             'GROUP_ID': '13',
                             'RESPONSIBLE_ID': '311',
@@ -332,7 +333,8 @@ def main():
             'fields':
                 {
                     'TITLE': f'Конфигурации ГРМ - не найдены в 1С',
-                    'DESCRIPTION': task_text,
+                    'DESCRIPTION': f"Необходимо удалить записи о данных конфигурациях\n"
+                                   f"{task_text}",
                     'CREATED_BY': '173',
                     'GROUP_ID': '13',
                     'RESPONSIBLE_ID': '311',
@@ -367,7 +369,7 @@ def main():
         # Если клиент из 1С не найден в Битриксе и компанию не нужно игнорировать
 
         if flag is False and str(client['id']) not in ignore_companies:
-            task_text += f'ID 1C: {client["id"]}\n' \
+            task_text += f'ID ГРМ: {client["id"]}\n' \
                          f'email: {client["email"]}\n' \
                          f'Логин: {client["login"]}\n' \
                          f'ИНН: {client["inn"]}\n' \
@@ -385,6 +387,7 @@ def main():
                 {
                     'TITLE': f'Найдены новые клиенты в 1С',
                     'DESCRIPTION': f'Данные клиентов, которые есть в 1С и нет в Битриксе:\n'
+                                   f'Необходимо проверить наличие компании в Битриксе и заполнить поле id ГРМ\n'
                                    f'\n'
                                    f'{task_text}',
                     'CREATED_BY': '173',
