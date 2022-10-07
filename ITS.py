@@ -162,9 +162,11 @@ def update_bitrix_list(report_type):
                                 )
 
     for element in report['report']['entries']:
+
         for tariff in element['tariffs']:
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
 
+            inn = ''
             if 'userOrganizationInn' in tariff:     # Если есть ИНН в элементе отчета, если нет - компания неопознана
                     inn = tariff['userOrganizationInn']     # ИНН компании из отчета
             else:
@@ -185,7 +187,8 @@ def update_bitrix_list(report_type):
             startDate = tariff['startDate']  # Дата начала из отчета
 
             # Поиск компании в Битриксе по ИНН из отчета
-
+            if not inn:
+                continue
             companies = b.get_all('crm.company.list',
                                       {
                                           'select': ['*', 'UF_*'],
@@ -266,6 +269,7 @@ def update_bitrix_list(report_type):
                                         str(maxVolume) == str(element_maxVolume) and\
                                         subscriberCode == element_subscriberCode:
 
+
                                     element_id = bitrix_element['ID']   # ID элемента списка
 
                                     b.call('lists.element.update',
@@ -293,7 +297,6 @@ def update_bitrix_list(report_type):
                             if flag is False:   # Если не был найден элемент для обновления
 
                                 # Создание элемента списка
-
                                 b.call('lists.element.add',
                                        {
                                            'IBLOCK_TYPE_ID': 'lists',
@@ -327,7 +330,7 @@ def update_bitrix_list(report_type):
 2: Название услуги для фильтрации в отчете
 3: Список названия услуг, которые необходмо вывести в список
 """
-'''
+
 report_types = {
     'COUNTERAGENT': [
         'Контрагент', [
@@ -352,26 +355,6 @@ report_types = {
             'Досье контрагента',
         ]
     ],
-    'DOCUMENT_RECOGNITION': [
-        'РПД',
-        'UC_GZFC63',
-        'Распознавание первичных документов',
-        [
-            'Число страниц',
-        ]
-    ],
-    'ESS': [
-        'Кабинет сотрудника',
-        'UC_D1DN7U',
-        'Кабинет сотрудника',
-        [
-            'Число кабинетов сотрудников',
-        ]
-    ],
-}
-'''
-
-report_types = {
     'DOCUMENT_RECOGNITION': [
         'РПД',
         'UC_GZFC63',
