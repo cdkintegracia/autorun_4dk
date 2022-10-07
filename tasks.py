@@ -26,7 +26,7 @@ def create_sub_task(main_task_id: str, deal_name, company_name, deal_id, task_ty
             'RESPONSIBLE_ID': '173',
             'PARENT_ID': main_task_id,
             'UF_CRM_TASK': [f"D_{deal_id}", f"CO_{company_id}"],
-            'GROUP_ID': '11',
+            'GROUP_ID': '77',
             'CREATED_BY': '173'
         }})
 
