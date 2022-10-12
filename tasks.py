@@ -60,7 +60,7 @@ def create_check_list(data: dict, main_task_id: str, task_type: str):
 def create_task(deals, task_type):
 
     task_types = {
-        'ДК': 'Эти сделки завершаются сегодня',
+        'ДК': 'Эти сделки завершаются',
         'ДПО': 'Внимание! Наступила дата проверки оплаты для сделок'
     }
 
@@ -83,9 +83,15 @@ def create_task(deals, task_type):
     time_task = time.strftime('%d.%m.%Y')  # Время для названия задачи
 
     if autoprolongation_deals or no_autoprolongation_deals:
-
+        week_day = datetime.today().isoweekday()
+        if week_day != 5:  # Пятница
+            task_title = f'{task_types[task_type]} ({time_task})'
+        else:
+            end_time_task = datetime.today() + timedelta(days=2)
+            end_time_task = end_time_task.strftime('%d.%m.%Y')
+            task_title = f"{task_types[task_type]} {time_task} - {end_time_task}"
         task = b.call('tasks.task.add', {'fields': {
-            'TITLE': f'{task_types[task_type]} ({time_task})',
+            'TITLE': task_title,
             'GROUP_ID': '11',
             'RESPONSIBLE_ID': '173',
             'CREATED_BY': '173',
