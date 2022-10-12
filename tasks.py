@@ -1,4 +1,6 @@
 import time
+from datetime import datetime
+from datetime import timedelta
 
 from fast_bitrix24 import Bitrix
 from authentication import authentication
@@ -97,64 +99,125 @@ def create_task(deals, task_type):
 
 
 def main():
-
+    week_day = datetime.today().isoweekday()
+    if week_day in [6, 7]:  # Выходные
+        return
     time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
-    # Сделки ДК == сегодня
+    date_end_filter = datetime.today() + timedelta(days=2)
+    date_end_filter = date_end_filter.strftime('%Y-%m-%d')
 
-    deals_dk = b.get_all('crm.deal.list', {
-    'select': [
-        'TITLE',
-        'TYPE_ID',
-        'STAGE_ID',
-        'CLOSEDATE',
-        'COMPANY_ID',
-        'CLOSED',
-        'CATEGORY_ID',
-        'UF_CRM_1638958630625',
-        'UF_CRM_1637933869479',
-    ],
-    'filter': {
-        'CLOSEDATE': time_filter,   # Дата завершения == текущая дата
-        '!TYPE_ID': [
-            'UC_QQPYF0',    # Лицензия
-            'UC_OV4T7K',    # Отчетность (в рамках ИТС)
-            'UC_YIAJC8',    # Лицензия с купоном ИТС
-            'UC_74DPBQ',     # Битрикс24
+    if week_day != 5:  # Пятница
+
+        # Сделки ДК == сегодня
+        deals_dk = b.get_all('crm.deal.list', {
+        'select': [
+            'TITLE',
+            'TYPE_ID',
+            'STAGE_ID',
+            'CLOSEDATE',
+            'COMPANY_ID',
+            'CLOSED',
+            'CATEGORY_ID',
+            'UF_CRM_1638958630625',
+            'UF_CRM_1637933869479',
         ],
-        'CLOSED': 'N',  # Сделка не закрыта
-    }
-    }
-                  )
+        'filter': {
+            'CLOSEDATE': time_filter,   # Дата завершения == текущая дата
+            '!TYPE_ID': [
+                'UC_QQPYF0',    # Лицензия
+                'UC_OV4T7K',    # Отчетность (в рамках ИТС)
+                'UC_YIAJC8',    # Лицензия с купоном ИТС
+                'UC_74DPBQ',     # Битрикс24
+            ],
+            'CLOSED': 'N',  # Сделка не закрыта
+        }
+        }
+                      )
+
+        # Сделки ДПО == сегодня
+        deals_dpo = b.get_all('crm.deal.list', {
+            'select': [
+                'TITLE',
+                'TYPE_ID',
+                'STAGE_ID',
+                'CLOSEDATE',
+                'COMPANY_ID',
+                'CLOSED',
+                'CATEGORY_ID',
+                'UF_CRM_1638958630625',
+                'UF_CRM_1637933869479',
+            ],
+            'filter': {
+                'UF_CRM_1638958630625': time_filter,  # ДПО == текущая дата
+                '!TYPE_ID': [
+                    'UC_QQPYF0',  # Лицензия
+                    'UC_OV4T7K',  # Отчетность (в рамках ИТС)
+                    'UC_YIAJC8',  # Лицензия с купоном ИТС
+                    'UC_74DPBQ',  # Битрикс24
+                ],
+                'CLOSED': 'N',  # Сделка не закрыта
+            }
+        }
+                              )
+
+    else:
+
+        # Сделки ДК == с пятницы по воскресенье
+        deals_dk = b.get_all('crm.deal.list', {
+            'select': [
+                'TITLE',
+                'TYPE_ID',
+                'STAGE_ID',
+                'CLOSEDATE',
+                'COMPANY_ID',
+                'CLOSED',
+                'CATEGORY_ID',
+                'UF_CRM_1638958630625',
+                'UF_CRM_1637933869479',
+            ],
+            'filter': {
+                '>=CLOSEDATE': time_filter,
+                '<=CLOSEDATE': date_end_filter,
+                '!TYPE_ID': [
+                    'UC_QQPYF0',  # Лицензия
+                    'UC_OV4T7K',  # Отчетность (в рамках ИТС)
+                    'UC_YIAJC8',  # Лицензия с купоном ИТС
+                    'UC_74DPBQ',  # Битрикс24
+                ],
+                'CLOSED': 'N',  # Сделка не закрыта
+            }
+        }
+                             )
+
+        # Сделки ДПО == с пятницы по воскресенье
+        deals_dpo = b.get_all('crm.deal.list', {
+            'select': [
+                'TITLE',
+                'TYPE_ID',
+                'STAGE_ID',
+                'CLOSEDATE',
+                'COMPANY_ID',
+                'CLOSED',
+                'CATEGORY_ID',
+                'UF_CRM_1638958630625',
+                'UF_CRM_1637933869479',
+            ],
+            'filter': {
+                '>=UF_CRM_1638958630625': time_filter,
+                '<=UF_CRM_1638958630625': date_end_filter,
+                '!TYPE_ID': [
+                    'UC_QQPYF0',  # Лицензия
+                    'UC_OV4T7K',  # Отчетность (в рамках ИТС)
+                    'UC_YIAJC8',  # Лицензия с купоном ИТС
+                    'UC_74DPBQ',  # Битрикс24
+                ],
+                'CLOSED': 'N',  # Сделка не закрыта
+            }
+        }
+                              )
+
 
     create_task(deals_dk, 'ДК')
-
-    # Сделки ДПО == сегодня
-
-    deals_dpo = b.get_all('crm.deal.list', {
-    'select': [
-        'TITLE',
-        'TYPE_ID',
-        'STAGE_ID',
-        'CLOSEDATE',
-        'COMPANY_ID',
-        'CLOSED',
-        'CATEGORY_ID',
-        'UF_CRM_1638958630625',
-        'UF_CRM_1637933869479',
-    ],
-    'filter': {
-        'UF_CRM_1638958630625': time_filter,   # ДПО == текущая дата
-        '!TYPE_ID': [
-            'UC_QQPYF0',    # Лицензия
-            'UC_OV4T7K',    # Отчетность (в рамках ИТС)
-            'UC_YIAJC8',    # Лицензия с купоном ИТС
-            'UC_74DPBQ',     # Битрикс24
-        ],
-        'CLOSED': 'N',  # Сделка не закрыта
-    }
-    }
-                  )
-
     create_task(deals_dpo, 'ДПО')
 
 
