@@ -8,8 +8,11 @@ Tips:
 from time import time
 from time import asctime
 from time import sleep
+import dateutil.parser
+
 from fast_bitrix24 import Bitrix
 import requests
+
 from authentication import authentication
 
 """
@@ -185,6 +188,7 @@ def update_bitrix_list(report_type):
                         break
 
             startDate = tariff['startDate']  # Дата начала из отчета
+            startDate_formated = dateutil.parser.isoparse(startDate)
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
@@ -287,6 +291,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1289': subscriberCode,
                                                        'PROPERTY_1293': element_type_fields[name_element_type],
                                                        'PROPERTY_1331': task_95,
+                                                       'PROPERTY_1347': startDate_formated,
                                                    }
                                            }
                                            )
@@ -312,6 +317,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1289': subscriberCode,
                                                    'PROPERTY_1293': element_type_fields[name_element_type],
                                                    'PROPERTY_1331': '2213',
+                                                   'PROPERTY_1347': startDate_formated,
                                                }
                                        }
                                        )
