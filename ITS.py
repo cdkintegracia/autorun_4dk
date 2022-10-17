@@ -292,6 +292,8 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1293': element_type_fields[name_element_type],
                                                        'PROPERTY_1331': task_95,
                                                        'PROPERTY_1347': startDate_formated,
+                                                       'PROPERTY_1349': maxVolume,
+                                                       'PROPERTY_1351': usedVolume,
                                                    }
                                            }
                                            )
@@ -318,6 +320,8 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1293': element_type_fields[name_element_type],
                                                    'PROPERTY_1331': '2213',
                                                    'PROPERTY_1347': startDate_formated,
+                                                   'PROPERTY_1349': maxVolume,
+                                                   'PROPERTY_1351': usedVolume,
                                                }
                                        }
                                        )
