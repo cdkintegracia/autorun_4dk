@@ -22,7 +22,7 @@ def main():
     read_check_date = current_date.strftime('%Y-%m-%d')
 
 
-    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter}})
+    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2'}})
     mails = []
     for mail in not_filtred_mails:
         if date_filter in mail['CREATED']:
@@ -40,7 +40,7 @@ def main():
             if 'READ_CONFIRMED' not in mail['SETTINGS']:
                 b.call('im.notify.system.add',
                        {'USER_ID': mail['AUTHOR_ID'],
-                        'MESSAGE': f'Письмо не прочитано в течении суток или не было доставлено.\n'
+                        'MESSAGE': f'Письмо не было прочитано или доставлено в срок.\n'
                         f'{crm_dct[mail["OWNER_TYPE_ID"]][0]} https://vc4dk.bitrix24.ru/crm/{crm_dct[mail["OWNER_TYPE_ID"]][1]}/details/{mail["OWNER_ID"]}/'})
 
                 # Создание элемента
