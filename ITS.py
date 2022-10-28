@@ -221,6 +221,8 @@ def update_bitrix_list(report_type):
 
                 for company in companies:
 
+                    element_responsible = company['ASSIGNED_BY_ID']
+
                     for deal in deals:
 
                         if company['ID'] == deal['COMPANY_ID']:     # Найдена сделка, принадлежащая компании
@@ -264,7 +266,6 @@ def update_bitrix_list(report_type):
 
                                 subscriberCode = element['subscriberCode']
 
-
                                 # Обновление элемента списка если найден соответствующий для компании
 
                                 if element_company_id == company['ID'] and\
@@ -294,6 +295,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1347': startDate_formated,
                                                        'PROPERTY_1349': maxVolume,
                                                        'PROPERTY_1351': usedVolume,
+                                                       'PROPERTY_1353': element_responsible,
                                                    }
                                            }
                                            )
@@ -322,6 +324,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1347': startDate_formated,
                                                    'PROPERTY_1349': maxVolume,
                                                    'PROPERTY_1351': usedVolume,
+                                                   'PROPERTY_1353': element_responsible,
                                                }
                                        }
                                        )
