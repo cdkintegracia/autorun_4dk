@@ -68,7 +68,7 @@ def create_task(deals, task_type):
     no_autoprolongation_deals = {}
 
     for deal in deals:
-
+        print(deal['ID'])
         # Получение названия компании
         company = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]
 
