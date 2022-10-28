@@ -68,7 +68,7 @@ def create_task(deals, task_type):
     no_autoprolongation_deals = {}
 
     for deal in deals:
-        print(deal['ID'], deal['CATEGORY_ID'])
+
         # Получение названия компании
         company = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]
 
@@ -193,6 +193,7 @@ def main():
                     'UC_74DPBQ',  # Битрикс24
                 ],
                 'CLOSED': 'N',  # Сделка не закрыта
+                'CATEGORY_ID': '1',
             }
         }
                              )
@@ -220,6 +221,7 @@ def main():
                     'UC_74DPBQ',  # Битрикс24
                 ],
                 'CLOSED': 'N',  # Сделка не закрыта
+                'CATEGORY_ID': '1',
             }
         }
                               )
