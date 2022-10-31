@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 from datetime import timedelta
+from calendar import monthrange
 
 from fast_bitrix24 import Bitrix
 from authentication import authentication
@@ -105,6 +106,14 @@ def create_task(deals, task_type):
 
 
 def main():
+    # Проверка на последний день месяца
+    current_day = datetime.now().day
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    last_day_current_month = monthrange(current_year, current_month)[1]
+    if current_day == last_day_current_month:
+        return
+
     week_day = datetime.today().isoweekday()
     if week_day in [6, 7]:  # Выходные
         return
