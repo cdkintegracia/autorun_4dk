@@ -1,11 +1,11 @@
 from fast_bitrix24 import Bitrix
 import requests
 
-#from authentication import authentication
+from authentication import authentication
 
 
-webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
-#webhook = authentication('Bitrix')
+
+webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
 
