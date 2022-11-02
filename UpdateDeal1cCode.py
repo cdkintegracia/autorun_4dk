@@ -1,0 +1,59 @@
+from fast_bitrix24 import Bitrix
+import requests
+
+from authentication import authentication
+
+
+b = Bitrix(authentication('Bitrix'))
+webhook = authentication('Bitrix')
+
+
+def update_deal_1c_code():
+    deals = b.get_all('crm.deal.list', {
+        'select': [
+            'ID',
+            ''
+        ], 'filter': {
+            'STAGE_ID': [
+                'C1:NEW',
+                'C1:UC_0KJKTY',
+                'C1:UC_3J0IH6',
+                'C1:UC_KZSOR2',
+                'C1:UC_VQ5HJD'
+
+            ],
+            'CATEGORY_ID': '1',
+        }})
+    for deal in deals:
+        try:
+            deal_id = deal['id']
+            # Получение информации о продукте сделки
+
+            deal_product = requests.get(url=webhook + 'crm.deal.productrows.get.json?id=' + deal_id)
+
+            # ID продукта сделки
+
+            id_deal_product = str(deal_product.json()['result'][0]['PRODUCT_ID'])
+
+
+            # Получение полей продукта
+
+            product_fields = requests.get(url=webhook + 'crm.product.get.json?id=' + id_deal_product)
+
+            # Получение кода 1С
+
+            if product_fields.json()['result']['PROPERTY_139'] is None:
+                return "NO CODE"
+            code_1c = product_fields.json()['result']['PROPERTY_139']['value']
+
+            # Сверка кода 1С продукта и кода в сделке
+
+            deal_1c_code = requests.get(url=f"{webhook}crm.deal.get?id={deal_id}").json()['result']['UF_CRM_1655972832']
+
+            if deal_1c_code != code_1c:
+
+                # Запись кода в сделку
+
+                requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
+        except:
+            pass

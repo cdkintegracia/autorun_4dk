@@ -11,7 +11,7 @@ from authentication import authentication
 webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
-def update_deal_1c_code():
+def check_deal_stage():
     deals = b.get_all('crm.deal.list', {
         'select': [
             'STAGE_ID',
@@ -45,5 +45,5 @@ def update_deal_1c_code():
 
 
 if __name__ == '__main__':
-    update_deal_1c_code()
+    check_deal_stage()
 
