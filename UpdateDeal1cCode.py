@@ -1,14 +1,16 @@
 from fast_bitrix24 import Bitrix
 import requests
 
-from authentication import authentication
+#from authentication import authentication
 
 
-b = Bitrix(authentication('Bitrix'))
-webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
+#webhook = authentication('Bitrix')
+b = Bitrix(webhook)
 
 
 def update_deal_1c_code():
+
     deals = b.get_all('crm.deal.list', {
         'select': [
             'ID',
@@ -23,10 +25,16 @@ def update_deal_1c_code():
 
             ],
             'CATEGORY_ID': '1',
+            'TYPE_ID': [
+                'UC_HT9G9H',
+                'UC_XIYCTV'
+            ]
         }})
+    error_text = ''
     for deal in deals:
         try:
-            deal_id = deal['id']
+            deal_id = deal['ID']
+
             # Получение информации о продукте сделки
 
             deal_product = requests.get(url=webhook + 'crm.deal.productrows.get.json?id=' + deal_id)
@@ -56,4 +64,15 @@ def update_deal_1c_code():
 
                 requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
         except:
-            pass
+            error_text += f"{deal_id}\n"
+    if error_text:
+        data = {
+            'fields': {
+                'GROUP_ID': '13',
+                'DESCRIPTION': error_text,
+                'TITLE': 'Ошибка обновления поля в сделках "СлужКод1С',
+                'RESPONSIBLE_ID': '173',
+                'CREATED_BY': '173',
+            }
+        }
+        new_task = requests.post(f"{webhook}tasks.task.add", json=data)
