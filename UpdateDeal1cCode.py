@@ -26,8 +26,22 @@ def update_deal_1c_code():
             ],
             'CATEGORY_ID': '1',
             'TYPE_ID': [
-                'UC_HT9G9H',
-                'UC_XIYCTV'
+                'UC_5T4MAW',
+                'UC_N113M9',
+                'UC_ZKPT1B',
+                'UC_2SJOEJ',
+                'UC_AVBW73',
+                'UC_GPT391',
+                'UC_92H9MN',
+                'UC_7V8HWF',
+                'UC_IUJR81',
+                'UC_IV3HX1',
+                'UC_1UPOTU',
+                'UC_81T8ZR',
+                'UC_SV60SP',
+                'UC_2B0CK2',
+                'UC_86JXH1',
+                'UC_WUGAZ7'
             ]
         }})
     error_text = ''
