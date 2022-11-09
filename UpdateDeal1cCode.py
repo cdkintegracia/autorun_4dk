@@ -1,12 +1,11 @@
 from fast_bitrix24 import Bitrix
 import requests
 
-#from authentication import authentication
+from authentication import authentication
 
 
 
-#webhook = authentication('Bitrix')
-webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
+webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
 
@@ -75,5 +74,3 @@ def update_deal_1c_code():
             }
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
-
-update_deal_1c_code()
