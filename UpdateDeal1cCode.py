@@ -1,12 +1,14 @@
 from fast_bitrix24 import Bitrix
 import requests
 
-from authentication import authentication
+#from authentication import authentication
 
 
 
-webhook = authentication('Bitrix')
+#webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
 b = Bitrix(webhook)
+
 
 
 def update_deal_1c_code():
@@ -25,24 +27,7 @@ def update_deal_1c_code():
 
             ],
             'CATEGORY_ID': '1',
-            'TYPE_ID': [
-                'UC_5T4MAW',
-                'UC_N113M9',
-                'UC_ZKPT1B',
-                'UC_2SJOEJ',
-                'UC_AVBW73',
-                'UC_GPT391',
-                'UC_92H9MN',
-                'UC_7V8HWF',
-                'UC_IUJR81',
-                'UC_IV3HX1',
-                'UC_1UPOTU',
-                'UC_81T8ZR',
-                'UC_SV60SP',
-                'UC_2B0CK2',
-                'UC_86JXH1',
-                'UC_WUGAZ7'
-            ]
+            'ID': ['110613', '110601', '110593', '107775', '107719', '107701', '107695', '107635', '107219', '107217', '107165', '107075', '107061', '107057', '107045', '107025', '107017', '107015', '106963', '106943', '106899', '106895', '106699', '106841', '106875', '106861', '106869', '106865', '106845', '106839', '106819', '106781', '106633', '106763', '106757', '106709', '106713', '106647', '106637', '106551', '106571', '106577', '106537', '106477', '106305', '106303', '106099', '105877', '106051', '106009', '105801', '88331']
         }})
     error_text = ''
     for deal in deals:
@@ -90,3 +75,5 @@ def update_deal_1c_code():
             }
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
+
+update_deal_1c_code()
