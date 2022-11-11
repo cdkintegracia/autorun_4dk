@@ -265,6 +265,10 @@ def update_bitrix_list(report_type):
                                     task_95 = '2213'
 
                                 subscriberCode = element['subscriberCode']
+                                if 'тестовый' in option['name']:
+                                    test_option = '2243'
+                                else:
+                                    test_option = '2245'
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
@@ -296,6 +300,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1349': maxVolume,
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
+                                                       'PROPERTY_1357': test_option,
                                                    }
                                            }
                                            )
@@ -325,6 +330,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1349': maxVolume,
                                                    'PROPERTY_1351': usedVolume,
                                                    'PROPERTY_1353': element_responsible,
+                                                   'PROPERTY_1357': test_option,
                                                }
                                        }
                                        )
