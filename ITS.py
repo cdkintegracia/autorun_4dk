@@ -269,7 +269,7 @@ def update_bitrix_list(report_type):
                                     test_option = '2243'
                                 else:
                                     test_option = '2245'
-                                print(option['name'])
+                                print(tariff['name'])
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
