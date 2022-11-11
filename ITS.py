@@ -267,8 +267,10 @@ def update_bitrix_list(report_type):
                                 subscriberCode = element['subscriberCode']
                                 if 'тестовый' in option['name']:
                                     test_option = '2243'
+                                    print('YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
                                 else:
                                     test_option = '2245'
+                                    print('NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
@@ -351,6 +353,14 @@ def update_bitrix_list(report_type):
 """
 
 report_types = {
+    'DOCUMENT_RECOGNITION': [
+            'РПД',
+            'UC_GZFC63',
+            'Распознавание первичных документов',
+            [
+                'Число страниц',
+            ]
+        ],
     'COUNTERAGENT': [
         'Контрагент', [
             'UC_A7G0AM',    # '1С Контрагент'
@@ -372,14 +382,6 @@ report_types = {
         [
             'Автозаполнение реквизитов контрагентов ',
             'Досье контрагента',
-        ]
-    ],
-    'DOCUMENT_RECOGNITION': [
-        'РПД',
-        'UC_GZFC63',
-        'Распознавание первичных документов',
-        [
-            'Число страниц',
         ]
     ],
     'ESS': [
