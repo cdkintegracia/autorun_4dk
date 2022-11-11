@@ -267,10 +267,9 @@ def update_bitrix_list(report_type):
                                 subscriberCode = element['subscriberCode']
                                 if 'тестовый' in option['name']:
                                     test_option = '2243'
-                                    print('YESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS')
                                 else:
                                     test_option = '2245'
-                                    print('NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+                                print(option['name'])
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
