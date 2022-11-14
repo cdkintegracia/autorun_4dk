@@ -194,6 +194,7 @@ def update_bitrix_list(report_type):
                 test_option = '2243'
             else:
                 test_option = '2245'
+            print(test_option)
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
