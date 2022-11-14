@@ -274,7 +274,6 @@ def update_bitrix_list(report_type):
                                         test_option = '2243'
                                     else:
                                         test_option = '2245'
-                                    print(test_option)
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
