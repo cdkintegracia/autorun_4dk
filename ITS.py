@@ -190,12 +190,6 @@ def update_bitrix_list(report_type):
             startDate = tariff['startDate']  # Дата начала из отчета
             startDate_formated = dateutil.parser.isoparse(startDate).strftime('%Y-%m-%d %H:%M:%S')
 
-            if 'тестовый' in tariff['name']:
-                test_option = '2243'
-            else:
-                test_option = '2245'
-            print(test_option)
-
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
                 continue
@@ -271,6 +265,16 @@ def update_bitrix_list(report_type):
                                     task_95 = '2213'
 
                                 subscriberCode = element['subscriberCode']
+
+                                try:
+                                    for field_value in bitrix_element['PROPERTY_1357']:
+                                        test_option = bitrix_element['PROPERTY_1357'][field_value]
+                                except:
+                                    if 'тестовый' in tariff['name']:
+                                        test_option = '2243'
+                                    else:
+                                        test_option = '2245'
+                                    print(test_option)
 
                                 # Обновление элемента списка если найден соответствующий для компании
 
