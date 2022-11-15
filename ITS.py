@@ -316,8 +316,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1349': maxVolume,
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
-                                                       #'PROPERTY_1357': test_option,
-                                                       'PROPERTY_1357': '2245',
+                                                       'PROPERTY_1357': test_option,
                                                    }
                                            }
                                            )
