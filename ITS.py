@@ -9,6 +9,8 @@ from time import time
 from time import asctime
 from time import sleep
 import dateutil.parser
+from datetime import datetime
+from datetime import timedelta
 
 from fast_bitrix24 import Bitrix
 import requests
@@ -164,6 +166,8 @@ def update_bitrix_list(report_type):
                                     'IBLOCK_ID': '169'}
                                 )
 
+    current_date = datetime.now()
+
     for element in report['report']['entries']:
 
         for tariff in element['tariffs']:
@@ -204,6 +208,10 @@ def update_bitrix_list(report_type):
 
             for option in tariff['options']:
 
+                test_option = '2245'
+                if 'тестовый' in tariff['name']:
+                    test_option = '2243'
+
                 # Если не найдена нужная услуга в отчете
 
                 if option['name'] not in report_types[report_type][3]:
@@ -228,6 +236,17 @@ def update_bitrix_list(report_type):
                         if company['ID'] == deal['COMPANY_ID']:     # Найдена сделка, принадлежащая компании
 
                             for bitrix_element in bitrix_elements:
+
+                                for field_value in bitrix_element['PROPERTY_1287']:
+                                    update_date = datetime.strptime(bitrix_element['PROPERTY_1287'][field_value], '%d.%m.%Y %H:%M:%S')
+                                    if (current_date - update_date).days > 5:
+                                        b.call('lists.element.get', {
+                                    'IBLOCK_TYPE_ID': 'lists',
+                                    'IBLOCK_ID': '169',
+                                    'ELEMENT_ID': bitrix_element['ID']
+                                        }
+                                )
+
 
                                 # Поля элемента списка в переменные
 
@@ -266,15 +285,6 @@ def update_bitrix_list(report_type):
 
                                 subscriberCode = element['subscriberCode']
 
-                                try:
-                                    for field_value in bitrix_element['PROPERTY_1357']:
-                                        test_option = bitrix_element['PROPERTY_1357'][field_value]
-                                except:
-                                    if 'тестовый' in tariff['name']:
-                                        test_option = '2243'
-                                    else:
-                                        test_option = '2245'
-
                                 # Обновление элемента списка если найден соответствующий для компании
 
                                 if element_company_id == company['ID'] and\
@@ -286,6 +296,7 @@ def update_bitrix_list(report_type):
 
                                     element_id = bitrix_element['ID']   # ID элемента списка
 
+                                    test_option = '2245'
                                     b.call('lists.element.update',
                                            {
                                                'IBLOCK_TYPE_ID': 'lists',
@@ -305,7 +316,8 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1349': maxVolume,
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
-                                                       'PROPERTY_1357': test_option,
+                                                       #'PROPERTY_1357': test_option,
+                                                       'PROPERTY_1357': '2245',
                                                    }
                                            }
                                            )
