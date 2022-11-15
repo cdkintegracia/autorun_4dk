@@ -301,7 +301,7 @@ def update_bitrix_list(report_type):
 
                                     element_id = bitrix_element['ID']   # ID элемента списка
 
-                                    test_option = '2245'
+
                                     b.call('lists.element.update',
                                            {
                                                'IBLOCK_TYPE_ID': 'lists',
@@ -321,7 +321,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1349': maxVolume,
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
-                                                       'PROPERTY_1357': '2245',
+                                                       'PROPERTY_1357': test_option,
                                                    }
                                            }
                                            )
