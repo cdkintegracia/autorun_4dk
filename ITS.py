@@ -240,12 +240,15 @@ def update_bitrix_list(report_type):
                                 for field_value in bitrix_element['PROPERTY_1287']:
                                     update_date = datetime.strptime(bitrix_element['PROPERTY_1287'][field_value], '%d.%m.%Y %H:%M:%S')
                                     if (current_date - update_date).days > 5:
-                                        b.call('lists.element.delete', {
-                                    'IBLOCK_TYPE_ID': 'lists',
-                                    'IBLOCK_ID': '169',
-                                    'ELEMENT_ID': bitrix_element['ID']
-                                        }
-                                )
+                                        try:
+                                            b.call('lists.element.delete', {
+                                        'IBLOCK_TYPE_ID': 'lists',
+                                        'IBLOCK_ID': '169',
+                                        'ELEMENT_ID': bitrix_element['ID']
+                                            }
+                                    )
+                                        except:
+                                            pass
 
 
                                 # Поля элемента списка в переменные
