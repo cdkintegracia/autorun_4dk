@@ -209,7 +209,9 @@ def update_bitrix_list(report_type):
             for option in tariff['options']:
 
                 test_option = '2245'
+                test_option_str = 'Нет'
                 if 'тестовый' in tariff['name']:
+                    test_option_str = 'Да'
                     test_option = '2243'
 
                 # Если не найдена нужная услуга в отчете
@@ -319,6 +321,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
                                                        'PROPERTY_1357': test_option,
+                                                       'PROPERTY_1373': test_option_str
                                                    }
                                            }
                                            )
@@ -349,16 +352,11 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1351': usedVolume,
                                                    'PROPERTY_1353': element_responsible,
                                                    'PROPERTY_1357': test_option,
+                                                   'PROPERTY_1373': test_option_str
                                                }
                                        }
                                        )
                                 element_id = new_element['ID']
-
-                            a = b.call('bizproc.workflow.start', {
-                                'TEMPLATE_ID': '1241',
-                                'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
-                                'PARAMETERS': {'test': test_option}
-                            })
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
@@ -420,9 +418,6 @@ report_types = {
 
 def main():
     for report_type in report_types:
-        b.call('im.notify.system.add', {
-            'USER_ID': '311',
-            'MESSAGE': f'test_option'})
         update_bitrix_list(report_type)
 
 
