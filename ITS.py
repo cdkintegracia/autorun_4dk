@@ -211,12 +211,6 @@ def update_bitrix_list(report_type):
                 test_option = '2245'
                 if 'тестовый' in tariff['name']:
                     test_option = '2243'
-                b.call('im.notify.system.add', {
-                    'USER_ID': '311',
-                    'MESSAGE': f'test_option {test_option}'})
-                b.call('im.notify.system.add', {
-                    'USER_ID': '311',
-                    'MESSAGE': f'Отчет {test_option}\n'})
 
                 # Если не найдена нужная услуга в отчете
 
@@ -426,6 +420,9 @@ report_types = {
 
 def main():
     for report_type in report_types:
+        b.call('im.notify.system.add', {
+            'USER_ID': '311',
+            'MESSAGE': f'test_option'})
         update_bitrix_list(report_type)
 
 
