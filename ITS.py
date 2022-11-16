@@ -321,7 +321,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
                                                        'PROPERTY_1357': test_option,
-                                                       'PROPERTY_1373': test_option_str
+                                                       'PROPERTY_1373': '2'
                                                    }
                                            }
                                            )
@@ -352,7 +352,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1351': usedVolume,
                                                    'PROPERTY_1353': element_responsible,
                                                    'PROPERTY_1357': test_option,
-                                                   'PROPERTY_1373': test_option_str
+                                                   'PROPERTY_1373': '1'
                                                }
                                        }
                                        )
