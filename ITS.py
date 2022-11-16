@@ -211,6 +211,9 @@ def update_bitrix_list(report_type):
                 test_option = '2245'
                 if 'тестовый' in tariff['name']:
                     test_option = '2243'
+                b.call('im.notify.system.add', {
+                    'USER_ID': '311',
+                    'MESSAGE': f'test_option {test_option}'})
 
                 # Если не найдена нужная услуга в отчете
 
