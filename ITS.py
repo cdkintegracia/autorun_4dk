@@ -339,7 +339,7 @@ def update_bitrix_list(report_type):
                             if flag is False:   # Если не был найден элемент для обновления
 
                                 # Создание элемента списка
-                                b.call('lists.element.add',
+                                new_element = b.call('lists.element.add',
                                        {
                                            'IBLOCK_TYPE_ID': 'lists',
                                            'IBLOCK_ID': '169',
@@ -362,6 +362,13 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
+                                element_id = new_element['ID']
+
+                            b.call('bizproc.workflow.start', {
+                                'TEMPLATE_ID': '1241',
+                                'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
+                                'PARAMETERS': {'test': test_option}
+                            })
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
