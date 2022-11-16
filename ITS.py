@@ -286,16 +286,6 @@ def update_bitrix_list(report_type):
                                 except:
                                     task_95 = '2213'
 
-                                try:
-                                    for field_value in bitrix_element['PROPERTY_1357']:
-
-                                        # Тестовый
-
-                                        test_option = bitrix_element['PROPERTY_1357'][field_value]
-                                except:
-                                    test_option = '2245'
-                    
-
                                 subscriberCode = element['subscriberCode']
 
                                 # Обновление элемента списка если найден соответствующий для компании
