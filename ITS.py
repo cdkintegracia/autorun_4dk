@@ -288,9 +288,13 @@ def update_bitrix_list(report_type):
 
                                 try:
                                     for field_value in bitrix_element['PROPERTY_1357']:
+
+                                        # Тестовый
+
                                         test_option = bitrix_element['PROPERTY_1357'][field_value]
                                 except:
                                     test_option = '2245'
+                    
 
                                 subscriberCode = element['subscriberCode']
 
@@ -304,7 +308,6 @@ def update_bitrix_list(report_type):
 
 
                                     element_id = bitrix_element['ID']   # ID элемента списка
-
 
                                     b.call('lists.element.update',
                                            {
