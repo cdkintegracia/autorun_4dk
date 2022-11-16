@@ -239,6 +239,7 @@ def update_bitrix_list(report_type):
 
                                 for field_value in bitrix_element['PROPERTY_1287']:
                                     update_date = datetime.strptime(bitrix_element['PROPERTY_1287'][field_value], '%d.%m.%Y %H:%M:%S')
+                                    print(update_date, current_date, (current_date - update_date).days)
                                     if (current_date - update_date).days > 5:
                                         b.call('lists.element.get', {
                                     'IBLOCK_TYPE_ID': 'lists',
@@ -282,6 +283,7 @@ def update_bitrix_list(report_type):
                                         task_95 = bitrix_element['PROPERTY_1331'][field_value]
                                 except:
                                     task_95 = '2213'
+                                    
                                 try:
                                     for field_value in bitrix_element['PROPERTY_1357']:
                                         test_option = bitrix_element['PROPERTY_1357'][field_value]
