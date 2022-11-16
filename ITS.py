@@ -362,7 +362,9 @@ def update_bitrix_list(report_type):
                                 'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
                                 'PARAMETERS': {'test': test_option}
                             })
-                            print(a)
+                            b.call('im.notify.system.add', {
+                                'USER_ID': '311',
+                                'MESSAGE': f'Отчет {test_option}\n{a}'})
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
