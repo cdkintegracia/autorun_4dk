@@ -357,11 +357,12 @@ def update_bitrix_list(report_type):
                                        )
                                 element_id = new_element['ID']
 
-                            b.call('bizproc.workflow.start', {
+                            a = b.call('bizproc.workflow.start', {
                                 'TEMPLATE_ID': '1241',
                                 'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
                                 'PARAMETERS': {'test': test_option}
                             })
+                            print(a)
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
