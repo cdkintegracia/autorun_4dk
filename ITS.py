@@ -214,6 +214,9 @@ def update_bitrix_list(report_type):
                 b.call('im.notify.system.add', {
                     'USER_ID': '311',
                     'MESSAGE': f'test_option {test_option}'})
+                b.call('im.notify.system.add', {
+                    'USER_ID': '311',
+                    'MESSAGE': f'Отчет {test_option}\n'})
 
                 # Если не найдена нужная услуга в отчете
 
@@ -362,9 +365,6 @@ def update_bitrix_list(report_type):
                                 'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
                                 'PARAMETERS': {'test': test_option}
                             })
-                            b.call('im.notify.system.add', {
-                                'USER_ID': '311',
-                                'MESSAGE': f'Отчет {test_option}\n{a}'})
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
