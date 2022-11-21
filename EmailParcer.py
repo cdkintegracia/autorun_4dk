@@ -48,7 +48,7 @@ def upload_file_to_bx24(filename: str, filecontent: str) -> str:
 
 
 def mail_parser():
-    mail_pass = "CRY1bm8HjBThhs0Je5Gm"
+    mail_pass = authentication('1c@gk4dk.ru')
     username = "1с@gk4dk.ru"
     imap_server = "imap.mail.ru"
     imap = imaplib.IMAP4_SSL(imap_server)
