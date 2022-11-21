@@ -87,6 +87,7 @@ def get_report_number(type_report):
         'https://partner-api.1c.ru/api/rest/public/option/billing-report',
         headers=headers, json=json_data)
 
+    print(response.json())
     report_number = response.json()['reportUeid']   # ID запрошенного отчета
     print(f'Запрос на формирование отчета "{type_report}" отправлен. Номер отчета: {report_number}')
     return report_number
@@ -321,7 +322,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
                                                        'PROPERTY_1357': test_option,
-                                                       'PROPERTY_1373': '2'
+                                                       'PROPERTY_1373': test_option
                                                    }
                                            }
                                            )
