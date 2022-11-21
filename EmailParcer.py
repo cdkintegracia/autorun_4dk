@@ -16,18 +16,6 @@ from fast_bitrix24 import Bitrix
 
 b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
 
-allowed_mail_headers = [
-    'Активирован код приглашения',
-    'Автоматическое закрепление заявки',
-    'Уведомление об окончании у абонентов',
-    'Сервис переноса заявок',
-    'Уведомление о переносе абонента',
-    'Платная задача завершена',
-    'Заказ на сайте its.1c.ru',
-    'Успешная регистрация',
-    'Незаконченная регистрация',
-]
-
 
 def html_parser(mail_info):
     html_text = BeautifulSoup(mail_info, "html.parser").findAll()
@@ -49,6 +37,18 @@ def upload_file_to_bx24(filename: str, filecontent: str) -> str:
 
 
 def mail_parser():
+    allowed_mail_headers = [
+        'Активирован код приглашения',
+        'Автоматическое закрепление заявки',
+        'Уведомление об окончании у абонентов',
+        'Сервис переноса заявок',
+        'Уведомление о переносе абонента',
+        'Платная задача завершена',
+        'Заказ на сайте its.1c.ru',
+        'Успешная регистрация',
+        'Незаконченная регистрация',
+    ]
+
     mail_pass = '4CdDE8pWtsue9YUkWmjJ'
     username = "ecp@gk4dk.ru"
     imap_server = "imap.mail.ru"
