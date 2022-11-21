@@ -90,9 +90,9 @@ def mail_parser():
                             if allowed_mail_header in mail_header:
                                 flag = True
                                 break
-                        if flag is True:
+
+                        if flag is False:
                             continue
-                        print(flag)
 
                         # Текст письма \ вложения
                         mail_attachments = {}
