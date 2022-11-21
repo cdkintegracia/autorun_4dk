@@ -87,7 +87,8 @@ def mail_parser():
                                 mail_header = decode_header(mail_info['Subject'])[0][0].decode()
                             else:
                                 mail_header = mail_info['Subject']
-                        print(type(mail_header))
+                        if type(mail_header) != 'str':
+                            allowed_mail_headers = map(lambda x: x.encode(), allowed_mail_headers)
                         if not any(True for allowed_header in allowed_mail_headers if allowed_header in mail_header):
                             continue
 
