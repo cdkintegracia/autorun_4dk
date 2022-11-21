@@ -62,79 +62,93 @@ def mail_parser():
 
             # Итератор по порядковым номерам писем
             for unseen_mail_number in unseen_mail_numbers:
-                if unseen_mail_number:
-                    res, msg = imap.fetch(unseen_mail_number, '(RFC822)')
-                    if res == 'OK':
-                        mail_info = email.message_from_bytes(msg[0][1])
+                mail_text = ''
+                mail_from = ''
+                mail_header = 'Без темы'
+                try:
+                    if unseen_mail_number:
+                        res, msg = imap.fetch(unseen_mail_number, '(RFC822)')
+                        if res == 'OK':
+                            mail_info = email.message_from_bytes(msg[0][1])
 
-                        # Отправитель письма
-                        mail_from = mail_info['From']
-                        if '=?' in mail_from and '?=' in mail_from:
-                            mail_from_name = decode_header(mail_from)[0][0].decode()
-                            mail_from_email = mail_from.split(' ')[1].strip('<>')
-                            mail_from = f"{mail_from_name} {mail_from_email}"
+                            # Отправитель письма
+                            mail_from = mail_info['From']
+                            if '=?' in mail_from and '?=' in mail_from:
+                                mail_from_name = decode_header(mail_from)[0][0].decode()
+                                mail_from_email = mail_from.split(' ')[1].strip('<>')
+                                mail_from = f"{mail_from_name} {mail_from_email}"
 
-                        # Тема письма
-                        mail_header = 'Без темы'
-                        if mail_info['Subject']:
-                            if 'windows-1251' in mail_info['Subject'] or 'Windows-1251' in mail_info['Subject']:
-                                mail_header = mail_info['Subject'].encode('utf8')
-                            elif '=?' in mail_info['Subject'] and '?=' in mail_info['Subject']:
-                                mail_header = decode_header(mail_info['Subject'])[0][0].decode()
+                            # Тема письма
+                            if mail_info['Subject']:
+                                if 'windows-1251' in mail_info['Subject'] or 'Windows-1251' in mail_info['Subject']:
+                                    mail_header = mail_info['Subject'].encode('utf8')
+                                elif '=?' in mail_info['Subject'] and '?=' in mail_info['Subject']:
+                                    mail_header = decode_header(mail_info['Subject'])[0][0].decode()
+                                else:
+                                    mail_header = mail_info['Subject']
+
+                            if not any(True for allowed_header in allowed_mail_headers if allowed_header in mail_header):
+                                continue
+
+                            # Текст письма \ вложения
+                            mail_attachments = {}
+                            if mail_info.is_multipart():
+                                payload = mail_info.get_payload()
+                                for part in mail_info.walk():
+
+                                    # Текст письма закодирован
+                                    if part.get_content_maintype() == 'text' and part.get_content_subtype() == 'plain':
+                                        try:
+                                            mail_text += f"{base64.b64decode(part.get_payload()).decode()}\n\n"
+                                        except ValueError:
+                                            mail_text += part.get_payload()
+
+                                    # Текст письма в html формате
+                                    elif part.get_content_maintype() == 'text' and part.get_content_subtype() == 'html':
+                                        mail_text += html_parser(part.get_payload())
+
+                                    # Парсинг файлов
+                                    if part.get_content_disposition() == 'attachment':
+                                        file_name = 'Файл'
+                                        if '=?' in part.get_filename() and '?=' in part.get_filename():
+                                            file_name = decode_header(part.get_filename())[0][0].decode()
+                                        else:
+                                            file_name = part.get_filename()
+                                        mail_attachments[file_name] = part.get_payload()
+
                             else:
-                                mail_header = mail_info['Subject']
+                                mail_text += html_parser(mail_info.get_payload())
 
-                        if not any(True for allowed_header in allowed_mail_headers if allowed_header in mail_header):
-                            continue
+                            mail_attachment_id_list = []
+                            if mail_attachments:
+                                for filename in mail_attachments:
+                                    file_id = upload_file_to_bx24(filename, mail_attachments[filename])
+                                    mail_attachment_id_list.append(f'n{file_id}')
 
-                        # Текст письма \ вложения
-                        mail_text = ''
-                        mail_attachments = {}
-                        if mail_info.is_multipart():
-                            payload = mail_info.get_payload()
-                            for part in mail_info.walk():
-
-                                # Текст письма закодирован
-                                if part.get_content_maintype() == 'text' and part.get_content_subtype() == 'plain':
-                                    try:
-                                        mail_text += f"{base64.b64decode(part.get_payload()).decode()}\n\n"
-                                    except ValueError:
-                                        mail_text += part.get_payload()
-
-                                # Текст письма в html формате
-                                elif part.get_content_maintype() == 'text' and part.get_content_subtype() == 'html':
-                                    mail_text += html_parser(part.get_payload())
-
-                                # Парсинг файлов
-                                if part.get_content_disposition() == 'attachment':
-                                    file_name = 'Файл'
-                                    if '=?' in part.get_filename() and '?=' in part.get_filename():
-                                        file_name = decode_header(part.get_filename())[0][0].decode()
-                                    else:
-                                        file_name = part.get_filename()
-                                    mail_attachments[file_name] = part.get_payload()
-
-                        else:
-                            mail_text += html_parser(mail_info.get_payload())
-
-                        mail_attachment_id_list = []
-                        if mail_attachments:
-                            for filename in mail_attachments:
-                                file_id = upload_file_to_bx24(filename, mail_attachments[filename])
-                                mail_attachment_id_list.append(f'n{file_id}')
-
-                        b.call('tasks.task.add', {
-                            'fields': {
-                                'TITLE': f'Входящее письмо: {mail_header}',
-                                'DESCRIPTION': f'От: {mail_from}\n'
-                                               f'Тема: {mail_header}\n\n'
-                                               f'Текст:\n'
-                                               f'{mail_text}',
-                                'CREATED_BY': '173',
-                                'RESPONSIBLE_ID': '173',
-                                'GROUP_ID': '11',
-                                'UF_TASK_WEBDAV_FILES': mail_attachment_id_list,
-                            }})
+                            b.call('tasks.task.add', {
+                                'fields': {
+                                    'TITLE': f'Входящее письмо: {mail_header}',
+                                    'DESCRIPTION': f'От: {mail_from}\n'
+                                                   f'Тема: {mail_header}\n\n'
+                                                   f'Текст:\n'
+                                                   f'{mail_text}',
+                                    'CREATED_BY': '173',
+                                    'RESPONSIBLE_ID': '173',
+                                    'GROUP_ID': '11',
+                                    'UF_TASK_WEBDAV_FILES': mail_attachment_id_list,
+                                }})
+                except:
+                    b.call('tasks.task.add', {
+                        'fields': {
+                            'TITLE': f'Не удалось обработать письмо на 1c@gk4dk.ru',
+                            'DESCRIPTION': f'От: {mail_from}\n'
+                                           f'Тема: {mail_header}\n\n'
+                                           f'Текст:\n'
+                                           f'{mail_text}',
+                            'CREATED_BY': '173',
+                            'RESPONSIBLE_ID': '173',
+                            'GROUP_ID': '13',
+                        }})
 
 
 if __name__ == '__main__':
