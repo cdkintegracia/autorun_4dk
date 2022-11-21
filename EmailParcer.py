@@ -72,7 +72,6 @@ def mail_parser():
 
                         # Отправитель письма
                         mail_from = mail_info['From']
-                        print(mail_from)
                         if '=?' in mail_from and '?=' in mail_from:
                             mail_from_name = decode_header(mail_from)[0][0].decode()
                             mail_from_email = mail_from.split(' ')[1].strip('<>')
@@ -80,17 +79,20 @@ def mail_parser():
 
                         # Тема письма
                         if mail_info['Subject']:
-                            print(mail_info['Subject'])
                             if 'windows-1251' in mail_info['Subject'] or 'Windows-1251' in mail_info['Subject']:
                                 mail_header = mail_info['Subject'].encode('utf8')
                             elif '=?' in mail_info['Subject'] and '?=' in mail_info['Subject']:
                                 mail_header = decode_header(mail_info['Subject'])[0][0].decode()
                             else:
                                 mail_header = mail_info['Subject']
-                        if type(mail_header) != 'str':
-                            allowed_mail_headers = map(lambda x: x.encode(), allowed_mail_headers)
-                        if not any(True for allowed_header in allowed_mail_headers if allowed_header in mail_header):
+                        flag = False
+                        for allowed_mail_header in allowed_mail_headers:
+                            if allowed_mail_header in mail_header:
+                                flag = True
+                                break
+                        if flag is True:
                             continue
+                        print(flag)
 
                         # Текст письма \ вложения
                         mail_attachments = {}
