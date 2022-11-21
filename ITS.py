@@ -87,7 +87,7 @@ def get_report_number(type_report):
         'https://partner-api.1c.ru/api/rest/public/option/billing-report',
         headers=headers, json=json_data)
 
-    print(response.json())
+    print(response)
     report_number = response.json()['reportUeid']   # ID запрошенного отчета
     print(f'Запрос на формирование отчета "{type_report}" отправлен. Номер отчета: {report_number}')
     return report_number
