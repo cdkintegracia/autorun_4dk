@@ -1,4 +1,4 @@
- """
+"""
 https://habr.com/ru/post/688784/
 """
 
