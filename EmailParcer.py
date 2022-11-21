@@ -6,6 +6,7 @@ import imaplib
 import email
 from email.header import decode_header
 import base64
+
 from bs4 import BeautifulSoup
 
 from fast_bitrix24 import Bitrix
@@ -15,7 +16,7 @@ from authentication import authentication
 
 b = Bitrix(authentication('Bitrix'))
 
-allowed_mail_header = [
+allowed_mail_headers = [
     'Активирован код приглашения',
     'Автоматическое закрепление заявки',
     'Уведомление об окончании у абонентов',
@@ -49,7 +50,7 @@ def upload_file_to_bx24(filename: str, filecontent: str) -> str:
 
 def mail_parser():
     mail_pass = authentication('1c@gk4dk.ru')
-    username = "1с@gk4dk.ru"
+    username = "1c@gk4dk.ru"
     imap_server = "imap.mail.ru"
     imap = imaplib.IMAP4_SSL(imap_server)
     imap.login(username, mail_pass)
@@ -76,12 +77,14 @@ def mail_parser():
                         # Тема письма
                         mail_header = 'Без темы'
                         if mail_info['Subject']:
-                            if '=?' in mail_info['Subject'] and '?=' in mail_info['Subject']:
+                            if 'windows-1251' in mail_info['Subject'] or 'Windows-1251' in mail_info['Subject']:
+                                mail_header = mail_info['Subject'].encode('utf8')
+                            elif '=?' in mail_info['Subject'] and '?=' in mail_info['Subject']:
                                 mail_header = decode_header(mail_info['Subject'])[0][0].decode()
                             else:
                                 mail_header = mail_info['Subject']
 
-                        if mail_header not in allowed_mail_header:
+                        if not any(True for allowed_header in allowed_mail_headers if allowed_header in mail_header):
                             continue
 
                         # Текст письма \ вложения
@@ -100,7 +103,7 @@ def mail_parser():
 
                                 # Текст письма в html формате
                                 elif part.get_content_maintype() == 'text' and part.get_content_subtype() == 'html':
-                                    mail_text = html_parser(part.get_payload())
+                                    mail_text += html_parser(part.get_payload())
 
                                 # Парсинг файлов
                                 if part.get_content_disposition() == 'attachment':
@@ -112,7 +115,7 @@ def mail_parser():
                                     mail_attachments[file_name] = part.get_payload()
 
                         else:
-                            mail_text = html_parser(mail_info.get_payload())
+                            mail_text += html_parser(mail_info.get_payload())
 
                         mail_attachment_id_list = []
                         if mail_attachments:
@@ -128,6 +131,7 @@ def mail_parser():
                                                f'Текст:\n'
                                                f'{mail_text}',
                                 'CREATED_BY': '173',
+                                'RESPONSIBLE_ID': '173',
                                 'GROUP_ID': '11',
                                 'UF_TASK_WEBDAV_FILES': mail_attachment_id_list,
                             }})
