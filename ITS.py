@@ -87,6 +87,7 @@ def get_report_number(type_report):
         'https://partner-api.1c.ru/api/rest/public/option/billing-report',
         headers=headers, json=json_data)
 
+    print(response)
     report_number = response.json()['reportUeid']   # ID запрошенного отчета
     print(f'Запрос на формирование отчета "{type_report}" отправлен. Номер отчета: {report_number}')
     return report_number
@@ -209,7 +210,9 @@ def update_bitrix_list(report_type):
             for option in tariff['options']:
 
                 test_option = '2245'
+                test_option_str = 'Нет'
                 if 'тестовый' in tariff['name']:
+                    test_option_str = 'Да'
                     test_option = '2243'
 
                 # Если не найдена нужная услуга в отчете
@@ -286,16 +289,6 @@ def update_bitrix_list(report_type):
                                 except:
                                     task_95 = '2213'
 
-                                try:
-                                    for field_value in bitrix_element['PROPERTY_1357']:
-
-                                        # Тестовый
-
-                                        test_option = bitrix_element['PROPERTY_1357'][field_value]
-                                except:
-                                    test_option = '2245'
-                    
-
                                 subscriberCode = element['subscriberCode']
 
                                 # Обновление элемента списка если найден соответствующий для компании
@@ -329,6 +322,7 @@ def update_bitrix_list(report_type):
                                                        'PROPERTY_1351': usedVolume,
                                                        'PROPERTY_1353': element_responsible,
                                                        'PROPERTY_1357': test_option,
+                                                       'PROPERTY_1373': test_option
                                                    }
                                            }
                                            )
@@ -359,16 +353,11 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1351': usedVolume,
                                                    'PROPERTY_1353': element_responsible,
                                                    'PROPERTY_1357': test_option,
+                                                   'PROPERTY_1373': '1'
                                                }
                                        }
                                        )
                                 element_id = new_element['ID']
-
-                            b.call('bizproc.workflow.start', {
-                                'TEMPLATE_ID': '1241',
-                                'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element_id],
-                                'PARAMETERS': {'test': test_option}
-                            })
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
