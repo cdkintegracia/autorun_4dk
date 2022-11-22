@@ -357,7 +357,7 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
-                                element_id = new_element['ID']
+                                element_id = str(new_element)
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
