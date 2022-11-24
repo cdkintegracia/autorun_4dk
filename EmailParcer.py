@@ -51,6 +51,10 @@ def mail_parser():
 
     mail_pass = '4CdDE8pWtsue9YUkWmjJ'
     username = "ecp@gk4dk.ru"
+    '''
+    mail_pass = 'qhFr7KaLsYvLdAHSiMhu'
+    username = "mok@gk4dk.ru"
+    '''
     imap_server = "imap.mail.ru"
     imap = imaplib.IMAP4_SSL(imap_server)
     imap.login(username, mail_pass)
@@ -102,6 +106,7 @@ def mail_parser():
 
                                 # Текст письма закодирован
                                 if part.get_content_maintype() == 'text' and part.get_content_subtype() == 'plain':
+
                                     try:
                                         mail_text += f"{base64.b64decode(part.get_payload()).decode()}\n\n"
                                     except ValueError:
@@ -121,7 +126,13 @@ def mail_parser():
                                     mail_attachments[file_name] = part.get_payload()
 
                         else:
-                            mail_text += html_parser(mail_info.get_payload())
+                            if mail_info.get_content_maintype() == 'html':
+                                mail_text += html_parser(mail_info.get_payload())
+                            else:
+                                try:
+                                    mail_text += f"{base64.b64decode(mail_info.get_payload()).decode()}\n\n"
+                                except ValueError:
+                                    mail_text += mail_info.get_payload()
 
                         mail_attachment_id_list = []
                         if mail_attachments:
@@ -132,7 +143,7 @@ def mail_parser():
                         print(mail_header)
                         print(mail_from)
                         print(mail_text)
-
+                        '''
                         b.call('tasks.task.add', {
                             'fields': {
                                 'TITLE': f'Входящее письмо: {mail_header}',
@@ -145,7 +156,7 @@ def mail_parser():
                                 'GROUP_ID': '11',
                                 'UF_TASK_WEBDAV_FILES': mail_attachment_id_list,
                             }})
-
+                        '''
 
 
 if __name__ == '__main__':
