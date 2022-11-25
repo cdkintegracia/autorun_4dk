@@ -1,13 +1,23 @@
 from datetime import datetime, timedelta
 import os.path
+from os import remove as os_remove
+import base64
 
 from fast_bitrix24 import Bitrix
 import openpyxl
+from openpyxl.styles import Font
+
+from authentication import authentication
 
 
-b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
+b = Bitrix(authentication('Bitrix'))
 
 users_info = b.get_all('user.get', {'filter': {'ACTIVE': 'true'}})
+
+report_created_time = datetime.now()
+report_name_time = report_created_time.strftime('%d-%m-%Y %H %M %S %f')
+report_name = f'Отчет по сделкам {report_name_time}.xlsx'.replace(' ', '_')
+
 
 def get_deals():
     current_day = datetime.now()
@@ -48,7 +58,7 @@ def sort_users():
             departments['ГО4'].append(user['ID'])
         elif 27 in user['UF_DEPARTMENT']:
             departments['ГО3'].append(user['ID'])
-        elif 225 in user['UF_DEPARTMENT']:
+        elif 225 in user['UF_DEPARTMENT'] or user['ID'] == '109':
             departments['ОВ'].append(user['ID'])
         else:
             if user['ID'] == '109':     # Светлана Ридкобород
@@ -59,16 +69,17 @@ def sort_users():
 
 def sort_data_by_group(b24_deals, user_departments, stage_ids, group_name):
     global users_info
+    title_date_filter_range = f"{datetime.strftime(datetime.now(), '%d.%m.%Y')} - {datetime.strftime(datetime.now() + timedelta(days=30), '%d.%m.%Y')}"
     group_id = {
         'ИТС': '859',
         'Отчетность': '905',
     }
     result = [
-        ['Состояние сделок, заканчивающихся в течение след. 30 дней'],
-        ['', '', 'Услуга активна', 'Счет сформирован', 'Счет отправлен', 'Нет оплаты', 'Ждем решения клиента' 'Услуга завершена', 'Отказ от сопровождения']
+        [f'Состояние сделок, заканчивающихся в период {title_date_filter_range}'],
+        ['', '', '', '', 'Услуга активна', 'Счет сформирован', 'Счет отправлен', 'Нет оплаты', 'Ждем решения клиента', 'Услуга завершена', 'Отказ от сопровождения']
     ]
     for department in user_departments:
-        department_row = [department, '', ]
+        department_row = [department, '', '', '']
         for stage in stage_ids:
             filtered_deals_count = len(
                 list(
@@ -78,14 +89,16 @@ def sort_data_by_group(b24_deals, user_departments, stage_ids, group_name):
                                   and x['UF_CRM_1657878818384'] == group_id[group_name],
                         b24_deals
                     )))
+            if filtered_deals_count == 0:
+                filtered_deals_count = ''
             department_row.append(filtered_deals_count)
         result.append(department_row)
 
+        department_user_rows = []
         for user_id in user_departments[department]:
             user_info = list(filter(lambda x: x['ID'] == user_id, users_info))[0]
             user_name = f"{user_info['LAST_NAME']} {user_info['NAME']}"
-            print(user_name, user_id)
-            user_row = ['', user_name]
+            user_row = ['', user_name, '', '']
             for stage in stage_ids:
                 filtered_deals_count = len(
                     list(
@@ -95,8 +108,13 @@ def sort_data_by_group(b24_deals, user_departments, stage_ids, group_name):
                             and x['UF_CRM_1657878818384'] == group_id[group_name],
                             b24_deals
                         )))
+                if filtered_deals_count == 0:
+                    filtered_deals_count = ''
                 user_row.append(filtered_deals_count)
-            result.append(user_row)
+            if any(user_row[2:]):
+                department_user_rows.append(user_row)
+        department_user_rows = list(sorted(department_user_rows, key=lambda x: x[1]))
+        result += department_user_rows
     return result
 
 
@@ -110,9 +128,32 @@ def write_data_to_xlsx(data, report_name):
 
     for row in data:
         worksheet.append(row)
+
+    bold_cells = ['A', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
+    max_rows = worksheet.max_row
+    max_columns = worksheet.max_column
+    for row in range(1, max_rows + 1):
+        if worksheet.cell(row, 1).value in ['ГО4', 'ГО3', 'ОВ', 'Прочие']:
+            for cell_letter in bold_cells:
+                cell_number = cell_letter + str(row)
+                worksheet[cell_number].font = Font(bold=True)
+
     workbook.save(report_name)
 
 
+def upload_report_to_b24(report_name):
+    bitrix_folder_id = '234509'
+
+    with open(report_name, 'rb') as file:
+        report_file = file.read()
+    report_file_base64 = str(base64.b64encode(report_file))[2:]
+    upload_file = b.call('disk.folder.uploadfile', {
+        'id': bitrix_folder_id,
+        'data': {'NAME': report_name},
+        'fileContent': report_file_base64
+    })
+    os_remove(report_name)
+    return upload_file["ID"]
 
 
 def send_deal_statistic_email():
@@ -130,15 +171,11 @@ def send_deal_statistic_email():
     user_departments = sort_users()
     for group in group_names:
         data_to_write = sort_data_by_group(b24_deals, user_departments, stage_ids, group)
-        write_data_to_xlsx(data_to_write, 'text.xlsx')
+        write_data_to_xlsx(data_to_write, report_name)
+    b24_file_id = upload_report_to_b24(report_name)
+    b.call('bizproc.workflow.start', {'TEMPLATE_ID': '1245', 'DOCUMENT_ID': ['lists', 'BizprocDocument', '237723'], 'PARAMETERS': {'file_id': b24_file_id}})
 
 
-
-
-
-
-
-
-send_deal_statistic_email()
-
+if __name__ == '__main__':
+    send_deal_statistic_email()
 
