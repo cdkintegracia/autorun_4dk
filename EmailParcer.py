@@ -11,10 +11,10 @@ from bs4 import BeautifulSoup
 
 from fast_bitrix24 import Bitrix
 
-#from authentication import authentication
+from authentication import authentication
 
 
-b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
+b = Bitrix(authentication('Bitrix'))
 
 
 def html_parser(mail_info):
