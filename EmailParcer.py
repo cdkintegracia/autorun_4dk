@@ -37,6 +37,7 @@ def upload_file_to_bx24(filename: str, filecontent: str) -> str:
 
 
 def mail_parser():
+    return
     allowed_mail_headers = [
         'Активирован код приглашения',
         'Автоматическое закрепление заявки',
@@ -161,10 +162,3 @@ def mail_parser():
 
 if __name__ == '__main__':
     mail_parser()
-
-
-
-
-
-
-
