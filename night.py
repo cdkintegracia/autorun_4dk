@@ -5,7 +5,7 @@ from UpdateDeal1cCode import update_deal_1c_code
 
 def main():
     check_deal_stage()
-    #update_deal_1c_code()
+    update_deal_1c_code()
 
 
 main()
