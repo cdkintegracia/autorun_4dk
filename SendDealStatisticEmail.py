@@ -157,6 +157,9 @@ def upload_report_to_b24(report_name):
 
 
 def send_deal_statistic_email():
+    current_week_day = datetime.now().today().isoweekday()
+    if current_week_day != 1:
+        return
     stage_ids = [
         'C1:NEW',           # Услуга активна
         'C1:UC_0KJKTY',     # Счет сформирован
