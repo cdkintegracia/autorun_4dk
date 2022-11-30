@@ -1,5 +1,6 @@
 from fast_bitrix24 import Bitrix
 import requests
+from bitrix24 import *
 
 from authentication import authentication
 
@@ -11,10 +12,10 @@ b = Bitrix(webhook)
 
 
 def update_deal_1c_code():
+    bx24 = Bitrix24(authentication('Bitrix'))
 
-    deals = b.get_all('crm.deal.list', {
-        'filter': {
-            'UF_CRM_1655972832': None,  # СлужКод1С
+    deals = bx24.callMethod('crm.deal.list', filter =
+            {'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
             'UF_CRM_1657878818384': [  # Группа
                 '859',  # ИТС
@@ -27,7 +28,8 @@ def update_deal_1c_code():
                 'C1:UC_KZSOR2',  # Нет оплаты
                 'C1:UC_VQ5HJD',  # Ждём решения клиента
             ]
-        }})
+        })
+    print(len(deals))
 
     error_text = ''
     for deal in deals:
