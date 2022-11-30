@@ -34,6 +34,7 @@ def update_deal_1c_code():
 
     error_text = ''
     for deal in deals:
+        print(deal)
         try:
             deal_id = deal['ID']
 
