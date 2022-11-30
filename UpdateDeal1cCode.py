@@ -34,7 +34,7 @@ def update_deal_1c_code():
 
     error_text = ''
     for deal in deals:
-        print(deal)
+
         try:
             deal_id = deal['ID']
 
@@ -79,6 +79,7 @@ def update_deal_1c_code():
             }
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
+    print('Ошибки', error_text)
 
 
 if __name__ == '__main__':
