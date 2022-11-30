@@ -1,6 +1,5 @@
 from fast_bitrix24 import Bitrix
 import requests
-from bitrix24 import *
 
 from authentication import authentication
 
@@ -16,7 +15,6 @@ def update_deal_1c_code():
     deals = b.get_all('crm.deal.list', {
         'select': ['*', 'UF_*'],
         'filter': {
-            #'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
             'UF_CRM_1657878818384': [  # Группа
                 '859',  # ИТС
@@ -34,8 +32,8 @@ def update_deal_1c_code():
 
     error_text = ''
     for deal in deals:
+        if deal['ID'] == '110873':
 
-        try:
             deal_id = deal['ID']
 
             # Получение информации о продукте сделки
@@ -66,7 +64,7 @@ def update_deal_1c_code():
                 # Запись кода в сделку
 
                 requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
-        except:
+        
             error_text += f"{deal_id}\n"
     if error_text:
         data = {
