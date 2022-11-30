@@ -28,6 +28,7 @@ def update_deal_1c_code():
                 'C1:UC_VQ5HJD',  # Ждём решения клиента
             ]
         }})
+    print(len(deals))
 
     error_text = ''
     for deal in deals:
