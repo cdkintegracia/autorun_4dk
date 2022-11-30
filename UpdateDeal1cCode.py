@@ -31,7 +31,6 @@ def update_deal_1c_code():
             ]
         }})
     deals = list(filter(lambda x: x['UF_CRM_1655972832'] in [None, 'None'], deals))
-    print(len(deals))
 
     error_text = ''
     for deal in deals:
