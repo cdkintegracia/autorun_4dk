@@ -14,12 +14,18 @@ def update_deal_1c_code():
 
     deals = b.get_all('crm.deal.list', {
         'filter': {
-            'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
             'UF_CRM_1657878818384': [  # Группа
                 '859',  # ИТС
                 '907',  # Сервисы ИТС
             ],
+            'STAGE_ID': [
+                'C1:NEW',  # Услуга активна
+                'C1:UC_0KJKTY',  # Счет сформирован
+                'C1:UC_3J0IH6',  # Счет отправлен клиенту
+                'C1:UC_KZSOR2',  # Нет оплаты
+                'C1:UC_VQ5HJD',  # Ждём решения клиента
+            ]
         }})
 
     error_text = ''
