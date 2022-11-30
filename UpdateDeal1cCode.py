@@ -14,6 +14,7 @@ b = Bitrix(webhook)
 def update_deal_1c_code():
 
     deals = b.get_all('crm.deal.list', {
+        'select': ['*', 'UF_*'],
         'filter': {
             #'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
