@@ -1,11 +1,12 @@
 from fast_bitrix24 import Bitrix
 import requests
 
-from authentication import authentication
+#from authentication import authentication
 
 
 
-webhook = authentication('Bitrix')
+#webhook = authentication('Bitrix')
+webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
 b = Bitrix(webhook)
 
 
@@ -54,7 +55,7 @@ def update_deal_1c_code():
             # Получение кода 1С
 
             if product_fields.json()['result']['PROPERTY_139'] is None:
-                return "NO CODE"
+                error_text += f"{deal_id}\n"
             code_1c = product_fields.json()['result']['PROPERTY_139']['value']
 
             # Сверка кода 1С продукта и кода в сделке
