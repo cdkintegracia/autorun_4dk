@@ -76,3 +76,7 @@ def update_deal_1c_code():
             }
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
+
+        
+if __name__ == '__main__':
+    update_deal_1c_code()
