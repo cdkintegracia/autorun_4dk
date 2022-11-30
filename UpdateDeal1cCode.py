@@ -12,7 +12,7 @@ b = Bitrix(webhook)
 
 def update_deal_1c_code():
 
-    deals = b.get_all('crm.deal.list', {
+    deals = b.call('crm.deal.list', {
         'filter': {
             'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
@@ -28,7 +28,6 @@ def update_deal_1c_code():
                 'C1:UC_VQ5HJD',  # Ждём решения клиента
             ]
         }})
-    print(len(deals))
 
     error_text = ''
     for deal in deals:
@@ -77,6 +76,6 @@ def update_deal_1c_code():
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
 
-        
+
 if __name__ == '__main__':
     update_deal_1c_code()
