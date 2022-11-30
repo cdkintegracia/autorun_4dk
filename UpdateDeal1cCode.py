@@ -29,11 +29,11 @@ def update_deal_1c_code():
             ]
         }})
     deals = list(filter(lambda x: x['UF_CRM_1655972832'] in [None, 'None'], deals))
-
+    count = 0
     error_text = ''
     for deal in deals:
-        if deal['ID'] == '110873':
 
+        try:
             deal_id = deal['ID']
 
             # Получение информации о продукте сделки
@@ -64,8 +64,10 @@ def update_deal_1c_code():
                 # Запись кода в сделку
 
                 requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
-        
+        except:
             error_text += f"{deal_id}\n"
+        count += 1
+        print(f'{count} | {len(deals)}')
     if error_text:
         data = {
             'fields': {
@@ -77,8 +79,6 @@ def update_deal_1c_code():
             }
         }
         new_task = requests.post(f"{webhook}tasks.task.add", json=data)
-    print('Ошибки', error_text)
-
 
 if __name__ == '__main__':
     update_deal_1c_code()
