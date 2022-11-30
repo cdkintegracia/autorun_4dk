@@ -14,7 +14,7 @@ def update_deal_1c_code():
 
     deals = b.get_all('crm.deal.list', {
         'filter': {
-            'UF_CRM_1655972832': [None, 'None', ''],  # СлужКод1С
+            'UF_CRM_1655972832': None,  # СлужКод1С
             'CATEGORY_ID': '1',
             'UF_CRM_1657878818384': [  # Группа
                 '859',  # ИТС
