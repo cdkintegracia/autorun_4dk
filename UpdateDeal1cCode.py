@@ -15,7 +15,7 @@ def update_deal_1c_code():
     bx24 = Bitrix24(authentication('Bitrix'))
 
     deals = bx24.callMethod('crm.deal.list', filter =
-            {'UF_CRM_1655972832': None,  # СлужКод1С
+            {
             'CATEGORY_ID': '1',
             'UF_CRM_1657878818384': [  # Группа
                 '859',  # ИТС
