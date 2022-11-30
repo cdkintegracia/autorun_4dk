@@ -32,6 +32,8 @@ def update_deal_1c_code():
     count = 0
     error_text = ''
     for deal in deals:
+        count += 1
+        print(f'{count} | {len(deals)}')
 
         try:
             deal_id = deal['ID']
@@ -66,8 +68,7 @@ def update_deal_1c_code():
                 requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
         except:
             error_text += f"{deal_id}\n"
-        count += 1
-        print(f'{count} | {len(deals)}')
+
     if error_text:
         data = {
             'fields': {
