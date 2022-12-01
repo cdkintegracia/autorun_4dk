@@ -70,17 +70,6 @@ def update_deal_1c_code():
         except:
             error_text += f"{deal_id}\n"
 
-    if error_text:
-        data = {
-            'fields': {
-                'GROUP_ID': '13',
-                'DESCRIPTION': error_text,
-                'TITLE': 'Ошибка обновления поля в сделках "СлужКод1С',
-                'RESPONSIBLE_ID': '173',
-                'CREATED_BY': '173',
-            }
-        }
-        new_task = requests.post(f"{webhook}tasks.task.add", json=data)
 
 if __name__ == '__main__':
     update_deal_1c_code()
