@@ -1,18 +1,18 @@
 from fast_bitrix24 import Bitrix
 import requests
+from tools import *
 
-#from authentication import authentication
+from authentication import authentication
 
 
 
-#webhook = authentication('Bitrix')
-webhook = 'https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/'
+webhook = authentication('Bitrix')
 b = Bitrix(webhook)
 
 
 
 def update_deal_1c_code():
-
+    success_count = 0
     deals = b.get_all('crm.deal.list', {
         'select': ['*', 'UF_*'],
         'filter': {
@@ -67,9 +67,16 @@ def update_deal_1c_code():
                 # Запись кода в сделку
 
                 requests.post(url=f"{webhook}crm.deal.update?id={deal_id}&fields[UF_CRM_1655972832]={code_1c}")
+
+                success_count += 1
         except:
             error_text += f"{deal_id}\n"
 
+    data = {
+        'USER_ID': '1',
+        'MESSAGE': f'Поле "СлужКод1С было обновлено в {success_count} сделках'
+    }
+    send_bitrix_request('im.notify.system.add', data)
 
 if __name__ == '__main__':
     update_deal_1c_code()
