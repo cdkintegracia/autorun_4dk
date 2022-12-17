@@ -110,10 +110,9 @@ def get_report(report_number):
         'https://partner-api.1c.ru/api/rest/public/option/billing-report/' + report_number,
         headers=headers)
     report = response.json()
-    print(report)
 
     while report['state'] == 'PROCESSING':  # Ожидание готовности отчета
-
+        print(report)
         print(f'Отчет формируется {asctime()}')
         sleep(10)
         report = get_report(report_number)  # Обновление статуса отчета
