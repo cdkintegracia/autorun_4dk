@@ -301,7 +301,7 @@ def update_bitrix_list(report_type):
 
 
                                     element_id = bitrix_element['ID']   # ID элемента списка
-
+                                    print('Id:', element_id)
                                     b.call('lists.element.update',
                                            {
                                                'IBLOCK_TYPE_ID': 'lists',
