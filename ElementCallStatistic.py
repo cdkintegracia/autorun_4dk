@@ -4,11 +4,9 @@ from time import gmtime
 from time import strptime
 from datetime import timedelta
 
-from fast_bitrix24 import Bitrix
-
 from tools import *
 
-b = Bitrix('https://vc4dk.bitrix24.ru/rest/311/wkq0a0mvsvfmoseo/')
+
 
 month_string = {
         '01': 'Январь',
@@ -182,13 +180,13 @@ def sort_types(company_id):
     return '2355'
 
 
-def create_element(company_id, outgoing_email=False, connect_treatment=False, call_duration=False, incoming_call=False, outgoing_call_other=False):
+def create_element(company_id, outgoing_email=False, connect_treatment=False, call_duration=False, incoming_call=False, outgoing_call_other=False, responsible=None):
     current_date = f'{month_string[strftime("%m")]} {strftime("%Y")}'
-
-    request_data = {
-        'select': ['ASSIGNED_BY_ID'],
-        'filter': {'ID': company_id}}
-    responsible = b.get_all('crm.company.list', request_data)[0]['ASSIGNED_BY_ID']
+    if not responsible:
+        request_data = {
+            'select': ['ASSIGNED_BY_ID'],
+            'filter': {'ID': company_id}}
+        responsible = send_bitrix_request('crm.company.list', request_data)[0]['ASSIGNED_BY_ID']
 
     lk_call_count = '0'
     string_call_duration = '00:00:00'
@@ -201,15 +199,12 @@ def create_element(company_id, outgoing_email=False, connect_treatment=False, ca
         'IBLOCK_ID': '175',
         'ELEMENT_CODE': time(),
         'fields': {
-            #'NAME': current_date,  # Название == месяц и год
-            'NAME': 'Декабрь 2022',
+            'NAME': current_date,  # Название == месяц и год
             'PROPERTY_1303': string_call_duration,  # Продолжительность звонка
             'PROPERTY_1299': company_id,  # Привязка к компании
             'PROPERTY_1305': str(lk_call_count),  # Количество звонков
-            #'PROPERTY_1339': month_codes[strftime("%m")],  # Месяц
-            'PROPERTY_1339': '2237',
-            'PROPERTY_1341': '2239',
-            #'PROPERTY_1341': year_codes[strftime('%Y')],  # Год
+            'PROPERTY_1339': month_codes[strftime("%m")],  # Месяц
+            'PROPERTY_1341': year_codes[strftime('%Y')],  # Год
             'PROPERTY_1355': responsible,
             'PROPERTY_1359': int(outgoing_email),  # Исходящие письма
             'PROPERTY_1361': '0',  # Всего взаимодействий
@@ -219,8 +214,77 @@ def create_element(company_id, outgoing_email=False, connect_treatment=False, ca
             'PROPERTY_1377': sort_types(company_id)      # Топ сделка
         }
     }
-    element = b.call('lists.element.add', request_data)
+    element = send_bitrix_request('lists.element.add', request_data)
     return str(element)
+
+
+def rewrite_element(element_data, calls_duration, calls_count):
+    property_1303 = calls_duration
+    property_1305 = calls_count
+    if 'PROPERTY_1307' not in element_data:
+        property_1307 = '00:00:00'
+    else:
+        property_1307 = list(element_data['PROPERTY_1307'].values())[0]
+    if 'PROPERTY_1315' not in element_data:
+        property_1315 = ''
+    else:
+        property_1315 = list(element_data['PROPERTY_1315'].values())[0]
+    if 'PROPERTY_1317' not in element_data:
+        property_1317 = ''
+    else:
+        property_1317 = list(element_data['PROPERTY_1317'].values())[0]
+    property_1299 = list(element_data['PROPERTY_1299'].values())[0]
+    property_1339 = list(element_data['PROPERTY_1339'].values())[0]
+    property_1341 = list(element_data['PROPERTY_1341'].values())[0]
+    if 'PROPERTY_1355' not in element_data:
+        property_1355 = ''
+    else:
+        property_1355 = list(element_data['PROPERTY_1355'].values())[0]
+    if 'PROPERTY_1359' not in element_data:
+        property_1359 = '0'
+    else:
+        property_1359 = list(element_data['PROPERTY_1359'].values())[0]
+    if 'PROPERTY_1365' not in element_data:
+        property_1365 = '0'
+    else:
+        property_1365 = list(element_data['PROPERTY_1365'].values())[0]
+    if 'PROPERTY_1369' not in element_data:
+        property_1369 = '0'
+    else:
+        property_1369 = list(element_data['PROPERTY_1369'].values())[0]
+    if 'PROPERTY_1375' not in element_data:
+        property_1375 = '0'
+    else:
+        property_1375 = list(element_data['PROPERTY_1375'].values())[0]
+    if 'PROPERTY_1377' not in element_data:
+        property_1377 = ''
+    else:
+        property_1377 = list(element_data['PROPERTY_1377'].values())[0]
+    property_1361 = int(property_1359) + int(property_1365) + int(property_1369) + int(property_1375) + int(property_1305)
+    request_data = {
+        'IBLOCK_TYPE_ID': 'lists',
+        'IBLOCK_ID': '175',
+        'ELEMENT_ID': element_data['ID'],
+        'fields': {
+            'NAME': element_data['NAME'],  # Название == месяц и год
+            'PROPERTY_1299': property_1299,  # Привязка к компании
+            'PROPERTY_1303': property_1303,  # Продолжительность звонка
+            'PROPERTY_1305': property_1305,  # Количество звонков
+            'PROPERTY_1307': property_1307,
+            'PROPERTY_1315': property_1315,
+            'PROPERTY_1317': property_1317,
+            'PROPERTY_1339': property_1339,  # Месяц
+            'PROPERTY_1341': property_1341,  # Год
+            'PROPERTY_1355': property_1355,
+            'PROPERTY_1359': property_1359,  # Исходящие письма
+            'PROPERTY_1361': property_1361,  # Всего взаимодействий
+            'PROPERTY_1365': property_1365,  # Обращений в 1С:Коннект
+            'PROPERTY_1369': property_1369,  # Входящие звонки
+            'PROPERTY_1375': property_1375,  # Исходящие (остальные)
+            'PROPERTY_1377': property_1377  # Топ сделка
+        }
+    }
+    element = send_bitrix_request('lists.element.update', request_data)
 
 
 def update_element(company_id=None, element=None, outgoing_email=False, connect_treatment=False, call_duration=False, incoming_call=False, outgoing_call_other=False):
@@ -237,13 +301,13 @@ def update_element(company_id=None, element=None, outgoing_email=False, connect_
                 'PROPERTY_1299': company_id,
                 'NAME': current_date,
             }}
-        element = b.get_all('lists.element.get', request_data)
+        element = send_bitrix_request('lists.element.get', request_data)
         if element:
             element = element[0]
         else:
             create_element(company_id)
             total_interactions_bool = False
-            element = b.get_all('lists.element.get', request_data)[0]
+            element = send_bitrix_request('lists.element.get', request_data)[0]
     for field_value in element['PROPERTY_1303']:
         element_duration = element['PROPERTY_1303'][field_value]
     for field_value in element['PROPERTY_1305']:
@@ -257,7 +321,7 @@ def update_element(company_id=None, element=None, outgoing_email=False, connect_
         request_data = {
             'select': ['ASSIGNED_BY_ID'],
             'filter': {'ID': company_id}}
-        responsible = b.get_all('crm.company.list', request_data)[0]['ASSIGNED_BY_ID']
+        responsible = send_bitrix_request('crm.company.list', request_data)[0]['ASSIGNED_BY_ID']
     try:
         for field_value in element['PROPERTY_1315']:
             first_break_limit = element['PROPERTY_1315'][field_value]
@@ -333,5 +397,5 @@ def update_element(company_id=None, element=None, outgoing_email=False, connect_
             'PROPERTY_1377': top_deal  # Топ сделка
         }
     }
-    b.call('lists.element.update', request_data)
+    send_bitrix_request('lists.element.update', request_data)
 
