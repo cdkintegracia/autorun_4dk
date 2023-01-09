@@ -3,6 +3,7 @@ import clear_calls, ITS, GRM, X_Report
 
 
 def main():
+    pass
     clear_calls.main()
     ITS.main()
     GRM.main()
