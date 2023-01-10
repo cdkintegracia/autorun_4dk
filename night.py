@@ -5,6 +5,7 @@ from CreateCallStatisticNullElements import create_call_statistic_null_elements
 
 
 def main():
+    return
     check_deal_stage()
     update_deal_1c_code()
     create_call_statistic_null_elements()
