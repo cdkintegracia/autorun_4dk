@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import requests
-
 import clear_calls, ITS, GRM, X_Report
 from SendNotification import send_motification
+from SendRequestCreateCurrentMonthDealsDataFile import send_request_create_current_month_deals_data_file
 
 
 def main():
@@ -10,7 +9,7 @@ def main():
     ITS.main()
     GRM.main()
     X_Report.main()
-    requests.get(url='http://141.8.195.67:5000/')
+    send_request_create_current_month_deals_data_file()
     send_motification(['311', '1'], 'Автозапуск вечерних процессов завершен')
 
 
