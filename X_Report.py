@@ -1,4 +1,5 @@
 from time import strftime
+from datetime import datetime
 
 from fast_bitrix24 import Bitrix
 import gspread
@@ -131,8 +132,7 @@ def main():
 
     access = gspread.service_account(f"/root/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
     worksheet_date = month_string[strftime('%m')]
-    with open('/root/autorun_4dk/X_Report config.txt', 'r') as file:
-        file_name = file.read()
+    file_name = str(datetime.now().year)
     spreadsheet = access.open(file_name)
     try:
         worksheet = spreadsheet.add_worksheet(title=worksheet_date, rows=1, cols=1)
