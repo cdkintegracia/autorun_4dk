@@ -14,3 +14,7 @@ def send_request_create_current_month_deals_data_file():
         return
     requests.get(url='http://141.8.195.67:5000/create_current_month_deals_data_file')
     send_motification(['311', '1'], 'Создан файл с информацией по сделкам для отчета по сумме сервисов')
+
+
+if __name__ == '__main__':
+    send_request_create_current_month_deals_data_file()
