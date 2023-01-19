@@ -64,6 +64,7 @@ def update_daily_task_statistic():
     sheet_name = month_int_names[datetime.now().month + 1]
     google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
+    print('1')
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1, cols=1)
         titles = [
@@ -78,6 +79,7 @@ def update_daily_task_statistic():
         worksheet.update('A1', titles)
     except gspread.exceptions.APIError:
         worksheet = spreadsheet.worksheet(sheet_name)
+    print('2')
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
     for row in worksheet_values:
