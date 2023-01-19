@@ -62,10 +62,7 @@ def update_daily_task_statistic():
     tasks = get_tasks()
     file_name = f'Задачи {datetime.now().year}'
     sheet_name = month_int_names[datetime.now().month + 1]
-    try:
-        google_access = gspread.service_account(authentication('Google'))
-    except:
-        google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
+    google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1, cols=1)
