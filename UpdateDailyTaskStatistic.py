@@ -103,7 +103,7 @@ def update_daily_task_statistic():
             row.insert(-1, len(tasks['ЛК']['Всего ЛК']))
             row[-1] = get_values_sum(row)
         elif 'ТЛП' in row:
-            row.insert(-1, len(tasks['ЛК']['ЗУП']) + len(tasks['ТЛП']))
+            row.insert(-1, len(tasks['ТЛП']))
             row[-1] = get_values_sum(row)
 
         new_worksheet_data.append(row)
