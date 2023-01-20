@@ -29,6 +29,13 @@ def get_tasks() -> dict:
     filter_date_b24_start = datetime.strftime(current_date, '%Y-%m-%d')
     filter_date_b24_end = datetime.strftime(current_date + timedelta(days=1), '%Y-%m-%d')
     result.setdefault('ЛК', {})
+    tasks = b.get_all('tasks.task.list', {
+            'filter': {
+                'GROUP_ID': '7',
+                '>=CREATED_DATE': filter_date_b24_start,
+                '<CREATED_DATE': filter_date_b24_end}
+        })
+    result['ЛК'].setdefault('Всего ЛК', tasks)
     for tag in task_tags:
         tasks = b.get_all('tasks.task.list', {
             'filter': {
@@ -47,7 +54,7 @@ def get_tasks() -> dict:
     return result
 
 
-def get_values_sum(row):
+def get_values_sum(row: list) -> str:
     values_sum = 0
     for ind in range(len(row)):
         if ind == len(row) - 1:
@@ -62,16 +69,19 @@ def update_daily_task_statistic():
     tasks = get_tasks()
     file_name = f'Задачи {datetime.now().year}'
     sheet_name = month_int_names[datetime.now().month]
-    google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
+    try:
+        google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
+    except FileNotFoundError:
+        google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1, cols=1)
         titles = [
             ['Группа', '', 'Всего'],
             ['ЛК', ''],
+            ['', 'Всего ЛК', ''],
             ['', 'БП', ''],
             ['', 'ЗУП', ''],
-            ['', 'Всего ЛК', ''],
             [''],
             ['ТЛП', 'Всего ТЛП', ]
         ]
@@ -81,6 +91,7 @@ def update_daily_task_statistic():
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
     for row in worksheet_values:
+        print(row)
         if 'Группа' in row:
             current_date = datetime.strftime(datetime.now(), '%d.%m.%y')
             row.insert(-1, current_date)
@@ -89,7 +100,7 @@ def update_daily_task_statistic():
         elif 'ЗУП' in row:
             row.insert(-1, len(tasks['ЛК']['ЗУП']))
         elif 'Всего ЛК' in row:
-            row.insert(-1, len(tasks['ЛК']['ЗУП']) + len(tasks['ЛК']['БП']))
+            row.insert(-1, len(tasks['ЛК']['Всего ЛК']))
             row[-1] = get_values_sum(row)
         elif 'ТЛП' in row:
             row.insert(-1, len(tasks['ЛК']['ЗУП']) + len(tasks['ТЛП']))
