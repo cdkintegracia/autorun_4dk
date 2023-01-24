@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import tasks, ClearListBP, X_Report
 from Prolongation_ITS import prolongation_its
+from SendCompanyInteractionInfo import send_company_interaction_info
 
 
 
 def main():
     prolongation_its()
     tasks.main()
+    send_company_interaction_info()
     ClearListBP.clear_bp()
     X_Report.main()
 
