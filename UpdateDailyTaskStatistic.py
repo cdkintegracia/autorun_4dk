@@ -66,6 +66,9 @@ def get_values_sum(row: list) -> str:
 
 
 def update_daily_task_statistic():
+    week_day = datetime.today().isoweekday()
+    if week_day in [6, 7]:  # Выходные
+        return
     tasks = get_tasks()
     file_name = f'Задачи {datetime.now().year}'
     sheet_name = month_int_names[datetime.now().month]

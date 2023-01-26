@@ -125,7 +125,8 @@ def send_company_interaction_info():
         task = b.call('tasks.task.add', {
             'fields': {
                 'TITLE': 'Компании без взаимодействия',
-                'RESPONSIBLE_ID': responsible,
+                #'RESPONSIBLE_ID': responsible,
+                'RESPONSIBLE_ID': '1',
                 'CREATED_BY': '173',
                 'DESCRIPTION': 'По данным системы, с этими компаниями последнее взаимодействие произошло свыше 90 дней. Пожалуйста, свяжитесь с клиентами и/или укажите актуальные контактные данные в карточке компании и контактов',
                 'DEADLINE': f"{datetime.strftime(task_deadline_date, '%Y-%m-%d')} 19:00",
