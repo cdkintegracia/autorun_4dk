@@ -8,8 +8,8 @@ from UpdateDailyTaskStatistic import update_daily_task_statistic
 def main():
     clear_calls.main()
     update_daily_task_statistic()
-    X_Report.main()
     send_request_create_current_month_deals_data_file()
+    X_Report.main()
     send_motification(['311', '1'], 'Автозапуск вечерних процессов завершен')
 
 
