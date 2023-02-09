@@ -426,19 +426,19 @@ def main():
     if datetime.today().isoweekday() == 1:
         update_bitrix_list(report_types['ESS'])
         send_motification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
-
-    with open('its_update.txt', 'r') as file:
-        day_code = int(file.read())
-    if day_code % 2 == 0:
-        update_bitrix_list('DOCUMENT_RECOGNITION')
-        send_motification(['1', '311'], f'{notification_text} (РПД)')
     else:
-        update_bitrix_list('COUNTERAGENT')
-        send_motification(['1', '311'], f'{notification_text} (Контрагент)')
+        with open('its_update.txt', 'r') as file:
+            day_code = int(file.read())
+        if day_code % 2 == 0:
+            update_bitrix_list('DOCUMENT_RECOGNITION')
+            send_motification(['1', '311'], f'{notification_text} (РПД)')
+        else:
+            update_bitrix_list('COUNTERAGENT')
+            send_motification(['1', '311'], f'{notification_text} (Контрагент)')
 
-    day_code += 1
-    with open('its_update.txt', 'w') as file:
-        file.write(str(day_code))
+        day_code += 1
+        with open('its_update.txt', 'w') as file:
+            file.write(str(day_code))
 
 
 if __name__ == '__main__':
