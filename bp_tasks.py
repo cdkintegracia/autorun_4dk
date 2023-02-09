@@ -62,7 +62,7 @@ def main():
     """
     Google sheets
     """
-
+    
     access = gspread.service_account(filename=f"/root/autorun_4dk/credentials/bitrix24-data-studio-2278c7bfb1a7.json")
     spreadsheet = access.open('bitrix_data')
     worksheet = spreadsheet.worksheet('bp_tasks')
