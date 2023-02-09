@@ -422,10 +422,6 @@ report_types = {
 
 
 def main():
-    with open('its_update.txt', 'r') as file:
-        day_code = int(file.read())
-    print(day_code)
-    exit()
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
     if datetime.today().isoweekday() == 1:
         update_bitrix_list(report_types['ESS'])
