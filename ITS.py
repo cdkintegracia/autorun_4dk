@@ -427,7 +427,7 @@ def main():
         update_bitrix_list(report_types['ESS'])
         send_motification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
     else:
-        with open('its_update.txt', 'r') as file:
+        with open('/root/autorun_4dk/its_update.txt', 'r') as file:
             day_code = int(file.read())
         if day_code % 2 == 0:
             update_bitrix_list('DOCUMENT_RECOGNITION')
@@ -437,7 +437,7 @@ def main():
             send_motification(['1', '311'], f'{notification_text} (Контрагент)')
 
         day_code += 1
-        with open('its_update.txt', 'w') as file:
+        with open('/root/autorun_4dk/its_update.txt', 'w') as file:
             file.write(str(day_code))
 
 
