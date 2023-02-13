@@ -2,12 +2,14 @@
 from CheckDealStage import check_deal_stage
 from UpdateDeal1cCode import update_deal_1c_code
 from CreateCallStatisticNullElements import create_call_statistic_null_elements
+from UpdateUserActivityStatistic import update_user_activity_statistic
 
 
 def main():
     check_deal_stage()
     update_deal_1c_code()
     create_call_statistic_null_elements()
+    update_user_activity_statistic()
 
 
 main()
