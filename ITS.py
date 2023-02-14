@@ -424,7 +424,7 @@ report_types = {
 def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
     if datetime.today().isoweekday() == 2:
-        update_bitrix_list(report_types['ESS'])
+        update_bitrix_list('ESS')
         send_motification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
     else:
         with open('/root/autorun_4dk/its_update.txt', 'r') as file:
