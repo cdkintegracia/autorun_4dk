@@ -74,9 +74,10 @@ def update_user_activity_statistic():
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
 
+    date_filter = datetime.strftime(datetime.now(), '%Y-%m-%d')
+    calls = b.get_all('voximplant.statistic.get', {'filter': {'>CALL_START_DATE': date_filter, 'CALL_FAILED_CODE': '200'}})
     date_filter = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
     sent_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>CREATED': date_filter, 'DIRECTION': '2'}})
-    calls = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'CALL', '>CREATED': date_filter}})
     tasks = b.get_all('tasks.task.list', {'filter': {'>CLOSED_DATE': date_filter}})
     user_name = ''
     user_id = ''
@@ -93,11 +94,11 @@ def update_user_activity_statistic():
             activities_sum = sum(list(map(lambda x: int(x), row[2:])))
             print(row)
         elif 'Исходящие звонки' in row:
-            user_outgoing_calls = list(filter(lambda x: x['DIRECTION'] == '2' and x['AUTHOR_ID'] == user_id, calls))
+            user_outgoing_calls = list(filter(lambda x: x['PORTAL_USER_ID'] == user_id and int(x['CALL_DURATION']) > 10 and x['CALL_TYPE'] == '2', calls))
             row[-1] = (len(user_outgoing_calls))
             activities_sum = sum(list(map(lambda x: int(x), row[2:])))
         elif 'Входящие звонки' in row:
-            user_incoming_calls = list(filter(lambda x: x['DIRECTION'] == '1' and x['AUTHOR_ID'] == user_id, calls))
+            user_incoming_calls = list(filter(lambda x: x['PORTAL_USER_ID'] == user_id and x['CALL_TYPE'] == '1', calls))
             row[-1] = (len(user_incoming_calls))
             activities_sum = sum(list(map(lambda x: int(x), row[2:])))
         elif 'Отправленные письма' in row:
@@ -109,3 +110,4 @@ def update_user_activity_statistic():
     worksheet.clear()
     worksheet.update('A1', new_worksheet_data)
 
+update_user_activity_statistic()
