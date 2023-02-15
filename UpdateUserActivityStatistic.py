@@ -55,12 +55,12 @@ def update_user_activity_statistic():
         google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
     try:
-        worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1, cols=1)
+        worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=35)
         titles = [
             ['Пользователь', 'Активность', 'Всего']
         ]
         users = list(map(lambda x: [f"{x['NAME']} {x['LAST_NAME']}"], users_info))
-        users = list(sorted(users, key=lambda x: x[0]))
+        users = list(sorted(users, key=lambda x: x[0].split()[1]))
         for user in users:
             titles.append(user)
             titles.append(['', 'Завершенные задачи'])
@@ -113,3 +113,15 @@ def update_user_activity_statistic():
         new_worksheet_data.append(row)
     worksheet.clear()
     worksheet.update('A1', new_worksheet_data)
+
+    # Форматирование
+
+    worksheet.format('A1:AI1000', {"horizontalAlignment": "CENTER", "textFormat": {"bold": False}})
+    worksheet.freeze(rows=1)
+    col_names = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'G', 8: 'H', 9: 'I', 10: 'J', 11: 'K', 12: 'L',
+                 13: 'M', 14: 'N', 15: 'O', 16: 'P', 17: 'Q', 18: 'R', 19: 'S', 20: 'T', 21: 'U', 22: 'V', 23: 'W',
+                 24: 'X', 25: 'Y', 26: 'Z', 27: 'AA', 28: 'AB', 29: 'AC', 30: 'AD', 31: 'AE', 32: 'AF', 33: 'AG',
+                 34: 'AH', 35: 'I'}
+    bold_col_number = len(new_worksheet_data[0]) - 1
+    bold_col_range = f'{col_names[bold_col_number]}1:{col_names[bold_col_number]}1000'
+    worksheet.format(bold_col_range, {"textFormat": {"bold": True}})
