@@ -113,5 +113,3 @@ def update_user_activity_statistic():
         new_worksheet_data.append(row)
     worksheet.clear()
     worksheet.update('A1', new_worksheet_data)
-
-update_user_activity_statistic()
