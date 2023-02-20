@@ -4,17 +4,39 @@ from Prolongation_ITS import prolongation_its
 from SendCompanyInteractionInfo import send_company_interaction_info
 from UpdateServiceSalesReport import update_service_sales_report
 from StartRecruitmentRequestProcess import start_recruitment_request_process
+from SendNotification import send_notification
 
 
 
 def main():
-    prolongation_its()
-    tasks.main()
-    send_company_interaction_info()
-    ClearListBP.clear_bp()
-    update_service_sales_report()
-    start_recruitment_request_process()
-    X_Report.main()
+    try:
+        prolongation_its()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задач "Пролонгация ИТС"')
+    try:
+        tasks.main()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задач о завершающихся сделках')
+    try:
+        send_company_interaction_info()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на отправке отчетов о взаимодействии с компаниями')
+    try:
+        ClearListBP.clear_bp()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на проверке запущенных БП в УС "ОтправкаПисемПлан"')
+    try:
+        update_service_sales_report()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
+    try:
+        start_recruitment_request_process()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
+    try:
+        X_Report.main()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении X-отчета')
 
 
 main()
