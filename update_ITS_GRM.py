@@ -13,7 +13,7 @@ def main():
     try:
         GRM.main()
     except:
-        send_notification(['1', '311'], 'Не удалось обновить УС "ГРМ" и УС "Отчет по сервисам"')
+        send_notification(['1', '311'], 'Не удалось обновить УС "ГРМ"')
     try:
         ITS.main()
     except:
