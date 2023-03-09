@@ -24,11 +24,10 @@ month_int_names = {
 
 
 def update_user_activity_statistic():
-    '''
     week_day = datetime.today().isoweekday()
     if week_day in [6, 7]:  # Выходные
         return
-    '''
+
     users_info = b.get_all('user.get', {
         'filter': {
             '!ID': [
@@ -133,3 +132,7 @@ def update_user_activity_statistic():
     bold_col_number = len(new_worksheet_data[0]) - 1
     bold_col_range = f'{col_names[bold_col_number]}1:{col_names[bold_col_number]}1000'
     worksheet.format(bold_col_range, {"textFormat": {"bold": True}})
+
+
+if __name__ == '__main__':
+    update_user_activity_statistic()

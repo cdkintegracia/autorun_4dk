@@ -19,10 +19,11 @@ def main():
         create_call_statistic_null_elements()
     except:
         send_notification(['1', '311'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
+    '''
     try:
         update_user_activity_statistic()
     except:
         send_notification(['1', '311'], 'Работа ночных процессов прервана на обновлении отчета по активности пользователей')
-
+    '''
 
 main()
