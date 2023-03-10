@@ -13,7 +13,8 @@ def main():
         '1': ['Лид:', 'lead', 'L'],
         '2': ['Сделка:', 'deal', 'D'],
         '3': ['Контакт:', 'contact', 'C'],
-        '4': ['Компания', 'company', 'CO']
+        '4': ['Компания', 'company', 'CO'],
+        '31': ['Счет', 'smart_invoice', 'SI'],
     }
     current_date = datetime.utcnow().strftime('%Y %m %d')
     current_date = datetime.strptime(current_date, '%Y %m %d')
