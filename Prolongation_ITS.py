@@ -16,6 +16,7 @@ def prolongation_its():
         return
     users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': '225'}})
     users_id = list(map(lambda x: x['ID'], users))
+    users_id.append('109')
     month = strftime('%m')
     year = strftime('%Y')
     date_filter_start = f"{year}-{month}-01"
