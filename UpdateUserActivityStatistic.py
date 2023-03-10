@@ -92,7 +92,7 @@ def update_user_activity_statistic():
     for row in worksheet_values:
         activities_sum = ''
         if 'Пользователь' in row:
-            row.insert(-1, datetime.strftime(datetime.now() - timedelta(days=1), '%d.%m.%Y'))
+            row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
             user_name = row[0]
             user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))[0]['ID']
