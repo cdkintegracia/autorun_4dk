@@ -100,6 +100,7 @@ def update_user_activity_statistic():
             try:
                 user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))[0]['ID']
             except IndexError:
+                print(row)
                 new_worksheet_data.append(row)
         elif 'Завершенные задачи' in row:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
