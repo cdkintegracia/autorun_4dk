@@ -95,7 +95,10 @@ def update_user_activity_statistic():
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
             user_name = row[0]
-            user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))[0]['ID']
+            try:
+                user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))[0]['ID']
+            except IndexError:
+                new_worksheet_data.append(row)
         elif 'Завершенные задачи' in row:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
