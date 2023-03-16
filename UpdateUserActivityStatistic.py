@@ -101,7 +101,7 @@ def update_user_activity_statistic():
             if user_id:
                 user_id = user_id[0]['ID']
             else:
-                new_worksheet_data.append(row)
+                continue
         elif 'Завершенные задачи' in row:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
