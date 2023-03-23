@@ -81,7 +81,6 @@ def get_report_number(type_report):
         'https://partner-api.1c.ru/api/rest/public/option/billing-report',
         headers=headers, json=json_data)
 
-    print(response)
     report_number = response.json()['reportUeid']   # ID запрошенного отчета
     print(f'Запрос на формирование отчета "{type_report}" отправлен. Номер отчета: {report_number}')
     return report_number
@@ -110,7 +109,7 @@ def get_report(report_number):
         print(f'Отчет формируется {asctime()}')
         sleep(10)
         report = get_report(report_number)  # Обновление статуса отчета
-    print(report)
+
     if report['state'] == 'OK':     # Отчет готов
         print('Отчет получен, начинается обработка данных')
         return report
@@ -186,7 +185,6 @@ def update_bitrix_list(report_type):
     for element in report['report']['entries']:
         if count == 500:
             exit()
-        count += 1
 
         for tariff in element['tariffs']:
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
@@ -277,6 +275,7 @@ def update_bitrix_list(report_type):
                                             'ELEMENT_ID': bitrix_element['ID']
                                                 }
                                         )
+                                        count += 1
 
 
                                 # Поля элемента списка в переменные
@@ -351,6 +350,7 @@ def update_bitrix_list(report_type):
                                                    }
                                            }
                                            )
+                                    count += 1
 
                                     # print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                     flag = True     # Найден элемент для обновления, новый создавать не нужно
@@ -382,6 +382,7 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
+                                count += 1
                                 element_id = str(new_element)
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
@@ -445,7 +446,6 @@ report_types = {
 def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
     if datetime.today().isoweekday() == 1:
-        print('Кабинет сотрудника')
         update_bitrix_list('ESS')
         send_notification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
     else:
