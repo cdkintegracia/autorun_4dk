@@ -34,7 +34,7 @@ deals = b.get_all('crm.deal.list',
                       'select': ['COMPANY_ID'],
                   }
                   )
-companies_list = b.get_all('crm.company.list', {'select': {'*', 'UF_*'}})
+companies_list = b.get_all('crm.company.list', {'select': ['*', 'UF_*']})
 '''
 def get_user_codes(sheet):
     """
