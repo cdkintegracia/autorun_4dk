@@ -147,7 +147,6 @@ def update_bitrix_list(report_type):
     companies_list = b.get_all('crm.company.list', {'select': ['*', 'UF_*']})
     name_report_type = report_types[report_type][2]     # Название услуги для фильтрации в отчете
     # Получение массива сделок по фильтру
-    count = 0
     deals = b.get_all('crm.deal.list',
                       {
                           'select': ['COMPANY_ID'],
@@ -183,8 +182,6 @@ def update_bitrix_list(report_type):
     current_date = datetime.now()
 
     for element in report['report']['entries']:
-        if count == 500:
-            exit()
 
         for tariff in element['tariffs']:
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
@@ -275,7 +272,6 @@ def update_bitrix_list(report_type):
                                             'ELEMENT_ID': bitrix_element['ID']
                                                 }
                                         )
-                                        count += 1
 
 
                                 # Поля элемента списка в переменные
@@ -350,7 +346,6 @@ def update_bitrix_list(report_type):
                                                    }
                                            }
                                            )
-                                    count += 1
 
                                     # print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                     flag = True     # Найден элемент для обновления, новый создавать не нужно
@@ -382,7 +377,6 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
-                                count += 1
                                 element_id = str(new_element)
 
                                 # print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
