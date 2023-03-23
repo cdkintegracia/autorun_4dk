@@ -241,9 +241,9 @@ def update_bitrix_list(report_type):
 
                     element_responsible = company['ASSIGNED_BY_ID']
 
-                    for deal in deals:
+                    filter_deals = list(filter(lambda x: x['COMPANY_ID'] == company['ID'], deals))
 
-                        if company['ID'] == deal['COMPANY_ID']:     # Найдена сделка, принадлежащая компании
+                    for deal in filter_deals:
 
                             for bitrix_element in bitrix_elements:
 
@@ -429,7 +429,8 @@ report_types = {
 
 def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
-    if datetime.today().isoweekday() == 1:
+    if datetime.today().isoweekday() == 4:
+        print('Кабинет сотрудника')
         update_bitrix_list('ESS')
         send_notification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
     else:
