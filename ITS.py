@@ -148,11 +148,13 @@ def update_bitrix_list(report_type):
     companies_list = b.get_all('crm.company.list', {'select': ['*', 'UF_*']})
     name_report_type = report_types[report_type][2]     # Название услуги для фильтрации в отчете
     # Получение массива сделок по фильтру
-
+    count = 0
     deals = b.get_all('crm.deal.list',
                       {
                           'select': ['COMPANY_ID'],
-                          'filter': {'TYPE_ID': deal_type},
+                          'filter': {
+                              'TYPE_ID': deal_type
+                          },
                       }
                       )
     element_type_fields = {
@@ -182,6 +184,9 @@ def update_bitrix_list(report_type):
     current_date = datetime.now()
 
     for element in report['report']['entries']:
+        if count == 500:
+            exit()
+        count += 1
 
         for tariff in element['tariffs']:
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
@@ -439,7 +444,7 @@ report_types = {
 
 def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
-    if datetime.today().isoweekday() == 4:
+    if datetime.today().isoweekday() == 1:
         print('Кабинет сотрудника')
         update_bitrix_list('ESS')
         send_notification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
