@@ -152,7 +152,7 @@ def update_bitrix_list(report_type):
     deals = b.get_all('crm.deal.list',
                       {
                           'select': ['COMPANY_ID'],
-                          'filter': deal_type,
+                          'filter': {'TYPE_ID': deal_type},
                       }
                       )
     element_type_fields = {
