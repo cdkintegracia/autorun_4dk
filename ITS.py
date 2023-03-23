@@ -27,14 +27,6 @@ https://reqbin.com/req/o3vugw0p/post-json-string-with-basic-authentication
 
 b = Bitrix(authentication('Bitrix'))
 
-# Получение массива сделок по фильтру
-
-deals = b.get_all('crm.deal.list',
-                  {
-                      'select': ['COMPANY_ID'],
-                  }
-                  )
-companies_list = b.get_all('crm.company.list', {'select': ['*', 'UF_*']})
 '''
 def get_user_codes(sheet):
     """
@@ -153,7 +145,16 @@ def update_bitrix_list(report_type):
     report = get_report(report_number)  # Получение отчета
     name_element_type = report_types[report_type][0]     # Название типа для элемента списка
     deal_type = report_types[report_type][1]    # Тип сделки для получения массива сделок
+    companies_list = b.get_all('crm.company.list', {'select': ['*', 'UF_*']})
     name_report_type = report_types[report_type][2]     # Название услуги для фильтрации в отчете
+    # Получение массива сделок по фильтру
+
+    deals = b.get_all('crm.deal.list',
+                      {
+                          'select': ['COMPANY_ID'],
+                          'filter': deal_type,
+                      }
+                      )
     element_type_fields = {
         'Кабинет сотрудника': '2187',
         'Автозаполнение реквизитов контрагентов ': '2191',
@@ -163,10 +164,19 @@ def update_bitrix_list(report_type):
 
     # Элементы списка "Отчет по сервисам" из Битрикса
 
+    report_type_filter = {
+        'DOCUMENT_RECOGNITION': '2189',
+        'COUNTERAGENT': ['2191', '2193'],
+        'ESS': '2187'
+    }
     bitrix_elements = b.get_all('lists.element.get',
                                 {
                                     'IBLOCK_TYPE_ID': 'lists',
-                                    'IBLOCK_ID': '169'}
+                                    'IBLOCK_ID': '169',
+                                    'filter': {
+                                        'PROPERTY_1293': report_type_filter[report_type],
+                                    }
+                                }
                                 )
 
     current_date = datetime.now()
@@ -190,7 +200,7 @@ def update_bitrix_list(report_type):
                     if element['subscriberCode'] == subscriber_code:
                         for value in elem['PROPERTY_1283'].values():
                             company_id = value
-                        inn = list(filter(lambda x: x['COMPANY_ID'] == company_id, companies_list))[0]['UF_CRM_1656070716']
+                        inn = list(filter(lambda x: x['ID'] == company_id, companies_list))[0]['UF_CRM_1656070716']
                         #inn = b.get_all('crm.company.list', {'select': ['UF_CRM_1656070716'], 'filter': {'ID': company_id}})[0]['UF_CRM_1656070716']
                         else_flag = True
                         break
