@@ -34,6 +34,7 @@ deals = b.get_all('crm.deal.list',
                       'select': ['COMPANY_ID'],
                   }
                   )
+companies_list = b.get_all('crm.company.list', {'select': {'*', 'UF_*'}})
 '''
 def get_user_codes(sheet):
     """
@@ -189,7 +190,8 @@ def update_bitrix_list(report_type):
                     if element['subscriberCode'] == subscriber_code:
                         for value in elem['PROPERTY_1283'].values():
                             company_id = value
-                        inn = b.get_all('crm.company.list', {'select': ['UF_CRM_1656070716'], 'filter': {'ID': company_id}})[0]['UF_CRM_1656070716']
+                        inn = list(filter(lambda x: x['COMPANY_ID'] == company_id, companies_list))[0]['UF_CRM_1656070716']
+                        #inn = b.get_all('crm.company.list', {'select': ['UF_CRM_1656070716'], 'filter': {'ID': company_id}})[0]['UF_CRM_1656070716']
                         else_flag = True
                         break
 
@@ -199,12 +201,16 @@ def update_bitrix_list(report_type):
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
                 continue
+
+            companies = list(filter(lambda x: x['UF_CRM_1656070716'] == inn, companies_list))
+            '''
             companies = b.get_all('crm.company.list',
                                       {
                                           'select': ['*', 'UF_*'],
                                           'filter': {'UF_CRM_1656070716': inn}
                                       }
                                   )
+            '''
 
             # Перебор компаний, сделок, элементов списки
 
