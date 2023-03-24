@@ -4,6 +4,7 @@ from UpdateDeal1cCode import update_deal_1c_code
 from CreateCallStatisticNullElements import create_call_statistic_null_elements
 from UpdateUserActivityStatistic import update_user_activity_statistic
 from SendNotification import send_notification
+from CreateRevenueListElements import create_revenue_list_elements
 
 
 def main():
@@ -19,6 +20,7 @@ def main():
         create_call_statistic_null_elements()
     except:
         send_notification(['1', '311'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
+    create_revenue_list_elements({})
     '''
     try:
         update_user_activity_statistic()
