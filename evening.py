@@ -18,10 +18,12 @@ def main():
         send_request_create_current_month_deals_data_file()
     except:
         send_notification(['1', '311'], 'Работа вечерних процессов прервана на выгрузке сделок для отчета')
+    '''
     try:
         X_Report.main()
     except:
         send_notification(['1', '311'], 'Работа вечерних процессов прервана на обновлении X-отчета')
+    '''
     send_notification(['311', '1'], 'Автозапуск вечерних процессов завершен')
 
 

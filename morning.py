@@ -33,10 +33,12 @@ def main():
         start_recruitment_request_process()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
+    '''
     try:
         X_Report.main()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении X-отчета')
+    '''
 
 
 main()
