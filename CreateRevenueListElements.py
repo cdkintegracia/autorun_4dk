@@ -330,7 +330,8 @@ def create_revenue_list_elements(req: dict):
         update_elements(req['company_id'])
     else:
         if datetime.today().isoweekday() in [6, 7]:
-            get_info_from_checko()
+            return
+        get_info_from_checko()
 
 
 if __name__ == '__main__':
