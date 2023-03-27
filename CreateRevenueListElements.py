@@ -244,7 +244,7 @@ def get_info_from_checko():
                         result_info.append([
                             company_info['TITLE'],
                             company_info['UF_CRM_1656070716'],
-                            revenue,
+                            round(revenue / 1_000_000, 3),
                             values['Среднесписочная численность']
                         ])
                         count += 1
@@ -277,7 +277,7 @@ def get_info_from_checko():
                         result_info.append([
                             company_info['TITLE'],
                             company_info['UF_CRM_1656070716'],
-                            revenue,
+                            round(revenue / 1_000_000, 3),
                             values['Среднесписочная численность']
                         ])
                         count += 1
@@ -301,11 +301,12 @@ def get_info_from_checko():
         b.call('tasks.task.add', {
             'fields': {
                 'TITLE': 'Информация о новых компаниях в Б24',
+                'CREATED_BY': '173',
                 'RESPONSIBLE_ID': '173',
-                'GROUP_ID': '13',
+                'GROUP_ID': '109',
                 'DESCRIPTION': tabulate(
                     result_info,
-                    headers=['Название компании', 'ИНН', 'Выручка за год', 'СЧР'],
+                    headers=['Название компании', 'ИНН', 'Выручка в млн', 'СЧР'],
                 )
             }})
 
