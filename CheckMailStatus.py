@@ -26,8 +26,12 @@ def main():
     not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2'}})
     mails = []
     for mail in not_filtred_mails:
+        print(mail)
         if date_filter in mail['CREATED']:
             mails.append(mail)
+
+    if not mails:
+        exit()
 
     current_date = datetime.utcnow().strftime('%Y %m %d')
     current_date = datetime.strptime(current_date, '%Y %m %d')
