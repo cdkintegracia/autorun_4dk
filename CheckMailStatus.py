@@ -72,7 +72,8 @@ def main():
         print(count)
         mail = b.get_all('crm.activity.list', {
             'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': element['NAME']}})
-
+        print(mail)
+        exit()
         if 'READ_CONFIRMED' in mail:
             b.call('lists.element.update', {
                 'IBLOCK_TYPE_ID': 'lists',
