@@ -66,6 +66,9 @@ def main():
         'IBLOCK_TYPE_ID': 'lists',
         'IBLOCK_ID': '185',
         'filter': {'PROPERTY_1343': 'None'}})
+    mail_id_list = list(map(lambda x: x['ID'], elements))
+    print(mail_id_list)
+    exit()
     count = 0
     for element in elements:
         count += 1
@@ -74,7 +77,7 @@ def main():
             'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': element['NAME']}})
         print(mail)
         exit()
-        if 'READ_CONFIRMED' in mail:
+        if 'READ_CONFIRMED' in mail['SETTINGS'] and mail['SETTINGS']['READ_CONFIRMED']:
             b.call('lists.element.update', {
                 'IBLOCK_TYPE_ID': 'lists',
                 'IBLOCK_ID': '185',
