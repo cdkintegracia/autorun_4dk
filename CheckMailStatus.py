@@ -66,17 +66,13 @@ def main():
         'IBLOCK_TYPE_ID': 'lists',
         'IBLOCK_ID': '185',
         'filter': {'PROPERTY_1343': 'None'}})
-    mail_id_list = list(map(lambda x: x['ID'], elements))
-    print(mail_id_list)
-    exit()
+    mail_id_list = list(map(lambda x: x['NAME'], elements))
     count = 0
     for element in elements:
         count += 1
         print(count)
         mail = b.get_all('crm.activity.list', {
-            'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': element['NAME']}})
-        print(mail)
-        exit()
+            'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': mail_id_list}})
         if 'READ_CONFIRMED' in mail['SETTINGS'] and mail['SETTINGS']['READ_CONFIRMED']:
             b.call('lists.element.update', {
                 'IBLOCK_TYPE_ID': 'lists',
