@@ -26,7 +26,6 @@ def main():
     not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2'}})
     mails = []
     for mail in not_filtred_mails:
-        print(mail)
         if date_filter in mail['CREATED']:
             mails.append(mail)
 
