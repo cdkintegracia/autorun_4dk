@@ -73,9 +73,10 @@ def main():
     for element in elements:
         count += 1
         print(count)
-        mails = list(filter(lambda x: x['ID'] == element['NAME'], mails))
-        print(mails)
-        exit()
+        mail = list(filter(lambda x: x['ID'] == element['NAME'], mails))
+        if not mail:
+            continue
+        mail = mail[0]
         if 'READ_CONFIRMED' in mail['SETTINGS'] and mail['SETTINGS']['READ_CONFIRMED']:
             b.call('lists.element.update', {
                 'IBLOCK_TYPE_ID': 'lists',
