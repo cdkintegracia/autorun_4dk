@@ -66,7 +66,10 @@ def main():
         'IBLOCK_TYPE_ID': 'lists',
         'IBLOCK_ID': '185',
         'filter': {'PROPERTY_1343': 'None'}})
+    count = 0
     for element in elements:
+        count += 1
+        print(count)
         mail = b.get_all('crm.activity.list', {
             'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'ID': element['NAME']}})
 
