@@ -29,9 +29,6 @@ def main():
         if date_filter in mail['CREATED']:
             mails.append(mail)
 
-    if not mails:
-        exit()
-
     current_date = datetime.utcnow().strftime('%Y %m %d')
     current_date = datetime.strptime(current_date, '%Y %m %d')
 
