@@ -73,7 +73,7 @@ def main():
     for element in elements:
         count += 1
         print(count)
-        mails = list(filter(lambda x: x['ID'] == element['NAME']))
+        mails = list(filter(lambda x: x['ID'] == element['NAME'], mails))
         print(mails)
         exit()
         if 'READ_CONFIRMED' in mail['SETTINGS'] and mail['SETTINGS']['READ_CONFIRMED']:
