@@ -275,9 +275,8 @@ def update_bitrix_list(report_type):
                                             'IBLOCK_TYPE_ID': 'lists',
                                             'IBLOCK_ID': '169',
                                             'ELEMENT_ID': bitrix_element['ID']
-                                                }
-                                        )
-                                            print('Удален элемент', bitrix_element['ID'])
+                                                })
+                                                print('Удален элемент', bitrix_element['ID'])
 
                                 # Поля элемента списка в переменные
 
