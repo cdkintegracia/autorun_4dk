@@ -277,7 +277,7 @@ def update_bitrix_list(report_type):
                                             'ELEMENT_ID': bitrix_element['ID']
                                                 }
                                         )
-
+                                            print('Удален элемент', bitrix_element['ID'])
 
                                 # Поля элемента списка в переменные
 
