@@ -263,6 +263,7 @@ def update_bitrix_list(report_type):
                             for bitrix_element in bitrix_elements:
 
                                 for field_value in bitrix_element['PROPERTY_1287']:
+                                    '''
                                     update_date = datetime.strptime(bitrix_element['PROPERTY_1287'][field_value], '%d.%m.%Y %H:%M:%S')
                                     if (current_date - update_date).days > 10:
                                         is_element_exists = b.get_all('lists.element.get', {
@@ -277,6 +278,7 @@ def update_bitrix_list(report_type):
                                             'ELEMENT_ID': bitrix_element['ID']
                                                 })
                                                 #print('Удален элемент', bitrix_element['ID'])
+                                    '''
 
                                 # Поля элемента списка в переменные
 

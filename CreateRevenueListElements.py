@@ -24,6 +24,7 @@ b24_list_element_fields = {
     'Дата регистрации': 'PROPERTY_1637',
     'Ответственный за компанию': 'PROPERTY_1639',
     'Год': 'PROPERTY_1643',
+    'Компания (название)': 'PROPERTY_1661',
 }
 
 
@@ -239,6 +240,7 @@ def get_info_from_checko():
                                 b24_list_element_fields['Дата регистрации']: values['Дата регистрации'],
                                 b24_list_element_fields['Ответственный за компанию']: company_info['ASSIGNED_BY_ID'],
                                 b24_list_element_fields['Год']: year,
+                                b24_list_element_fields['Компания (название)']: company_info['TITLE'],
                             }
                         })
                         result_info.append([
@@ -271,6 +273,7 @@ def get_info_from_checko():
                                 b24_list_element_fields['Дата регистрации']: values['Дата регистрации'],
                                 b24_list_element_fields['Ответственный за компанию']: company_info['ASSIGNED_BY_ID'],
                                 b24_list_element_fields['Год']: year,
+                                b24_list_element_fields['Компания (название)']: company_info['TITLE'],
 
                             }
                         })
