@@ -125,7 +125,9 @@ def update_user_activity_statistic():
             activities_sum = sum(list(map(lambda x: int(x), row[3:])))
         row.append(activities_sum)
         new_worksheet_data.append(row)
-    print(new_worksheet_data)
+    for i in new_worksheet_data:
+        if i[0] == 'Ольга Гарина':
+            print(i)
     exit()
     worksheet.clear()
     worksheet.update('A1', new_worksheet_data)
