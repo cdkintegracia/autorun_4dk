@@ -101,6 +101,8 @@ def update_user_activity_statistic():
                 user_id = user_id[0]['ID']
             else:
                 user_id = ''
+            if user_name == 'Ольга Гарина':
+                print(user_id)
         elif 'Завершенные задачи' in row and user_id:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
