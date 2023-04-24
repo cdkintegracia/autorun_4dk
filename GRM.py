@@ -93,6 +93,7 @@ def main():
     companies = []      # Список компаний для последующих итераций
 
     for deal in deals:
+        print(deal['ID'])
         lst_companies = b.get_all('crm.company.list', {
             'select': [
                 'UF_CRM_1659520257149',     # id ГРМ
