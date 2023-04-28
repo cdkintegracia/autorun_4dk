@@ -93,6 +93,8 @@ def update_user_activity_statistic():
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
             *user_name, user_id = row[0].split()
+            print(user_name)
+            print(user_id)
         elif 'Завершенные задачи' in row and user_id:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
