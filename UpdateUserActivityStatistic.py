@@ -54,7 +54,7 @@ def update_user_activity_statistic():
     except FileNotFoundError:
         google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
-    sheet_name = 'Май'
+
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=36)
         titles = [
@@ -82,19 +82,24 @@ def update_user_activity_statistic():
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
 
-    date_filter = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    date_filter = datetime.strftime(datetime.now(), '%Y-%m-%d')
     end_date_filter = datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d')
     calls = b.get_all('voximplant.statistic.get', {'filter': {'>=CALL_START_DATE': date_filter, 'CALL_FAILED_CODE': '200', '<CALL_START_DATE': end_date_filter}})
     sent_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2', '<CREATED': end_date_filter}})
     tasks = b.get_all('tasks.task.list', {'filter': {'>=CLOSED_DATE': date_filter, '<CLOSED_DATE': end_date_filter}})
+    user_name = ''
+    user_id = ''
     for row in worksheet_values:
         activities_sum = ''
         if 'Пользователь' in row:
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
-            *user_name, user_id = row[0].split()
-            print(user_name)
-            print(user_id)
+            #*user_name, user_id = row[0]
+            user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))
+            if user_id:
+                user_id = user_id[0]['ID']
+            else:
+                user_id = ''
         elif 'Завершенные задачи' in row and user_id:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
