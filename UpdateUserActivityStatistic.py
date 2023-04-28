@@ -94,7 +94,7 @@ def update_user_activity_statistic():
         if 'Пользователь' in row:
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
-            #*user_name, user_id = row[0]
+            #*user_name, user_id = row[0].split()
             user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))
             if user_id:
                 user_id = user_id[0]['ID']
