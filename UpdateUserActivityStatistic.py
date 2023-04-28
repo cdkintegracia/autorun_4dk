@@ -54,13 +54,13 @@ def update_user_activity_statistic():
     except FileNotFoundError:
         google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
-
+    sheet_name = 'Май'
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1000, cols=36)
         titles = [
             ['Пользователь', 'Отдел', 'Активность', 'Всего']
         ]
-        users = list(map(lambda x: [f"{x['NAME']} {x['LAST_NAME']}"], users_info))
+        users = list(map(lambda x: [f"{x['NAME']} {x['LAST_NAME']} {x['ID']}"], users_info))
         users = list(sorted(users, key=lambda x: x[0].split()[1]))
         for user in users:
             department_name = ''
@@ -94,14 +94,7 @@ def update_user_activity_statistic():
         if 'Пользователь' in row:
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
         elif row[2] == '':
-            user_name = row[0]
-            user_id = list(filter(lambda x: x['NAME'] == user_name.split()[0] and x['LAST_NAME'] == user_name.split()[1], users_info))
-            if user_id:
-                user_id = user_id[0]['ID']
-            else:
-                user_id = ''
-            if user_name == 'Ольга Гарина':
-                print(user_id)
+            *user_name, user_id = row[0]
         elif 'Завершенные задачи' in row and user_id:
             user_closed_tasks = list(filter(lambda x: x['responsibleId'] == user_id and '1С:Коннект' not in x['title'], tasks))
             row[-1] = (len(user_closed_tasks))
