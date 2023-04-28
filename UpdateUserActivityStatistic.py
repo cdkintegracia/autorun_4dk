@@ -82,7 +82,7 @@ def update_user_activity_statistic():
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
 
-    date_filter = datetime.strftime(datetime.now(), '%Y-%m-%d')
+    date_filter = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
     end_date_filter = datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d')
     calls = b.get_all('voximplant.statistic.get', {'filter': {'>=CALL_START_DATE': date_filter, 'CALL_FAILED_CODE': '200', '<CALL_START_DATE': end_date_filter}})
     sent_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2', '<CREATED': end_date_filter}})
