@@ -28,7 +28,7 @@ def update_user_activity_statistic():
     week_day = datetime.today().isoweekday()
     if week_day in [6, 7]:  # Выходные
         return
-    ''''''
+    '''
 
     users_info = b.get_all('user.get', {
         'filter': {
