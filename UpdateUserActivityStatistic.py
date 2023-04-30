@@ -24,11 +24,9 @@ month_int_names = {
 
 
 def update_user_activity_statistic():
-    '''
     week_day = datetime.today().isoweekday()
     if week_day in [6, 7]:  # Выходные
         return
-    '''
 
     users_info = b.get_all('user.get', {
         'filter': {
@@ -51,7 +49,6 @@ def update_user_activity_statistic():
     departments = b.get_all('department.get')
     file_name = f'Активность пользователей {datetime.now().year}'
     sheet_name = month_int_names[datetime.now().month]
-    sheet_name = 'test'
     try:
         google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
     except FileNotFoundError:
