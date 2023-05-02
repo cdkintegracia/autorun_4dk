@@ -10,6 +10,7 @@ b = Bitrix(authentication('Bitrix'))
 
 def send_company_interaction_info():
     current_day = datetime.now().day
+    current_day = 31
     month_day_range = monthrange(datetime.now().year, datetime.now().month)[1]
     task_deadline_date = datetime.now() + timedelta(days=1)
     if task_deadline_date.isoweekday() == 6:
@@ -41,6 +42,7 @@ def send_company_interaction_info():
             filter_month = 12
             filter_year -= 1
         filter_dates.append(f"{month_int_names[filter_month]} {filter_year}")
+    filter_dates = ['Апрель 2023', 'Март 2023', 'Декабрь 2023']
     companies = b.get_all('crm.company.list', {'select': ['TITLE']})
     its_deals = b.get_all('crm.deal.list', {
         'select': ['ASSIGNED_BY_ID', 'COMPANY_ID'],
@@ -126,17 +128,27 @@ def send_company_interaction_info():
             'fields': {
                 'TITLE': 'Компании без взаимодействия',
                 #'RESPONSIBLE_ID': responsible,
-                'RESPONSIBLE_ID': '1',
+                'RESPONSIBLE_ID': '311',
                 'CREATED_BY': '173',
                 'DESCRIPTION': 'По данным системы, с этими компаниями последнее взаимодействие произошло свыше 90 дней. Пожалуйста, свяжитесь с клиентами и/или укажите актуальные контактные данные в карточке компании и контактов',
                 'DEADLINE': f"{datetime.strftime(task_deadline_date, '%Y-%m-%d')} 19:00",
 
             }
-        })
+        }, raw=True)['result']
+
         for company in companies_without_interaction[responsible]:
             company_info = list(filter(lambda x: x['ID'] == company, companies))
             if company_info:
                 company_id = company_info[0]['ID']
                 company_name = company_info[0]['TITLE']
                 top_deal = companies_top_deal[company_info[0]['ID']]
-                b.call('task.checklistitem.add', [task['task']['id'], {'TITLE': f"{company_name} {top_deal} https://vc4dk.bitrix24.ru/crm/company/details/{company_id}/"}], raw=True)
+                b.call('task.checklistitem.add', {
+                           'TASKID': task['task']['id'],
+                           'FIELDS': {
+                               'TITLE': f"{company_name} {top_deal} https://vc4dk.bitrix24.ru/crm/company/details/{company_id}/"}
+                           } , raw=True)
+
+
+
+if __name__ == '__main__':
+    send_company_interaction_info()
