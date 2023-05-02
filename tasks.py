@@ -37,7 +37,7 @@ def create_sub_task(main_task_id: str, deal_name, company_name, deal_id, task_ty
 def create_check_list(data: dict, main_task_id: str, task_type: str, check_list_name: str):
     if not data:
         return
-
+    '''
     main_checklist = b.call('task.checklistitem.add', [
         main_task_id, {
             # <Название компании> <Название сделки> <Ссылка на сделку>
@@ -45,6 +45,13 @@ def create_check_list(data: dict, main_task_id: str, task_type: str, check_list_
         }
     ], raw=True
                             )
+    '''
+    main_checklist = b.call('task.checklistitem.add', {
+        'taskId': int(main_task_id),
+        'FIELDS': {
+            'TITLE': check_list_name,
+        }
+    }, raw=True)
 
     for deal_id in data:
         b.call('task.checklistitem.add', [
@@ -98,9 +105,8 @@ def create_task(deals, task_type):
             'CREATED_BY': '173',
 
         }
-        }
-               )
-
+        }, raw=True
+               )['result']
         create_check_list(no_autoprolongation_deals, task['task']['id'], task_type, 'Сделки без автопролонгации')
         create_check_list(autoprolongation_deals, task['task']['id'], task_type, 'Сделки с автопролонгацией')
 
