@@ -5,7 +5,7 @@ from SendCompanyInteractionInfo import send_company_interaction_info
 from UpdateServiceSalesReport import update_service_sales_report
 from StartRecruitmentRequestProcess import start_recruitment_request_process
 from SendNotification import send_notification
-
+from CreateCallRedirectionTasks import create_call_redirection_tasks
 
 
 def main():
@@ -33,6 +33,7 @@ def main():
         start_recruitment_request_process()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
+    create_call_redirection_tasks()
     '''
     try:
         X_Report.main()
