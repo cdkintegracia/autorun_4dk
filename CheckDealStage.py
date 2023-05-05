@@ -16,7 +16,8 @@ def check_deal_stage():
         'select': [
             'STAGE_ID',
             'CLOSEDATE',
-            'UF_CRM_1638958630625'
+            'UF_CRM_1638958630625',
+            'TYPE_ID',
         ], 'filter': {
             'STAGE_ID': [
                 'C1:NEW',
@@ -32,7 +33,8 @@ def check_deal_stage():
         if 'UF_CRM_1638958630625' in deal:
             if deal['UF_CRM_1638958630625'] not in ['None', None]:
                 dpo = deal['UF_CRM_1638958630625'][:10]
-                if dpo == check_date and deal['STAGE_ID'] != 'C1:NEW':
+                # Отдельное условие для Спарков
+                if (dpo == check_date and deal['STAGE_ID'] != 'C1:NEW') or (dpo == check_date and deal['TYPE_ID'] in ['UC_2B0CK2', 'UC_86JXH1', 'UC_WUGAZ7']):
                     b.call('crm.deal.update', {'ID': deal['ID'], 'fields': {'STAGE_ID': 'C1:UC_KZSOR2'}})
             else:
                 dk = deal['CLOSEDATE'][:10]
