@@ -54,6 +54,7 @@ def create_check_list(data: dict, main_task_id: str, task_type: str, check_list_
     }, raw=True)
 
     for deal_id in data:
+        '''
         b.call('task.checklistitem.add', [
             main_task_id, {
                 'TITLE': f"{data[deal_id][0]} - {data[deal_id][1]} https://vc4dk.bitrix24.ru/crm/deal/details/{deal_id}/",
@@ -61,7 +62,14 @@ def create_check_list(data: dict, main_task_id: str, task_type: str, check_list_
             }
         ], raw=True
                )
-
+        '''
+        b.call('task.checklistitem.add', {
+            'taskId': main_task_id,
+            'FIELDS': {
+                'TITLE': f"{data[deal_id][0]} - {data[deal_id][1]} https://vc4dk.bitrix24.ru/crm/deal/details/{deal_id}/",
+                'PARENT_ID': main_checklist['result'],
+            }
+        }, raw=True)
         create_sub_task(main_task_id, data[deal_id][0], data[deal_id][1], deal_id, task_type, data[deal_id][2])
 
 
