@@ -300,6 +300,7 @@ def get_info_from_checko():
         b.call('im.notify.system.add', {
             'USER_ID': user,
             'MESSAGE': notification_text})
+    '''
     if count:
         b.call('tasks.task.add', {
             'fields': {
@@ -312,6 +313,7 @@ def get_info_from_checko():
                     headers=['Название компании', 'ИНН', 'Выручка в млн', 'СЧР'],
                 )
             }})
+    '''
 
 
 def update_elements(company_id: str):
