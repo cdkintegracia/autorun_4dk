@@ -31,6 +31,7 @@ def create_call_redirection_tasks():
                 'DESCRIPTION': f"{user_name} уходит в отпуск с {vacation_start} по {vacation_end}. В связи с этим необходимо настроить переадресацию звонков с этого сотрудника на другого",
                 'CREATED_BY': '173',
                 'RESPONSIBLE_ID': department_info['UF_HEAD'],
+                'ACCOMPLICES': ['133', ],
                 'GROUP_ID': '13',
                 'DEADLINE': datetime.now().strftime('%Y-%m-%d 19:00:00'),
             }
