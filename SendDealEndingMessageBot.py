@@ -35,6 +35,12 @@ def send_deal_ending_message_bot():
             info_text += f"Сделка {deal['TITLE']} компании {company_name} завершается {closedate}. Начните работу по продлению сделки. Ссылка на сделку: https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n\n"
         data = {
             'job': 'send_message',
+            'dialog_id':  user,
+            'message': info_text
+        }
+        requests.post(url='http://141.8.195.67:5000/bitrix/chat_bot', json=data)
+        data = {
+            'job': 'send_message',
             'dialog_id': '311',
             'message': info_text
         }
