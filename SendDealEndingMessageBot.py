@@ -39,9 +39,3 @@ def send_deal_ending_message_bot():
             'message': info_text
         }
         requests.post(url='http://141.8.195.67:5000/bitrix/chat_bot', json=data)
-        data = {
-            'job': 'send_message',
-            'dialog_id': '311',
-            'message': f'{user}\n{info_text}'
-        }
-        requests.post(url='http://141.8.195.67:5000/bitrix/chat_bot', json=data)
