@@ -15,7 +15,7 @@ def send_deal_ending_message_bot():
         'filter': {
             'CLOSEDATE': filter_date.strftime('%Y-%m-%d 00:00:00'),
             '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8', 'UC_2B0CK2', 'UC_OV4T7K', 'UC_IV3HX1'],
-            '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
+            '!STAGE_ID': ['C1:WON', 'C1:LOSE', 'C1:UC_3J0IH6'],
         },
         'select': ['ASSIGNED_BY_ID', 'COMPANY_ID', 'CLOSEDATE', 'TITLE']
     })
