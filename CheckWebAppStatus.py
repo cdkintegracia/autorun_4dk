@@ -2,9 +2,10 @@ import requests
 from requests import request
 from fast_bitrix24 import Bitrix
 from authentication import authentication
+from web_app_ip import web_app_ip
 
 try:
-    r = request(method='GET', url='http://141.8.195.67:5000')
+    r = request(method='GET', url=web_app_ip)
     with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
     if status == 'offline':
