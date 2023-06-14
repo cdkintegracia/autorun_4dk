@@ -4,6 +4,7 @@ from fast_bitrix24 import Bitrix
 import requests
 
 from authentication import authentication
+from web_app_ip import web_app_ip
 
 
 b = Bitrix(authentication('Bitrix'))
@@ -38,4 +39,4 @@ def send_deal_ending_message_bot():
             'dialog_id':  user,
             'message': info_text
         }
-        requests.post(url='http://141.8.195.67:5000/bitrix/chat_bot', json=data)
+        requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
