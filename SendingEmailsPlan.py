@@ -18,7 +18,8 @@ def sending_emails_plan():
         end_date_filter = (datetime.now() + timedelta(days=5)).strftime('%Y-%m-%d')
     else:
         end_date_filter = (datetime.now() + timedelta(days=3)).strftime('%Y-%m-%d')
-    deals = b.get_all('crm.deal.list', {
+
+    deals_closedate = b.get_all('crm.deal.list', {
         'filter': {
             '>CLOSEDATE': start_date_filter,
             '<CLOSEDATE': end_date_filter,
@@ -32,13 +33,32 @@ def sending_emails_plan():
 
         }
     })
+
+    deals_check_pay_date = b.get_all('crm.deal.list', {
+        'filter': {
+            '>UF_CRM_1638958630625': start_date_filter,
+            '<UF_CRM_1638958630625': end_date_filter,
+            'CATEGORY_ID': '1',
+            '!TYPE_ID': [
+                'UC_QQPYF0',       # Лицензия
+                'UC_O99QUW',       # Отчетность
+                'UC_OV4T7K',       # Отчетность (в рамках ИТС)
+            ],
+            '!ASSIGNED_BY_ID': '93',
+
+        }
+    })
+    for deal in deals_check_pay_date:
+        if deal not in deals_closedate:
+            deals_closedate.append(deal)
+
     companies = b.get_all('crm.company.list', {
         'filter': {
-            'ID': list(map(lambda x: x['COMPANY_ID'], deals))
+            'ID': list(map(lambda x: x['COMPANY_ID'], deals_closedate))
         }
     })
     texts_and_users = {}
-    for deal in deals:
+    for deal in deals_closedate:
         company = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]
         message_text = f'Внимание! У клиента {company["TITLE"]} {datetime.fromisoformat(deal["CLOSEDATE"]).strftime("%d.%m.%Y")} заканчивается оплата по договору {deal["TITLE"]}. Пожалуйста, свяжитесь с клиентом.\n'
         texts_and_users[deal['ASSIGNED_BY_ID']] = texts_and_users.get(deal['ASSIGNED_BY_ID'], '') + message_text
@@ -50,3 +70,7 @@ def sending_emails_plan():
             'message': text,
         }
         requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+
+
+if __name__ == '__main__':
+    sending_emails_plan()
