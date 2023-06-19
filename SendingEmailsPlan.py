@@ -29,7 +29,7 @@ def sending_emails_plan():
                 'UC_O99QUW',       # Отчетность
                 'UC_OV4T7K',       # Отчетность (в рамках ИТС)
             ],
-            '!ASSIGNED_BY_ID': '93',
+            '!ASSIGNED_BY_ID': '91',
 
         }
     })
@@ -44,7 +44,7 @@ def sending_emails_plan():
                 'UC_O99QUW',       # Отчетность
                 'UC_OV4T7K',       # Отчетность (в рамках ИТС)
             ],
-            '!ASSIGNED_BY_ID': '93',
+            '!ASSIGNED_BY_ID': '91',
 
         }
     })
