@@ -18,6 +18,7 @@ def main(days):
                 'CLOSEDATE': filter_date.strftime('%Y-%m-%d 00:00:00'),
                 '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8', 'UC_2B0CK2', 'UC_OV4T7K', 'UC_IV3HX1'],
                 '!STAGE_ID': ['C1:WON', 'C1:LOSE', 'C1:UC_3J0IH6'],
+                '!ASSIGNED_BY_ID': ['91', '213'],
             },
             'select': ['ASSIGNED_BY_ID', 'COMPANY_ID', 'CLOSEDATE', 'TITLE']
         })
@@ -33,6 +34,7 @@ def main(days):
                 'CLOSEDATE': filter_date.strftime('%Y-%m-%d 00:00:00'),
                 '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8', 'UC_2B0CK2', 'UC_OV4T7K', 'UC_IV3HX1'],
                 'STAGE_ID': ['C1:NEW'],
+                '!ASSIGNED_BY_ID': ['91', '213'],
             },
             'select': ['ASSIGNED_BY_ID', 'COMPANY_ID', 'CLOSEDATE', 'TITLE']
         })
@@ -49,7 +51,10 @@ def main(days):
         for deal in user_deals:
             company_name = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]['TITLE']
             closedate = datetime.fromisoformat(deal['CLOSEDATE']).strftime('%d.%m.%Y')
-            info_text += f"Сделка {deal['TITLE']} компании {company_name} завершается {closedate}. Начните работу по продлению сделки. Ссылка на сделку: https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n\n"
+            if days == 39:
+                info_text += f"Сделка {deal['TITLE']} компании {company_name} завершается {closedate}. Начните работу по продлению сделки. Ссылка на сделку: https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n\n"
+            else:
+                info_text += f"Сделка {deal['TITLE']} компании {company_name} завершается {closedate}. Осталось {days} дней. Начните работу по продлению сделки. Ссылка на сделку: https://vc4dk.bitrix24.ru/crm/deal/details/{deal['ID']}/\n\n"
         data = {
             'job': 'send_message',
             'dialog_id': user,
