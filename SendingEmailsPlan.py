@@ -30,6 +30,7 @@ def sending_emails_plan():
                 'UC_OV4T7K',       # Отчетность (в рамках ИТС)
             ],
             '!ASSIGNED_BY_ID': '91',
+            '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
 
         }
     })
@@ -45,6 +46,7 @@ def sending_emails_plan():
                 'UC_OV4T7K',       # Отчетность (в рамках ИТС)
             ],
             '!ASSIGNED_BY_ID': '91',
+            '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
 
         }
     })
