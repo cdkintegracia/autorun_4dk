@@ -211,6 +211,7 @@ def update_bitrix_list(report_type):
                         break
 
             startDate = tariff['startDate']  # Дата начала из отчета
+            print(startDate)
             startDate_formated = dateutil.parser.isoparse(startDate).strftime('%Y-%m-%d %H:%M:%S')
 
             # Поиск компании в Битриксе по ИНН из отчета
