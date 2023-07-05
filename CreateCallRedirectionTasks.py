@@ -32,7 +32,6 @@ def create_call_redirection_tasks():
                 'CREATED_BY': '173',
                 'RESPONSIBLE_ID': department_info['UF_HEAD'],
                 'ACCOMPLICES': ['133', ],
-                'GROUP_ID': '13',
                 'DEADLINE': datetime.now().strftime('%Y-%m-%d 19:00:00'),
             }
         })
