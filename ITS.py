@@ -360,7 +360,6 @@ def update_bitrix_list(report_type):
                             if flag is False:   # Если не был найден элемент для обновления
 
                                 # Создание элемента списка
-                                print(maxVolume)
                                 new_element = b.call('lists.element.add',
                                        {
                                            'IBLOCK_TYPE_ID': 'lists',
@@ -377,7 +376,7 @@ def update_bitrix_list(report_type):
                                                    'PROPERTY_1293': element_type_fields[name_element_type],
                                                    'PROPERTY_1331': '2213',
                                                    'PROPERTY_1347': startDate_formated,
-                                                   'PROPERTY_1349': maxVolume,
+                                                   'PROPERTY_1349': maxVolume if maxVolume else 0,
                                                    'PROPERTY_1351': usedVolume,
                                                    'PROPERTY_1353': element_responsible,
                                                    'PROPERTY_1357': test_option,
