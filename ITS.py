@@ -393,6 +393,24 @@ def update_bitrix_list(report_type):
                             break
 
 
+def delete_old_elements():
+    elements = b.get_all('lists.element.get',
+                                {
+                                    'IBLOCK_TYPE_ID': 'lists',
+                                    'IBLOCK_ID': '169',
+                                    'filter': {
+                                        '<PROPERTY_1287': (datetime.now() - timedelta(days=14)).strftime('%d.%m.%Y'),
+                                    }
+                                }
+                                )
+    for element in elements:
+        b.call('lists.element.delete', {
+            'IBLOCK_TYPE_ID': 'lists',
+            'IBLOCK_ID': '169',
+            'ELEMENT_ID': element['ID']
+        })
+
+
 """
 Значения элементов словаря:
 0: Тип отчета
@@ -462,6 +480,8 @@ def main():
         day_code += 1
         with open('/root/autorun_4dk/its_update.txt', 'w') as file:
             file.write(str(day_code))
+
+    delete_old_elements()
 
 
 if __name__ == '__main__':
