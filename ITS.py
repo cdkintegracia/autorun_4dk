@@ -360,6 +360,7 @@ def update_bitrix_list(report_type):
                             if flag is False:   # Если не был найден элемент для обновления
 
                                 # Создание элемента списка
+                                print(maxVolume)
                                 new_element = b.call('lists.element.add',
                                        {
                                            'IBLOCK_TYPE_ID': 'lists',
