@@ -2,6 +2,7 @@ from fast_bitrix24 import Bitrix
 import requests
 from time import time
 from authentication import authentication
+from web_app_ip import web_app_ip
 
 
 # Токен доступа 1С
@@ -14,6 +15,11 @@ token_1c = 'Bearer ' \
 
 webhook = authentication('Bitrix')
 b = Bitrix(webhook)
+bot_message_users = [
+    '157',
+    '19',
+    '131',
+]
 
 def get_id(_inn):
 
@@ -262,6 +268,15 @@ def main():
                              f'---------------------------------------------------------\n'
 
     if task_text != '':
+        task_text = f"В список конфигураций ГРМ были добавлены новые:\n\n{task_text}"
+        for user in bot_message_users:
+            data = {
+                'job': 'send_message',
+                'dialog_id': user,
+                'message': task_text,
+            }
+            requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+        '''
         b.call('tasks.task.add', {
                         'fields': {
                             'TITLE': f'Обнаружены новые конфигурации ГРМ в 1С (инфо)',
@@ -275,6 +290,7 @@ def main():
                         }
         }
                )
+        '''
 
     # Поиск расхождений (сравниваются конфигурации Битрикс и 1С)
 
@@ -326,14 +342,28 @@ def main():
                                      f'ID: {config_id}\n' \
                                      f'-----------------------------------\n'
 
+                        b.call('lists.element.add', {'IBLOCK_TYPE_ID': 'lists', 'IBLOCK_ID': '167', 'ELEMENT_ID': element['ID'],
+                                                      'fields': {
+                                                          'PROPERTY_1313': '2199'
+                                                      }})
+
     # Постановление задачи, если были найдены рассхождения
 
     if task_text != '':
+        task_text = f"Из списка конфигураций ГРМ были удалены следующие:\n\n{task_text}"
+        for user in bot_message_users:
+            data = {
+                'job': 'send_message',
+                'dialog_id': user,
+                'message': task_text,
+            }
+            requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+        '''
         b.call('tasks.task.add', {
             'fields':
                 {
                     'TITLE': f'Конфигурации ГРМ - не найдены в 1С',
-                    'DESCRIPTION': f"Необходимо удалить записи о данных конфигурациях\n"
+                    'DESCRIPTION': f"Из списка конфигураций ГРМ были удалены следующие:\n"
                                    f"{task_text}",
                     'CREATED_BY': '173',
                     'GROUP_ID': '13',
@@ -343,6 +373,7 @@ def main():
                 }
         }
                )
+        '''
 
     # Сравнение массива клиентов Битрикса и 1С
 
