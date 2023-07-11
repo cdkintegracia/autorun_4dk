@@ -342,10 +342,10 @@ def main():
                                      f'ID: {config_id}\n' \
                                      f'-----------------------------------\n'
 
-                        b.call('lists.element.add', {'IBLOCK_TYPE_ID': 'lists', 'IBLOCK_ID': '167', 'ELEMENT_ID': element['ID'],
-                                                      'fields': {
-                                                          'PROPERTY_1313': '2199'
-                                                      }})
+                        b.call('bizproc.workflow.start', {
+                            'TEMPLATE_ID': '1597',
+                            'DOCUMENT_ID': ['lists', 'Bitrix\Lists\BizprocDocumentLists', element['ID']],
+                        })
 
     # Постановление задачи, если были найдены рассхождения
 
