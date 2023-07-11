@@ -264,7 +264,7 @@ def main():
                 task_text += f'Компания: {company["TITLE"]}\n' \
                              f'Конфигурация: {config_name}\n' \
                              f'ID: {config_id}\n'\
-                             f'Название услуги: {element["NAME"]}'\
+                             f'Название услуги: {element["NAME"]}\n'\
                              f'---------------------------------------------------------\n'
 
     if task_text != '':
