@@ -19,6 +19,16 @@ except requests.ConnectionError:
             file.write('Status_web_app: offline')
 
         b = Bitrix(authentication('Bitrix'))
+        notification_users = ['1', '311']
+        for user in notification_users:
+            data = {
+                'job': 'send_message',
+                'dialog_id': user,
+                'message': 'Работа веб-приложения остановлена',
+            }
+            requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+        '''
+        b = Bitrix(authentication('Bitrix'))
         b.call('tasks.task.add', {
             'fields': {
                 'RESPONSIBLE_ID': '311',
@@ -28,4 +38,5 @@ except requests.ConnectionError:
                 'CREATED_BY': '173',
             }
         })
+        '''
 
