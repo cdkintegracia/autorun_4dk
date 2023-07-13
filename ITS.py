@@ -325,7 +325,7 @@ def update_bitrix_list(report_type):
                                 # Обновление элемента списка если найден соответствующий для компании
 
                                 if element_company_id == company['ID'] and\
-                                        element_startDate == startDate and\
+                                        str(element_startDate) == str(startDate) and\
                                          bitrix_element['NAME'] == name_element_type and\
                                         str(maxVolume) == str(element_maxVolume) and\
                                         subscriberCode == element_subscriberCode:
