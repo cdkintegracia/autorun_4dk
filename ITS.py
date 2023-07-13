@@ -355,7 +355,7 @@ def update_bitrix_list(report_type):
                                                    }
                                            }
                                            )
-
+                                    print(element_id)
                                     #print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                     flag = True     # Найден элемент для обновления, новый создавать не нужно
 
@@ -387,7 +387,7 @@ def update_bitrix_list(report_type):
                                        }
                                        )
                                 element_id = str(new_element)
-
+                                print(element_id)
                                 #print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
                             # Защита от дублирования в том случае, если сделок по фильтру больше одной
