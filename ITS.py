@@ -191,6 +191,7 @@ def update_bitrix_list(report_type):
             job_notification_flag = True
 
         for tariff in element['tariffs']:
+            print(tariff)
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
 
             inn = ''
@@ -217,6 +218,7 @@ def update_bitrix_list(report_type):
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
+                print(inn, 11111)
                 continue
 
             companies = list(filter(lambda x: x['UF_CRM_1656070716'] == inn, companies_list))
