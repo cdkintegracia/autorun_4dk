@@ -183,7 +183,9 @@ def update_bitrix_list(report_type):
     job_maximum_time = datetime.now() + timedelta(hours=2)
     job_notification_flag = False
     for element in report['report']['entries']:
-
+        if element['subscriberCode'] != 'FR-FR-332507':
+            continue
+        print(element)
         if datetime.now() > job_maximum_time and not job_notification_flag:
             send_notification(['311', '1'], 'Элементы УС "Отчет по сервисам" обновляются более двух часов')
             job_notification_flag = True
