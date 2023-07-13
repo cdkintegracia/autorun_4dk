@@ -183,15 +183,15 @@ def update_bitrix_list(report_type):
     job_maximum_time = datetime.now() + timedelta(hours=2)
     job_notification_flag = False
     for element in report['report']['entries']:
+        '''
         if element['subscriberCode'] != 'FR-FR-332507':
             continue
-        print(element)
+        '''
         if datetime.now() > job_maximum_time and not job_notification_flag:
             send_notification(['311', '1'], 'Элементы УС "Отчет по сервисам" обновляются более двух часов')
             job_notification_flag = True
 
         for tariff in element['tariffs']:
-            print(tariff)
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
 
             inn = ''
@@ -218,7 +218,6 @@ def update_bitrix_list(report_type):
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
-                print(inn, 11111)
                 continue
 
             companies = list(filter(lambda x: x['UF_CRM_1656070716'] == inn, companies_list))
