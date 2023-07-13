@@ -243,6 +243,7 @@ def update_bitrix_list(report_type):
 
                 if option['name'] not in report_types[report_type][3]:
                     print(option['name'] in report_types[report_type][3])
+                    print(option['name'], report_types[report_type][3])
                     continue
 
                 # Услуга имеет счетчик количества использований
