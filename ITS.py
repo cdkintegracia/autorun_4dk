@@ -214,7 +214,6 @@ def update_bitrix_list(report_type):
 
             startDate = int(tariff['startDate'])  # Дата начала из отчета
             startDate_formated = datetime.utcfromtimestamp(startDate).strftime('%Y-%m-%d %H:%M:%S')
-            print(startDate_formated)
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
@@ -243,6 +242,7 @@ def update_bitrix_list(report_type):
                 # Если не найдена нужная услуга в отчете
 
                 if option['name'] not in report_types[report_type][3]:
+                    print(option['name'] in report_types[report_type][3])
                     continue
 
                 # Услуга имеет счетчик количества использований
