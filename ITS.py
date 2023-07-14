@@ -107,6 +107,7 @@ def get_report(report_number):
     while not report['state'] or report['state'] == 'PROCESSING':  # Ожидание готовности отчета
 
         print(f'Отчет формируется {asctime()}')
+        print(report)
         sleep(30)
         report = get_report(report_number)  # Обновление статуса отчета
 
@@ -482,7 +483,7 @@ def main():
         with open('/root/autorun_4dk/its_update.txt', 'w') as file:
             file.write(str(day_code))
 
-    delete_old_elements()
+    #delete_old_elements()
 
 
 if __name__ == '__main__':
