@@ -259,7 +259,7 @@ def update_bitrix_list(report_type):
                     element_responsible = company['ASSIGNED_BY_ID']
 
                     filter_deals = list(filter(lambda x: x['COMPANY_ID'] == company['ID'], deals))
-                    print(tariff)
+                    print(tariff['name'], option['name'])
                     if 'тестовый' in tariff['name']:
                         filter_deals = True
                     print(filter_deals)
