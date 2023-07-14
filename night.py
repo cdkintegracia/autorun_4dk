@@ -5,6 +5,7 @@ from CreateCallStatisticNullElements import create_call_statistic_null_elements
 from UpdateUserActivityStatistic import update_user_activity_statistic
 from SendNotification import send_notification
 from CreateRevenueListElements import create_revenue_list_elements
+from CreateBackupFiles import create_backup_files
 
 
 def main():
@@ -27,5 +28,6 @@ def main():
     except:
         send_notification(['1', '311'], 'Работа ночных процессов прервана на обновлении отчета по активности пользователей')
     '''
+    create_backup_files()
 
 main()

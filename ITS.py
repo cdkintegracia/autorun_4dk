@@ -108,7 +108,6 @@ def get_report(report_number):
 
         print(f'Отчет формируется {asctime()}')
         sleep(30)
-        report_number = 'a415340b-c66c-4170-bf2a-f19b1bfad508'
         report = get_report(report_number)  # Обновление статуса отчета
     if report['state'] == 'OK':     # Отчет готов
         print('Отчет получен, начинается обработка данных')

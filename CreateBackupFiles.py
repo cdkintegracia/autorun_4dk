@@ -1,16 +1,19 @@
 import csv
 from datetime import datetime
+import os
 
 from fast_bitrix24 import Bitrix
+import yadisk
 
 from authentication import authentication
 import field_values
 
 
 b = Bitrix(authentication('Bitrix'))
+y = yadisk.YaDisk(token=authentication('Yandex'))
 
 
-def main(filename, entity, companies, entity_id):
+def main(filename, entity, companies, entity_id, folder_path):
 
     if entity == 'deal':
         data = b.get_all('crm.deal.list', {
@@ -85,13 +88,16 @@ def main(filename, entity, companies, entity_id):
                     else:
                         if key in fields and fields[key]['type'] == 'enumeration':
                             data[row_number][key] = list(filter(lambda x: x['ID'] == str(data[row_number][key]), fields[key]['items']))[0]['VALUE']
-
-
-    with open(f'{filename}_{datetime.now().strftime("%d_%m_%Y")}.csv', 'w', newline='', encoding='utf-8') as csv_file:
+    filename = f'{filename}_{datetime.now().strftime("%d_%m_%Y")}.csv'
+    with open(filename, 'w', newline='', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(titles)
         for row in data:
             writer.writerow(list(row.values()))
+
+    with open(filename, 'rb') as file:
+        y.upload(file, f'{folder_path}/{filename}')
+    os.remove(filename)
 
 
 def create_backup_files():
@@ -106,8 +112,11 @@ def create_backup_files():
     companies = b.get_all('crm.company.list', {
         'select': ['*', 'UF_*']
     })
+    folder_path = f"/Бэкапы ЧДК/{datetime.now().strftime('%d.%m.%Y')}"
+    y.mkdir(folder_path)
     for data_type in data_types:
-        main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'])
+        main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'], folder_path)
 
 
-create_backup_files()
+if __name__ == '__main__':
+    create_backup_files()
