@@ -110,4 +110,4 @@ def create_backup_files():
         main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'])
 
 
-
+create_backup_files()
