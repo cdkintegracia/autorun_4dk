@@ -200,8 +200,8 @@ def update_bitrix_list(report_type):
             inn = ''
             if 'userOrganizationInn' in tariff:     # Если есть ИНН в элементе отчета, если нет - компания неопознана
                     inn = tariff['userOrganizationInn']     # ИНН компании из отчета
-            count += 1
-            print(count)
+                    count += 1
+                    print(count)
             else:
                 else_flag = False
                 # Поиск компании в элементах списка
