@@ -261,6 +261,7 @@ def update_bitrix_list(report_type):
                     filter_deals = list(filter(lambda x: x['COMPANY_ID'] == company['ID'], deals))
                     if 'тестовый' in tariff['name']:
                         filter_deals = True
+                    print(filter_deals)
 
                     if filter_deals:
 
@@ -332,6 +333,7 @@ def update_bitrix_list(report_type):
 
                                     element_id = bitrix_element['ID']   # ID элемента списка
                                     #print('Id:', element_id)
+                                    print(element_id)
                                     b.call('lists.element.update',
                                            {
                                                'IBLOCK_TYPE_ID': 'lists',
