@@ -182,44 +182,62 @@ def update_bitrix_list(report_type):
     current_date = datetime.now()
     job_maximum_time = datetime.now() + timedelta(hours=2)
     job_notification_flag = False
+    count = 0
     for element in report['report']['entries']:
-        '''
         if element['subscriberCode'] != 'FR-FR-332507':
             continue
-        '''
+        count +=1
+        print(count)
         if datetime.now() > job_maximum_time and not job_notification_flag:
             send_notification(['311', '1'], 'Элементы УС "Отчет по сервисам" обновляются более двух часов')
             job_notification_flag = True
-
+        count += 1
+        print(count)
         for tariff in element['tariffs']:
             flag = False    # Флаг определяющий создание нового элемента списка или обновление существующего
-
+            count += 1
+            print(count)
             inn = ''
             if 'userOrganizationInn' in tariff:     # Если есть ИНН в элементе отчета, если нет - компания неопознана
                     inn = tariff['userOrganizationInn']     # ИНН компании из отчета
+            count += 1
+            print(count)
             else:
                 else_flag = False
                 # Поиск компании в элементах списка
                 for elem in bitrix_elements:
+                    count += 1
+                    print(count)
                     if else_flag is True:
                         break
+                    count += 1
+                    print(count)
                     for value in elem['PROPERTY_1289'].values():
                         subscriber_code = value
+                    count += 1
+                    print(count)
                     if element['subscriberCode'] == subscriber_code:
                         for value in elem['PROPERTY_1283'].values():
                             company_id = value
+                        count += 1
+                        print(count)
                         inn = list(filter(lambda x: x['ID'] == company_id, companies_list))[0]['UF_CRM_1656070716']
                         #inn = b.get_all('crm.company.list', {'select': ['UF_CRM_1656070716'], 'filter': {'ID': company_id}})[0]['UF_CRM_1656070716']
                         else_flag = True
                         break
-
+            count += 1
+            print(count)
             startDate = int(tariff['startDate'])  # Дата начала из отчета
             startDate_formated = datetime.utcfromtimestamp(startDate).strftime('%Y-%m-%d %H:%M:%S')
 
+
+            count += 1
+            print(count)
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
                 continue
-
+            count += 1
+            print(count)
             companies = list(filter(lambda x: x['UF_CRM_1656070716'] == inn, companies_list))
             '''
             companies = b.get_all('crm.company.list',
