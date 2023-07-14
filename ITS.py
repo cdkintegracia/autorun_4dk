@@ -104,13 +104,12 @@ def get_report(report_number):
         headers=headers)
     report = response.json()
 
-    while not report['state'] or report['state'] == 'PROCESSING':  # Ожидание готовности отчета
+    while report['state'] == 'PROCESSING':  # Ожидание готовности отчета
 
         print(f'Отчет формируется {asctime()}')
-        print(report)
         sleep(30)
+        report_number = 'a415340b-c66c-4170-bf2a-f19b1bfad508'
         report = get_report(report_number)  # Обновление статуса отчета
-    print(report)
     if report['state'] == 'OK':     # Отчет готов
         print('Отчет получен, начинается обработка данных')
         return report
