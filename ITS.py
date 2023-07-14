@@ -110,7 +110,7 @@ def get_report(report_number):
         print(report)
         sleep(30)
         report = get_report(report_number)  # Обновление статуса отчета
-
+    print(report)
     if report['state'] == 'OK':     # Отчет готов
         print('Отчет получен, начинается обработка данных')
         return report
