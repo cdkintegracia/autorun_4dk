@@ -264,12 +264,14 @@ def update_bitrix_list(report_type):
                             regnumber = f"FR{subscriberCode.split('-')[2]}"
                         else:
                             regnumber = subscriberCode
+                        print(regnumber)
                         filter_deals = b.get_all('crm.deal.list', {
                             'filter': {
                                 'UF_CRM_1640523562691': regnumber,
                                 'TYPE_ID': deal_type
                             }
                         })
+                        print(filter_deals)
 
                     if filter_deals:
 
