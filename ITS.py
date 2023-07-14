@@ -260,10 +260,10 @@ def update_bitrix_list(report_type):
 
                     filter_deals = list(filter(lambda x: x['COMPANY_ID'] == company['ID'], deals))
                     if not filter_deals:
-                        if 'FR' in subscriberCode:
-                            regnumber = f"FR{subscriberCode.split('-')[2]}"
+                        if 'FR' in element['subscriberCode']:
+                            regnumber = f"FR{element['subscriberCode'].split('-')[2]}"
                         else:
-                            regnumber = subscriberCode
+                            regnumber = element['subscriberCode']
                         print(regnumber)
                         filter_deals = b.get_all('crm.deal.list', {
                             'filter': {
