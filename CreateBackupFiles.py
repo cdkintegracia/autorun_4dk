@@ -88,6 +88,7 @@ def main(filename, entity, companies, entity_id, folder_path):
                     else:
                         if key in fields and fields[key]['type'] == 'enumeration':
                             data[row_number][key] = list(filter(lambda x: x['ID'] == str(data[row_number][key]), fields[key]['items']))[0]['VALUE']
+
     filename = f'{filename}_{datetime.now().strftime("%d_%m_%Y")}.csv'
     with open(filename, 'w', newline='', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file)
