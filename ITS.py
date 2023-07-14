@@ -259,10 +259,17 @@ def update_bitrix_list(report_type):
                     element_responsible = company['ASSIGNED_BY_ID']
 
                     filter_deals = list(filter(lambda x: x['COMPANY_ID'] == company['ID'], deals))
-                    print(tariff['name'], option['name'])
-                    if 'тестовый' in tariff['name']:
-                        filter_deals = True
-                    print(filter_deals)
+                    if not filter_deals:
+                        if 'FR' in subscriberCode:
+                            regnumber = f"FR{subscriberCode.split('-')[2]}"
+                        else:
+                            regnumber = subscriberCode
+                        filter_deals = b.get_all('crm.deal.list', {
+                            'filter': {
+                                'UF_CRM_1640523562691': regnumber,
+                                'TYPE_ID': deal_type
+                            }
+                        })
 
                     if filter_deals:
 
