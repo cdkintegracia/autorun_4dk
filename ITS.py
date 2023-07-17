@@ -139,8 +139,7 @@ def update_bitrix_list(report_type):
     :param report_type: см. описание функции 'get_report_number'
     :return: Получение отчета по типу, и загрузка данных в список Битрикса "Отчет по сервисам"
     """
-    #report_number = get_report_number(report_type)  # Запрос отчета и получение номера запроса
-    report_number = 'b692fa5a-c2ec-42cb-a248-d6c3a9c4651c'
+    report_number = get_report_number(report_type)  # Запрос отчета и получение номера запроса
     report = get_report(report_number)  # Получение отчета
     name_element_type = report_types[report_type][0]     # Название типа для элемента списка
     deal_type = report_types[report_type][1]    # Тип сделки для получения массива сделок
@@ -348,7 +347,7 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
-                                print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
+                                #print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                 flag = True     # Найден элемент для обновления, новый создавать не нужно
 
                         if flag is False:   # Если не был найден элемент для обновления
@@ -379,7 +378,7 @@ def update_bitrix_list(report_type):
                                    }
                                    )
                             element_id = str(new_element)
-                            print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
+                            #print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
                             # Защита от дублирования в том случае, если сделок по фильтру больше одной
 
