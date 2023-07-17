@@ -269,7 +269,7 @@ def update_bitrix_list(report_type):
                                 'TYPE_ID': deal_type
                             }
                         })
-
+                    print(filter_deals)
 
                     if filter_deals:
 
