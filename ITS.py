@@ -139,7 +139,8 @@ def update_bitrix_list(report_type):
     :param report_type: см. описание функции 'get_report_number'
     :return: Получение отчета по типу, и загрузка данных в список Битрикса "Отчет по сервисам"
     """
-    report_number = get_report_number(report_type)  # Запрос отчета и получение номера запроса
+    #report_number = get_report_number(report_type)  # Запрос отчета и получение номера запроса
+    report_numer = 'b692fa5a-c2ec-42cb-a248-d6c3a9c4651c'
     report = get_report(report_number)  # Получение отчета
     name_element_type = report_types[report_type][0]     # Название типа для элемента списка
     deal_type = report_types[report_type][1]    # Тип сделки для получения массива сделок
