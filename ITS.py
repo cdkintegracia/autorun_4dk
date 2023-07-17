@@ -270,7 +270,6 @@ def update_bitrix_list(report_type):
                                 'TYPE_ID': deal_type
                             }
                         })
-                    print(filter_deals)
 
                     if filter_deals:
 
@@ -349,7 +348,7 @@ def update_bitrix_list(report_type):
                                                }
                                        }
                                        )
-                                #print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
+                                print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                 flag = True     # Найден элемент для обновления, новый создавать не нужно
 
                             if flag is False:   # Если не был найден элемент для обновления
@@ -380,7 +379,7 @@ def update_bitrix_list(report_type):
                                        }
                                        )
                                 element_id = str(new_element)
-                                #print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
+                                print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
                             # Защита от дублирования в том случае, если сделок по фильтру больше одной
 
