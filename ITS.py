@@ -460,19 +460,19 @@ def main():
     #if datetime.today().isoweekday() == 1:
         #update_bitrix_list('ESS')
         #send_notification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
+    #else:
+    with open('/root/autorun_4dk/its_update.txt', 'r') as file:
+        day_code = int(file.read())
+    if day_code % 2 == 0:
+        update_bitrix_list('DOCUMENT_RECOGNITION')
+        #send_notification(['1', '311'], f'{notification_text} (РПД)')
     else:
-        with open('/root/autorun_4dk/its_update.txt', 'r') as file:
-            day_code = int(file.read())
-        if day_code % 2 == 0:
-            update_bitrix_list('DOCUMENT_RECOGNITION')
-            #send_notification(['1', '311'], f'{notification_text} (РПД)')
-        else:
-            update_bitrix_list('COUNTERAGENT')
-            #send_notification(['1', '311'], f'{notification_text} (Контрагент)')
+        update_bitrix_list('COUNTERAGENT')
+        #send_notification(['1', '311'], f'{notification_text} (Контрагент)')
 
-        day_code += 1
-        with open('/root/autorun_4dk/its_update.txt', 'w') as file:
-            file.write(str(day_code))
+    day_code += 1
+    with open('/root/autorun_4dk/its_update.txt', 'w') as file:
+        file.write(str(day_code))
 
     #delete_old_elements()
 
