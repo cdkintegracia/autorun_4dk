@@ -388,6 +388,7 @@ def main():
     task_text = ''     # Текст для задачи с клиентами, которые есть в 1С и нет в Битриксе
 
     for client in response.json():      # Итерация списка клиентов в 1С
+        print(client)
         flag = False
 
         for company in companies:       # Итерация списка компаний из Битрикса
@@ -400,19 +401,38 @@ def main():
         # Если клиент из 1С не найден в Битриксе и компанию не нужно игнорировать
 
         if flag is False and str(client['id']) not in ignore_companies:
-            task_text += f'ID ГРМ: {client["id"]}\n' \
-                         f'email: {client["email"]}\n' \
-                         f'Логин: {client["login"]}\n' \
-                         f'ИНН: {client["inn"]}\n' \
-                         f'КПП: {client["kpp"]}\n' \
-                         f'Название: {client["name"]}\n' \
-                         f'Контакт: {client["responsible"]}\n' \
-                         f'Телефон: {client["phone"]}\n' \
-                         f'----------------------------------------------\n'
+            company_by_inn = list(filter(lambda x: x['UF_CRM_1656070716'] == client['inn'], companies))
+            if company_by_inn:
+                b.call('crm.company.update', {
+                    'ID': company_by_inn[0]['ID'],
+                    'fields': {
+                        'UF_CRM_1659520257149': client['id']
+                    }
+                })
+            else:
+                task_text += f'ID ГРМ: {client["id"]}\n' \
+                             f'email: {client["email"]}\n' \
+                             f'Логин: {client["login"]}\n' \
+                             f'ИНН: {client["inn"]}\n' \
+                             f'КПП: {client["kpp"]}\n' \
+                             f'Название: {client["name"]}\n' \
+                             f'Контакт: {client["responsible"]}\n' \
+                             f'Телефон: {client["phone"]}\n' \
+                             f'----------------------------------------------\n'
 
     # Постановление задачи, если были найдены рассхождения
 
     if task_text != '':
+        for user in bot_message_users:
+            task_text = f"Данные клиентов, которые есть в 1С и нет в Битриксе:\n" \
+                        f"Необходимо проверить наличие компании в Битриксе и заполнить поле id ГРМ\n:\n\n{task_text}"
+            data = {
+                'job': 'send_message',
+                'dialog_id': user,
+                'message': task_text,
+            }
+            requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+        '''
         b.call('tasks.task.add', {
             'fields':
                 {
@@ -429,6 +449,7 @@ def main():
                 }
         }
                )
+        '''
 
 
 if __name__ == '__main__':
