@@ -237,6 +237,7 @@ def update_bitrix_list(report_type):
                 if 'тестовый' in tariff['name']:
                     test_option_str = 'Да'
                     test_option = '2243'
+                subscriberCode = element['subscriberCode']
 
                 # Если не найдена нужная услуга в отчете
 
