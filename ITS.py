@@ -262,112 +262,94 @@ def update_bitrix_list(report_type):
                             regnumber = f"FR{element['subscriberCode'].split('-')[2]}"
                         else:
                             regnumber = element['subscriberCode']
-                        print(regnumber)
+
                         filter_deals = b.get_all('crm.deal.list', {
                             'filter': {
                                 'UF_CRM_1640523562691': regnumber,
                                 'TYPE_ID': deal_type
                             }
                         })
-                        print(filter_deals)
+
 
                     if filter_deals:
 
-                            for bitrix_element in bitrix_elements:
+                        for bitrix_element in bitrix_elements:
 
-                                for field_value in bitrix_element['PROPERTY_1287']:
-                                    '''
-                                    update_date = datetime.strptime(bitrix_element['PROPERTY_1287'][field_value], '%d.%m.%Y %H:%M:%S')
-                                    if (current_date - update_date).days > 10:
-                                        is_element_exists = b.get_all('lists.element.get', {
-                                            'IBLOCK_TYPE_ID': 'lists',
-                                            'IBLOCK_ID': '169',
-                                            'ELEMENT_ID': bitrix_element['ID'],
-                                        })
-                                        if is_element_exists:
-                                                b.call('lists.element.delete', {
-                                            'IBLOCK_TYPE_ID': 'lists',
-                                            'IBLOCK_ID': '169',
-                                            'ELEMENT_ID': bitrix_element['ID']
-                                                })
-                                                #print('Удален элемент', bitrix_element['ID'])
-                                    '''
+                            # Поля элемента списка в переменные
 
-                                # Поля элемента списка в переменные
+                            for field_value in bitrix_element['PROPERTY_1283']:
 
-                                for field_value in bitrix_element['PROPERTY_1283']:
+                                # ID компании, привязанной к элементу списка
 
-                                    # ID компании, привязанной к элементу списка
+                                element_company_id = bitrix_element['PROPERTY_1283'][field_value]
 
-                                    element_company_id = bitrix_element['PROPERTY_1283'][field_value]
+                            for field_value in bitrix_element['PROPERTY_1285']:
 
-                                for field_value in bitrix_element['PROPERTY_1285']:
+                                # Дата начала сервиса из элемента списка
 
-                                    # Дата начала сервиса из элемента списка
+                                element_startDate = bitrix_element['PROPERTY_1285'][field_value]
 
-                                    element_startDate = bitrix_element['PROPERTY_1285'][field_value]
+                            for field_value in bitrix_element['PROPERTY_1277']:
 
-                                for field_value in bitrix_element['PROPERTY_1277']:
+                                # Максимальное значение из элемента списка
 
-                                    # Максимальное значение из элемента списка
+                                element_maxVolume = bitrix_element['PROPERTY_1277'][field_value]
 
-                                    element_maxVolume = bitrix_element['PROPERTY_1277'][field_value]
+                                # Код подписчика из элемента списка
 
-                                    # Код подписчика из элемента списка
+                            for field_value in bitrix_element['PROPERTY_1289']:
 
-                                for field_value in bitrix_element['PROPERTY_1289']:
+                                element_subscriberCode = bitrix_element['PROPERTY_1289'][field_value]
 
-                                    element_subscriberCode = bitrix_element['PROPERTY_1289'][field_value]
+                            try:
+                                for field_value in bitrix_element['PROPERTY_1331']:
 
-                                try:
-                                    for field_value in bitrix_element['PROPERTY_1331']:
+                                    # 95% задача
 
-                                        # 95% задача
+                                    task_95 = bitrix_element['PROPERTY_1331'][field_value]
+                            except:
+                                task_95 = '2213'
 
-                                        task_95 = bitrix_element['PROPERTY_1331'][field_value]
-                                except:
-                                    task_95 = '2213'
+                            subscriberCode = element['subscriberCode']
 
-                                subscriberCode = element['subscriberCode']
+                            # Обновление элемента списка если найден соответствующий для компании
 
-                                # Обновление элемента списка если найден соответствующий для компании
-
-                                if element_company_id == company['ID'] and\
-                                        str(element_startDate) == str(startDate) and\
-                                         bitrix_element['NAME'] == name_element_type and\
-                                        str(maxVolume) == str(element_maxVolume) and\
-                                        subscriberCode == element_subscriberCode:
+                            if element_company_id == company['ID'] and\
+                                    str(element_startDate) == str(startDate) and\
+                                     bitrix_element['NAME'] == name_element_type and\
+                                    str(maxVolume) == str(element_maxVolume) and\
+                                    subscriberCode == element_subscriberCode:
 
 
-                                    element_id = bitrix_element['ID']   # ID элемента списка
-                                    #print('Id:', element_id)
+                                element_id = bitrix_element['ID']   # ID элемента списка
+                                #print('Id:', element_id)
 
-                                    b.call('lists.element.update',
-                                           {
-                                               'IBLOCK_TYPE_ID': 'lists',
-                                               'IBLOCK_ID': '169',
-                                               'ELEMENT_ID': element_id,
-                                               'fields':
-                                                   {
-                                                       'PROPERTY_1277': maxVolume,
-                                                       'PROPERTY_1279': usedVolume,
-                                                       'NAME': name_element_type,
-                                                       'PROPERTY_1283': company['ID'],
-                                                       'PROPERTY_1285': startDate,
-                                                       'PROPERTY_1289': subscriberCode,
-                                                       'PROPERTY_1293': element_type_fields[name_element_type],
-                                                       'PROPERTY_1331': task_95,
-                                                       'PROPERTY_1347': startDate_formated,
-                                                       'PROPERTY_1349': maxVolume,
-                                                       'PROPERTY_1351': usedVolume,
-                                                       'PROPERTY_1353': element_responsible,
-                                                       'PROPERTY_1357': test_option,
-                                                       'PROPERTY_1373': test_option
-                                                   }
-                                           }
-                                           )
-                                    #print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
-                                    flag = True     # Найден элемент для обновления, новый создавать не нужно
+                                b.call('lists.element.update',
+                                       {
+                                           'IBLOCK_TYPE_ID': 'lists',
+                                           'IBLOCK_ID': '169',
+                                           'ELEMENT_ID': element_id,
+                                           'fields':
+                                               {
+                                                   'PROPERTY_1277': maxVolume,
+                                                   'PROPERTY_1279': usedVolume,
+                                                   'NAME': name_element_type,
+                                                   'PROPERTY_1283': company['ID'],
+                                                   'PROPERTY_1285': startDate,
+                                                   'PROPERTY_1289': subscriberCode,
+                                                   'PROPERTY_1293': element_type_fields[name_element_type],
+                                                   'PROPERTY_1331': task_95,
+                                                   'PROPERTY_1347': startDate_formated,
+                                                   'PROPERTY_1349': maxVolume,
+                                                   'PROPERTY_1351': usedVolume,
+                                                   'PROPERTY_1353': element_responsible,
+                                                   'PROPERTY_1357': test_option,
+                                                   'PROPERTY_1373': test_option
+                                               }
+                                       }
+                                       )
+                                #print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
+                                flag = True     # Найден элемент для обновления, новый создавать не нужно
 
                             if flag is False:   # Если не был найден элемент для обновления
 
@@ -397,7 +379,6 @@ def update_bitrix_list(report_type):
                                        }
                                        )
                                 element_id = str(new_element)
-                                print(element_id)
                                 #print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
                             # Защита от дублирования в том случае, если сделок по фильтру больше одной
