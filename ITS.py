@@ -351,35 +351,35 @@ def update_bitrix_list(report_type):
                                 print(f'Обновлен элемент списка {name_element_type} {bitrix_element}')
                                 flag = True     # Найден элемент для обновления, новый создавать не нужно
 
-                            if flag is False:   # Если не был найден элемент для обновления
+                        if flag is False:   # Если не был найден элемент для обновления
 
-                                # Создание элемента списка
-                                new_element = b.call('lists.element.add',
-                                       {
-                                           'IBLOCK_TYPE_ID': 'lists',
-                                           'IBLOCK_ID': '169',
-                                           'ELEMENT_CODE': time(),
-                                           'fields':
-                                               {
-                                                   'PROPERTY_1277': maxVolume,
-                                                   'PROPERTY_1279': usedVolume,
-                                                   'NAME': name_element_type,
-                                                   'PROPERTY_1283': company['ID'],
-                                                   'PROPERTY_1285': startDate,
-                                                   'PROPERTY_1289': subscriberCode,
-                                                   'PROPERTY_1293': element_type_fields[name_element_type],
-                                                   'PROPERTY_1331': '2213',
-                                                   'PROPERTY_1347': startDate_formated,
-                                                   'PROPERTY_1349': maxVolume if maxVolume else 0,
-                                                   'PROPERTY_1351': usedVolume,
-                                                   'PROPERTY_1353': element_responsible,
-                                                   'PROPERTY_1357': test_option,
-                                                   'PROPERTY_1373': '1'
-                                               }
-                                       }
-                                       )
-                                element_id = str(new_element)
-                                print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
+                            # Создание элемента списка
+                            new_element = b.call('lists.element.add',
+                                   {
+                                       'IBLOCK_TYPE_ID': 'lists',
+                                       'IBLOCK_ID': '169',
+                                       'ELEMENT_CODE': time(),
+                                       'fields':
+                                           {
+                                               'PROPERTY_1277': maxVolume,
+                                               'PROPERTY_1279': usedVolume,
+                                               'NAME': name_element_type,
+                                               'PROPERTY_1283': company['ID'],
+                                               'PROPERTY_1285': startDate,
+                                               'PROPERTY_1289': subscriberCode,
+                                               'PROPERTY_1293': element_type_fields[name_element_type],
+                                               'PROPERTY_1331': '2213',
+                                               'PROPERTY_1347': startDate_formated,
+                                               'PROPERTY_1349': maxVolume if maxVolume else 0,
+                                               'PROPERTY_1351': usedVolume,
+                                               'PROPERTY_1353': element_responsible,
+                                               'PROPERTY_1357': test_option,
+                                               'PROPERTY_1373': '1'
+                                           }
+                                   }
+                                   )
+                            element_id = str(new_element)
+                            print(f"Создан {name_element_type} {company['TITLE']} {startDate}")
 
                             # Защита от дублирования в том случае, если сделок по фильтру больше одной
 
