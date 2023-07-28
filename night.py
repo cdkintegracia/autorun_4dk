@@ -6,6 +6,7 @@ from UpdateUserActivityStatistic import update_user_activity_statistic
 from SendNotification import send_notification
 from CreateRevenueListElements import create_revenue_list_elements
 from CreateBackupFiles import create_backup_files
+from FillCompanyInn import fill_company_inn
 
 
 def main():
@@ -17,6 +18,10 @@ def main():
         update_deal_1c_code()
     except:
         send_notification(['1', '311'], 'Работа ночных процессов прервана на обновлении "СлужКод1с"')
+    try:
+        fill_company_inn()
+    except:
+        send_notification(['1', '311'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
     try:
         create_call_statistic_null_elements()
     except:
