@@ -31,7 +31,7 @@ def check_deal_stage():
 
     for deal in deals:
         if 'UF_CRM_1638958630625' in deal:
-            if deal['UF_CRM_1638958630625'] not in ['None', None]:
+            if deal['UF_CRM_1638958630625'] not in ['None', None, '']:
                 dpo = deal['UF_CRM_1638958630625'][:10]
                 # Отдельное условие для Спарков
                 if (dpo == check_date and deal['STAGE_ID'] != 'C1:NEW') or (dpo == check_date and deal['TYPE_ID'] in ['UC_2B0CK2', 'UC_86JXH1', 'UC_WUGAZ7']):
