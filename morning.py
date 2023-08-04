@@ -8,6 +8,7 @@ from SendNotification import send_notification
 from CreateCallRedirectionTasks import create_call_redirection_tasks
 from SendDealEndingMessageBot import send_deal_ending_message_bot
 from SendingEmailsPlan import sending_emails_plan
+from EcpDealEnding import ecp_deal_ending
 
 
 def main():
@@ -32,13 +33,17 @@ def main():
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
     try:
+        ecp_deal_ending()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
+    '''
+    try:
         start_recruitment_request_process()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
     create_call_redirection_tasks()
     send_deal_ending_message_bot()
     sending_emails_plan()
-    '''
     try:
         X_Report.main()
     except:
