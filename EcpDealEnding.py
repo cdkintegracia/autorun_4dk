@@ -9,9 +9,17 @@ b = Bitrix(authentication('Bitrix'))
 
 
 def ecp_deal_ending():
+    if datetime.now().weekday() in [5, 6]:
+        exit()
     date_pattern = '%Y-%m-%d'
-    filter_date_start = (datetime.now() + timedelta(days=6)).strftime(date_pattern)
-    filter_date_end = (datetime.now() + timedelta(days=8)).strftime(date_pattern)
+    if datetime.now().weekday() != 0:
+        filter_date_start = (datetime.now() + timedelta(days=6)).strftime(date_pattern)
+        filter_date_end = (datetime.now() + timedelta(days=8)).strftime(date_pattern)
+        task_text = (datetime.now() + timedelta(days=7)).strftime("%d.%m.%Y")
+    else:
+        filter_date_start = (datetime.now() + timedelta(days=4)).strftime(date_pattern)
+        filter_date_end = (datetime.now() + timedelta(days=8)).strftime(date_pattern)
+        task_text = f'{(datetime.now() + timedelta(days=5)).strftime("%d.%m.%Y")} - {(datetime.now() + timedelta(days=7)).strftime("%d.%m.%Y")}'
     deals = b.get_all('crm.deal.list', {
         'select': ['*', 'UF_*'],
         'filter': {
@@ -27,25 +35,21 @@ def ecp_deal_ending():
         }
     })
 
-    task_text = ''
-    for index, deal in enumerate(deals, 1):
-        if index == 1:
-            task_text += f'Напомните клиентам о продлении ЭЦП\n' \
-                         f'Дата окончания ЭЦП: {(datetime.now() + timedelta(days=7)).strftime("%d.%m.%Y")}\n\n'
-        company_name = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]['TITLE']
-        task_text += f'{index}. {company_name} https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/\n'
-
-    if task_text:
-        b.call('tasks.task.add', {
+    if deals:
+        task = b.call('tasks.task.add', {
             'fields': {
-                'TITLE': f'Напомните клиентам о продлении ЭЦП {(datetime.now() + timedelta(days=7)).strftime("%d.%m.%Y")}',
+                'TITLE': f'Напомните клиентам о продлении ЭЦП {task_text}',
                 'GROUP_ID': '11',
                 'CREATED_BY': '173',
                 'RESPONSIBLE_ID': '91',
-                'DESCRIPTION': task_text,
+                'DESCRIPTION': f'Дата окончания ЭЦП: {task_text}',
             }
-        })
+        }, raw=True)['result']['task']['id']
 
+        for deal in deals:
+            company_name = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]['TITLE']
+            check_box_text = f'{company_name} https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/\n'
+            b.call('task.checklistitem.add', [task, {'TITLE': check_box_text}], raw=True)
 
 
 if __name__ == '__main__':
