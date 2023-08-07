@@ -36,6 +36,7 @@ def main():
         ecp_deal_ending()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
+    create_call_redirection_tasks()
     '''
     try:
         start_recruitment_request_process()
