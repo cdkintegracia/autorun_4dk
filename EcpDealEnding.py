@@ -10,7 +10,7 @@ b = Bitrix(authentication('Bitrix'))
 
 def ecp_deal_ending():
     if datetime.now().weekday() in [5, 6]:
-        exit()
+        return 
     date_pattern = '%Y-%m-%d'
     if datetime.now().weekday() != 0:
         filter_date_start = (datetime.now() + timedelta(days=6)).strftime(date_pattern)

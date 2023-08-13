@@ -63,6 +63,8 @@ def create_check_list(data: dict, main_task_id: str, task_type: str, check_list_
         ], raw=True
                )
         '''
+        print(f"{data[deal_id][0]} - {data[deal_id][1]} https://vc4dk.bitrix24.ru/crm/deal/details/{deal_id}/")
+        print(main_checklist['result'])
         b.call('task.checklistitem.add', {
             'taskId': main_task_id,
             'FIELDS': {
@@ -115,6 +117,7 @@ def create_task(deals, task_type):
         }
         }, raw=True
                )['result']
+
         create_check_list(no_autoprolongation_deals, task['task']['id'], task_type, 'Сделки без автопролонгации')
         create_check_list(autoprolongation_deals, task['task']['id'], task_type, 'Сделки с автопролонгацией')
 
