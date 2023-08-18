@@ -251,20 +251,11 @@ def main():
                                              }
                        )
 
-                # Формирование текста конфигурации для задачи
-
-                for i in element["PROPERTY_1259"]:
-                    config_name = element["PROPERTY_1259"][i]
-
-                for i in element["PROPERTY_1243"]:
-                    config_id = element["PROPERTY_1243"][i]
-
                 # Создание задачи на нахождение расхождения
 
                 task_text += f'Компания: {company["TITLE"]}\n' \
-                             f'Конфигурация: {config_name}\n' \
-                             f'ID: {config_id}\n'\
-                             f'Название услуги: {element["NAME"]}\n'\
+                             f'Конфигурация: {config["name"]}\n' \
+                             f'ID: {config["id"]}\n'\
                              f'---------------------------------------------------------\n'
 
     if task_text != '':
