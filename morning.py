@@ -9,9 +9,11 @@ from CreateCallRedirectionTasks import create_call_redirection_tasks
 from SendDealEndingMessageBot import send_deal_ending_message_bot
 from SendingEmailsPlan import sending_emails_plan
 from EcpDealEnding import ecp_deal_ending
+from SendRequestFillActDocumentSmartProcess import send_request_fill_act_document_smart_process
 
 
 def main():
+    send_request_fill_act_document_smart_process()
     try:
         prolongation_its()
     except:
