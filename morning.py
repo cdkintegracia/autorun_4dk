@@ -15,6 +15,11 @@ from SendRequestFillActDocumentSmartProcess import send_request_fill_act_documen
 def main():
     send_request_fill_act_document_smart_process()
     try:
+        sending_emails_plan()
+        send_deal_ending_message_bot()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
+    try:
         prolongation_its()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задач "Пролонгация ИТС"')
@@ -44,9 +49,6 @@ def main():
         start_recruitment_request_process()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
-    create_call_redirection_tasks()
-    send_deal_ending_message_bot()
-    sending_emails_plan()
     try:
         X_Report.main()
     except:
