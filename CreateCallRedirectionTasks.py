@@ -9,8 +9,7 @@ b = Bitrix(authentication('Bitrix'))
 
 
 def create_call_redirection_tasks():
-    #filter_date = (datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y')
-    filter_date = (datetime(day=27, month=8, year=2023) + timedelta(days=1)).strftime('%d.%m.%Y')
+    filter_date = (datetime.now() + timedelta(days=1)).strftime('%d.%m.%Y')
     elements = b.get_all('lists.element.get', {
         'IBLOCK_TYPE_ID': 'lists',
         'IBLOCK_ID': '159',
