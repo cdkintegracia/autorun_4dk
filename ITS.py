@@ -351,7 +351,7 @@ def update_bitrix_list(report_type):
                                 flag = True     # Найден элемент для обновления, новый создавать не нужно
 
                         if flag is False:   # Если не был найден элемент для обновления
-
+                            print(usedVolume, 'юзед волюме')
                             # Создание элемента списка
                             new_element = b.call('lists.element.add',
                                    {
@@ -361,7 +361,7 @@ def update_bitrix_list(report_type):
                                        'fields':
                                            {
                                                'PROPERTY_1277': maxVolume,
-                                               'PROPERTY_1279': usedVolume,
+                                               'PROPERTY_1279': usedVolume if usedVolume else 0,
                                                'NAME': name_element_type,
                                                'PROPERTY_1283': company['ID'],
                                                'PROPERTY_1285': startDate,
@@ -370,7 +370,7 @@ def update_bitrix_list(report_type):
                                                'PROPERTY_1331': '2213',
                                                'PROPERTY_1347': startDate_formated,
                                                'PROPERTY_1349': maxVolume if maxVolume else 0,
-                                               'PROPERTY_1351': usedVolume,
+                                               'PROPERTY_1351': usedVolume if usedVolume else 0,
                                                'PROPERTY_1353': element_responsible,
                                                'PROPERTY_1357': test_option,
                                                'PROPERTY_1373': '1'
