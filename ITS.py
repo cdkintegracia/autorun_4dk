@@ -351,7 +351,7 @@ def update_bitrix_list(report_type):
                                 flag = True     # Найден элемент для обновления, новый создавать не нужно
 
                         if flag is False:   # Если не был найден элемент для обновления
-                            print(usedVolume, 'юзед волюме')
+
                             # Создание элемента списка
                             new_element = b.call('lists.element.add',
                                    {
