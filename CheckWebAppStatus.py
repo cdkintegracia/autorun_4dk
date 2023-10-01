@@ -4,9 +4,9 @@ from fast_bitrix24 import Bitrix
 from authentication import authentication
 from web_app_ip import web_app_ip
 
+
 try:
     r = request(method='GET', url=web_app_ip)
-    print(r)
     with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
     if status == 'offline':
@@ -23,11 +23,14 @@ except requests.ConnectionError:
         notification_users = ['1', '311']
         for user in notification_users:
             data = {
-                'job': 'send_message',
-                'dialog_id': user,
-                'message': 'Работа веб-приложения остановлена',
+                'BOT_ID': '495',
+                'CLIENT_ID': 'vv58t6uleb5nyr3li47xp2mj5r3n46tb',
+                'DIALOG_ID': user,
+                'MESSAGE': 'Работа веб-приложения остановлена',
             }
-            requests.post(url=f'{web_app_ip}/bitrix/chat_bot', json=data)
+
+            requests.post(url=f'{authentication("Chat-bot")}imbot.message.add', json=data)
+
         '''
         b = Bitrix(authentication('Bitrix'))
         b.call('tasks.task.add', {
