@@ -136,7 +136,7 @@ def main():
         return
     time_filter = time.strftime('%Y-%m-%d')     # Время для фильтра в битриксе
     date_end_filter = datetime.today() + timedelta(days=2)
-    date_end_filter = date_end_filter.strftime('%Y-%m-%d')
+    date_end_filter_str = date_end_filter.strftime('%Y-%m-%d')
 
     if week_day != 5:  # Пятница
 
@@ -211,7 +211,7 @@ def main():
             ],
             'filter': {
                 '>=CLOSEDATE': time_filter,
-                '<=CLOSEDATE': date_end_filter,
+                '<=CLOSEDATE': date_end_filter_str,
                 '!TYPE_ID': [
                     'UC_QQPYF0',  # Лицензия
                     'UC_OV4T7K',  # Отчетность (в рамках ИТС)
@@ -239,7 +239,7 @@ def main():
             ],
             'filter': {
                 '>=UF_CRM_1638958630625': time_filter,
-                '<=UF_CRM_1638958630625': date_end_filter,
+                '<=UF_CRM_1638958630625': date_end_filter_str,
                 '!TYPE_ID': [
                     'UC_QQPYF0',  # Лицензия
                     'UC_OV4T7K',  # Отчетность (в рамках ИТС)
@@ -251,7 +251,9 @@ def main():
             }
         }
                               )
-
+        last_day_data = f'{current_year}-{current_month}-{last_day_current_month}'
+        deals_dk = list(filter(lambda x: last_day_data not in x['CLOSEDATE'], deals_dk))
+        deals_dpo = list(filter(lambda x: last_day_data not in x['UF_CRM_1638958630625'], deals_dpo))
 
     create_task(deals_dk, 'ДК')
     create_task(deals_dpo, 'ДПО')
