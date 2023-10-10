@@ -210,7 +210,7 @@ def update_bitrix_list(report_type):
                         break
 
             startDate = int(tariff['startDate'])  # Дата начала из отчета
-            startDate_formated = datetime.utcfromtimestamp(startDate).strftime('%Y-%m-%d %H:%M:%S')
+            startDate_formated = datetime.fromisoformat(startDate).strftime('%Y-%m-%d %H:%M:%S')
 
             # Поиск компании в Битриксе по ИНН из отчета
             if not inn:
