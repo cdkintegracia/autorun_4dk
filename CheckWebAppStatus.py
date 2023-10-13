@@ -23,8 +23,8 @@ except requests.ConnectionError:
         notification_users = ['1', '311']
         for user in notification_users:
             data = {
-                'BOT_ID': '495',
-                'CLIENT_ID': 'vv58t6uleb5nyr3li47xp2mj5r3n46tb',
+                'BOT_ID': '971',
+                'CLIENT_ID': '4so2clgikxlubo3xy49238j8gjpp0u66',
                 'DIALOG_ID': user,
                 'MESSAGE': 'Работа веб-приложения остановлена',
             }
