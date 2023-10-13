@@ -23,13 +23,13 @@ except requests.ConnectionError:
         notification_users = ['1', '311']
         for user in notification_users:
             data = {
-                'BOT_ID': '971',
-                'CLIENT_ID': '4so2clgikxlubo3xy49238j8gjpp0u66',
+                'BOT_ID': '1019',
+                'CLIENT_ID': '0ygqrhrjjhasn7uap3ginxcvuio3h99o',
                 'DIALOG_ID': user,
                 'MESSAGE': 'Работа веб-приложения остановлена',
             }
 
-            requests.post(url=f'{authentication("Chat-bot")}imbot.message.add', json=data)
+            requests.post(url=f'{authentication("Chat-bot").strip()}imbot.message.add', json=data)
 
         '''
         b = Bitrix(authentication('Bitrix'))
