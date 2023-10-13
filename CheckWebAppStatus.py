@@ -29,7 +29,8 @@ except requests.ConnectionError:
                 'MESSAGE': 'Работа веб-приложения остановлена',
             }
 
-            requests.post(url=f'{authentication("Chat-bot").strip()}imbot.message.add', json=data)
+            r = requests.post(url=f'{authentication("Chat-bot").strip()}imbot.message.add', json=data)
+            print(r.text())
 
         '''
         b = Bitrix(authentication('Bitrix'))
