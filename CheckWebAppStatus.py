@@ -9,16 +9,17 @@ try:
     r = request(method='GET', url=web_app_ip)
     with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
+        print(status)
     if status == 'offline':
         with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
             file.write('Status_web_app: online')
 except requests.ConnectionError:
     with open('/root/autorun_4dk/status_web_app.txt', 'r') as file:
         status = file.read().split(': ')[-1]
+        print(status)
     if status == 'online':
         with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
             file.write('Status_web_app: offline')
-
         b = Bitrix(authentication('Bitrix'))
         notification_users = ['1', '311']
         for user in notification_users:
