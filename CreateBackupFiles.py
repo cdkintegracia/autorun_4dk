@@ -13,13 +13,13 @@ b = Bitrix(authentication('Bitrix'))
 y = yadisk.YaDisk(token=authentication('Yandex'))
 
 
-def main(filename, entity, companies, entity_id, folder_path):
+def main(filename, entity, companies, entity_id, folder_path, category_id):
 
     if entity == 'deal':
         data = b.get_all('crm.deal.list', {
             'select': ['*', 'UF_*'],
             'filter': {
-                'CATEGORY_ID': '1' if filename == 'Сопровождение' else '9'
+                'CATEGORY_ID': category_id
             }
         })
     elif entity == 'item':
@@ -103,12 +103,12 @@ def main(filename, entity, companies, entity_id, folder_path):
 
 def create_backup_files():
     data_types = [
-        {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None},
-        {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None},
-        {'filename': 'Контакты', 'entity': 'contact', 'entity_id': None},
-        {'filename': 'Компании', 'entity': 'company', 'entity_id': None},
-        {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133'},
-        {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186'}
+        {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
+        {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
+        {'filename': 'Контакты', 'entity': 'contact', 'entity_id': None, 'category_id': None},
+        {'filename': 'Компании', 'entity': 'company', 'entity_id': None, 'category_id': None},
+        {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
+        {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None}
     ]
     companies = b.get_all('crm.company.list', {
         'select': ['*', 'UF_*']
@@ -116,7 +116,7 @@ def create_backup_files():
     folder_path = f"/Бэкапы ЧДК/{datetime.now().strftime('%d.%m.%Y')}"
     y.mkdir(folder_path)
     for data_type in data_types:
-        main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'], folder_path)
+        main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'], folder_path, category_id=data_type['category_id'])
 
 
 if __name__ == '__main__':
