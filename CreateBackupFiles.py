@@ -105,6 +105,7 @@ def create_backup_files():
     data_types = [
         {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
         {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
+        {'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
         {'filename': 'Контакты', 'entity': 'contact', 'entity_id': None, 'category_id': None},
         {'filename': 'Компании', 'entity': 'company', 'entity_id': None, 'category_id': None},
         {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
