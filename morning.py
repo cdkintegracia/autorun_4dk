@@ -31,6 +31,16 @@ def main():
         send_company_interaction_info()
     except:
         send_notification(['1', '311'], 'Работа утренних процессов прервана на отправке отчетов о взаимодействии с компаниями')
+    '''
+    try:
+        ClearListBP.clear_bp()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на проверке запущенных БП в УС "ОтправкаПисемПлан"')
+    try:
+        update_service_sales_report()
+    except:
+        send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
+    '''
     try:
         ecp_deal_ending()
     except:
