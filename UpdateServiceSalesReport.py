@@ -5,7 +5,7 @@ from web_app_ip import web_app_ip
 
 
 def update_service_sales_report():
-    return 
+    return
     current_day = datetime.now().day
     if current_day != 1:
         return
