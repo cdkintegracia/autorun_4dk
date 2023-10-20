@@ -42,7 +42,6 @@ def send_company_interaction_info():
             filter_month = 12
             filter_year -= 1
         filter_dates.append(f"{month_int_names[filter_month]} {filter_year}")
-    filter_dates = ['Апрель 2023', 'Март 2023', 'Декабрь 2023']
     companies = b.get_all('crm.company.list', {'select': ['TITLE']})
     its_deals = b.get_all('crm.deal.list', {
         'select': ['ASSIGNED_BY_ID', 'COMPANY_ID'],
