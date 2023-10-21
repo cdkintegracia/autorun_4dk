@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import tasks, ClearListBP, X_Report
 from Prolongation_ITS import prolongation_its
-from SendCompanyInteractionInfo import send_company_interaction_info
 from UpdateServiceSalesReport import update_service_sales_report
 from StartRecruitmentRequestProcess import start_recruitment_request_process
 from SendNotification import send_notification
@@ -18,43 +17,39 @@ def main():
         sending_emails_plan()
         send_deal_ending_message_bot()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
+        send_notification(['1'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
     try:
         prolongation_its()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задач "Пролонгация ИТС"')
+        send_notification(['1'], 'Работа утренних процессов прервана на создании задач "Пролонгация ИТС"')
     try:
         tasks.main()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задач о завершающихся сделках')
-    try:
-        send_company_interaction_info()
-    except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на отправке отчетов о взаимодействии с компаниями')
+        send_notification(['1'], 'Работа утренних процессов прервана на создании задач о завершающихся сделках')
     '''
     try:
         ClearListBP.clear_bp()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на проверке запущенных БП в УС "ОтправкаПисемПлан"')
+        send_notification(['1'], 'Работа утренних процессов прервана на проверке запущенных БП в УС "ОтправкаПисемПлан"')
     try:
         update_service_sales_report()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
+        send_notification(['1'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
     '''
     try:
         ecp_deal_ending()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
+        send_notification(['1'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
     create_call_redirection_tasks()
     '''
     try:
         start_recruitment_request_process()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
+        send_notification(['1'], 'Работа утренних процессов прервана на создании заданий на запрос персонала')
     try:
         X_Report.main()
     except:
-        send_notification(['1', '311'], 'Работа утренних процессов прервана на обновлении X-отчета')
+        send_notification(['1'], 'Работа утренних процессов прервана на обновлении X-отчета')
     '''
 
 

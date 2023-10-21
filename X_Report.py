@@ -147,7 +147,7 @@ def main():
             'DESCRIPTION': error_task_text,
             'GROUP_ID': '13',
             'CREATED_BY': '173',
-            'RESPONSIBLE_ID': '311',
+            'RESPONSIBLE_ID': '1',
         }})
 
 if __name__ == '__main__':

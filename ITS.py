@@ -184,7 +184,7 @@ def update_bitrix_list(report_type):
     for element in report['report']['entries']:
 
         if datetime.now() > job_maximum_time and not job_notification_flag:
-            send_notification(['311', '1'], 'Элементы УС "Отчет по сервисам" обновляются более двух часов')
+            send_notification(['1'], 'Элементы УС "Отчет по сервисам" обновляются более двух часов')
             job_notification_flag = True
 
         for tariff in element['tariffs']:
@@ -459,16 +459,16 @@ def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
     if datetime.today().isoweekday() == 1:
         update_bitrix_list('ESS')
-        send_notification(['1', '311'], f'{notification_text} (Кабинет сотрудника)')
+        send_notification(['1'], f'{notification_text} (Кабинет сотрудника)')
     else:
         with open('/root/autorun_4dk/its_update.txt', 'r') as file:
             day_code = int(file.read())
         if day_code % 2 == 0:
             update_bitrix_list('DOCUMENT_RECOGNITION')
-            send_notification(['1', '311'], f'{notification_text} (РПД)')
+            send_notification(['1'], f'{notification_text} (РПД)')
         else:
             update_bitrix_list('COUNTERAGENT')
-            send_notification(['1', '311'], f'{notification_text} (Контрагент)')
+            send_notification(['1'], f'{notification_text} (Контрагент)')
 
         day_code += 1
         with open('/root/autorun_4dk/its_update.txt', 'w') as file:

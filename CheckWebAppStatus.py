@@ -19,7 +19,7 @@ except requests.ConnectionError:
         with open('/root/autorun_4dk/status_web_app.txt', 'w') as file:
             file.write('Status_web_app: offline')
         b = Bitrix(authentication('Bitrix'))
-        notification_users = ['1', '311']
+        notification_users = ['1']
         for user in notification_users:
             data = {
                 'BOT_ID': '1019',
@@ -34,7 +34,7 @@ except requests.ConnectionError:
         b = Bitrix(authentication('Bitrix'))
         b.call('tasks.task.add', {
             'fields': {
-                'RESPONSIBLE_ID': '311',
+                'RESPONSIBLE_ID': '1',
                 'AUDITORS': '1',
                 'GROUP_ID': '13',
                 'TITLE': 'Работа веб-приложения остановлена',

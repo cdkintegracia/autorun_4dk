@@ -75,7 +75,7 @@ def prolongation_its():
             }
         }
                )
-    users_id_notification = ['311', '109']
+    users_id_notification = ['1', '109']
     for user_id in users_id_notification:
         b.call('im.notify.system.add', {
             'USER_ID': user_id,

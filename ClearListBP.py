@@ -23,9 +23,9 @@ def clear_bp():
                 'fields': {
                     'TITLE': f'В элементе списка ОтправкаПисемПлан запущено несколько БП',
                     'DESCRIPTION': f'ID элемента: {element}',
-                    'CREATED_BY': '311',
+                    'CREATED_BY': '1',
                     'GROUP_ID': '13',
-                    'RESPONSIBLE_ID': '311',
+                    'RESPONSIBLE_ID': '1',
                 }
             }
                    )

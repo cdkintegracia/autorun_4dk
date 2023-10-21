@@ -275,7 +275,7 @@ def main():
                                            f"{task_text}",
                             'CREATED_BY': '173',
                             'GROUP_ID': '13',
-                            'RESPONSIBLE_ID': '311',
+                            'RESPONSIBLE_ID': '1',
                             'ACCOMPLICES': '1',
                             'UF_CRM_TASK': f'C_{element["PROPERTY_1273"]}'
                         }
@@ -358,7 +358,7 @@ def main():
                                    f"{task_text}",
                     'CREATED_BY': '173',
                     'GROUP_ID': '13',
-                    'RESPONSIBLE_ID': '311',
+                    'RESPONSIBLE_ID': '1',
                     'ACCOMPLICES': '1',
                     'UF_CRM_TASK': f'C_{element["PROPERTY_1273"]}'
                 }
@@ -434,7 +434,7 @@ def main():
                                    f'{task_text}',
                     'CREATED_BY': '173',
                     'GROUP_ID': '13',
-                    'RESPONSIBLE_ID': '311',
+                    'RESPONSIBLE_ID': '1',
                     'ACCOMPLICES': '1',
                     'UF_CRM_TASK': f'C_{element["PROPERTY_1273"]}'
                 }
