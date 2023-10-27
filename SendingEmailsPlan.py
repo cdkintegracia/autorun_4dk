@@ -63,7 +63,8 @@ def sending_emails_plan():
     for deal in deals_closedate:
         company = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]
         message_text = f'Внимание! У клиента {company["TITLE"]} {datetime.fromisoformat(deal["CLOSEDATE"]).strftime("%d.%m.%Y")} заканчивается оплата по договору {deal["TITLE"]}. Пожалуйста, свяжитесь с клиентом.\n' \
-                       f'https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/'
+                       f'https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/' \
+                       f'\n'
         texts_and_users[deal['ASSIGNED_BY_ID']] = texts_and_users.get(deal['ASSIGNED_BY_ID'], '') + message_text
 
     for user, text in texts_and_users.items():
