@@ -118,7 +118,9 @@ def create_backup_files():
     y.mkdir(folder_path)
     for data_type in data_types:
         main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'], folder_path, category_id=data_type['category_id'])
-
+    b.call('im.notify.system.add', {
+        'USER_ID': 1,
+        'MESSAGE': f'Копии созданы'})    
 
 if __name__ == '__main__':
     create_backup_files()
