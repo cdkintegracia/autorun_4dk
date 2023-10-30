@@ -176,9 +176,8 @@ def send_deal_statistic_email():
         data_to_write = sort_data_by_group(b24_deals, user_departments, stage_ids, group)
         write_data_to_xlsx(data_to_write, report_name)
     b24_file_id = upload_report_to_b24(report_name)
-    b.call('bizproc.workflow.start', {'TEMPLATE_ID': '1245', 'DOCUMENT_ID': ['lists', 'BizprocDocument', '237723'], 'PARAMETERS': {'file_id': b24_file_id}})
-
+    #b.call('bizproc.workflow.start', {'TEMPLATE_ID': '1245', 'DOCUMENT_ID': ['lists', 'BizprocDocument', '237723'], 'PARAMETERS': {'file_id': b24_file_id}})
+    b.call('bizproc.workflow.start', {'TEMPLATE_ID': '1729', 'DOCUMENT_ID': ['lists', 'BizprocDocument', '237723'], 'PARAMETERS': {'file_id': b24_file_id}})
 
 if __name__ == '__main__':
     send_deal_statistic_email()
-
