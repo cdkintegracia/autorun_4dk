@@ -53,7 +53,7 @@ def update_user_activity_statistic():
     try:
         google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
     except FileNotFoundError:
-        google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
+        google_access = gspread.service_account(f"C:\\Users\\USER\\Documents\\GitHub\\autorun_4dk\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
 
     try:
@@ -79,7 +79,7 @@ def update_user_activity_statistic():
 
     except gspread.exceptions.APIError:
         worksheet = spreadsheet.worksheet(sheet_name)
-
+        
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
 
@@ -120,7 +120,7 @@ def update_user_activity_statistic():
             activities_sum = sum(list(map(lambda x: int(x), row[3:])))
         row.append(activities_sum)
         new_worksheet_data.append(row)
-        
+
     worksheet.clear()
     worksheet.update('A1', new_worksheet_data)
 
