@@ -44,6 +44,7 @@ def update_user_activity_statistic():
                 '205',  # b24_asterisk
                 '139',  # Антон Степанов
                 '639', # Служба качества ЧДК
+                '313',
             ],
             'ACTIVE': 'true'
         }})
@@ -79,7 +80,7 @@ def update_user_activity_statistic():
 
     except gspread.exceptions.APIError:
         worksheet = spreadsheet.worksheet(sheet_name)
-        
+
     worksheet_values = worksheet.get_all_values()
     new_worksheet_data = []
 
