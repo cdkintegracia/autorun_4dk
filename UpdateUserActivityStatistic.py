@@ -86,6 +86,8 @@ def update_user_activity_statistic():
 
     date_filter = datetime.strftime(datetime.now(), '%Y-%m-%d')
     end_date_filter = datetime.strftime(datetime.now() + timedelta(days=1), '%Y-%m-%d')
+    #date_filter = datetime.strftime(datetime.now()+ timedelta(days=-1), '%Y-%m-%d')
+    #end_date_filter = datetime.strftime(datetime.now(), '%Y-%m-%d')
     calls = b.get_all('voximplant.statistic.get', {'filter': {'>=CALL_START_DATE': date_filter, 'CALL_FAILED_CODE': '200', '<CALL_START_DATE': end_date_filter}})
     sent_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2', '<CREATED': end_date_filter}})
     tasks = b.get_all('tasks.task.list', {'filter': {'>=CLOSED_DATE': date_filter, '<CLOSED_DATE': end_date_filter}})
@@ -94,6 +96,7 @@ def update_user_activity_statistic():
         activities_sum = ''
         if 'Пользователь' in row:
             row.insert(-1, datetime.strftime(datetime.now(), '%d.%m.%Y'))
+            #row.insert(-1, datetime.strftime(datetime.now()+ timedelta(days=-1), '%d.%m.%Y'))
         elif row[2] == '':
             *user_name, user_id = row[0].split()
         elif 'Завершенные задачи' in row and user_id:
