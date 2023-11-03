@@ -45,6 +45,7 @@ def update_user_activity_statistic():
                 '139',  # Антон Степанов
                 '639', # Служба качества ЧДК
                 '313',
+                '297'
             ],
             'ACTIVE': 'true'
         }})
