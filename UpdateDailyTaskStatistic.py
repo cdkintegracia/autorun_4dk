@@ -75,7 +75,7 @@ def update_daily_task_statistic():
     try:
         google_access = gspread.service_account(f"/root/credentials/{authentication('Google')}")
     except FileNotFoundError:
-        google_access = gspread.service_account(f"C:\\Users\\mok\\Documents\\GitHub\\{authentication('Google')}")
+        google_access = gspread.service_account(f"C:\\Users\\USER\\Documents\\GitHub\\autorun_4dk\\{authentication('Google')}")
     spreadsheet = google_access.open(file_name)
     try:
         worksheet = spreadsheet.add_worksheet(title=sheet_name, rows=1, cols=1)
