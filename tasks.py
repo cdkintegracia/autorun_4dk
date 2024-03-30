@@ -138,7 +138,13 @@ def main():
     date_end_filter = datetime.today() + timedelta(days=2)
     date_end_filter_str = date_end_filter.strftime('%Y-%m-%d')
 
-    if week_day != 5:  # Пятница
+    #ibs >
+    no_weekend = False #>ibs предупреждаем создание задач, если на выходные приходится конец месяца
+    date_end_filter_before = datetime.today() + timedelta(days=1)
+    date_end_filter_before_str = date_end_filter_before.strftime('%Y-%m-%d')
+    if str(last_day_current_month) in date_end_filter_str or str(last_day_current_month) in date_end_filter_before_str:
+        no_weekend = True
+    if week_day != 5 or no_weekend == True:  # Не Пятница ИЛИ пятница, но на выходных - конец месяца
 
         # Сделки ДК == сегодня
         deals_dk = b.get_all('crm.deal.list', {
@@ -194,7 +200,7 @@ def main():
         }
                               )
 
-    else:
+    else: #если пятница, и на выходных не приходится конец месяца
 
         # Сделки ДК == с пятницы по воскресенье
         deals_dk = b.get_all('crm.deal.list', {
