@@ -27,8 +27,7 @@ def main(filename, entity, companies, entity_id, folder_path, category_id):
             'entityTypeId': entity_id,
             'select': ['*', 'UF_*']
         })
-    elif entity == 'company':
-        data = companies
+
     else:
         data = b.get_all(f'crm.{entity}.list', {
             'select': ['*', 'UF_*'],
@@ -106,14 +105,16 @@ def create_backup_files():
         {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
         {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
         {'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
-        {'filename': 'Контакты', 'entity': 'contact', 'entity_id': None, 'category_id': None},
-        {'filename': 'Компании', 'entity': 'company', 'entity_id': None, 'category_id': None},
         {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
-        {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None}
+        {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None},
+        {'filename': 'Проработка_по_сервисам', 'entity': 'item', 'entity_id': '150', 'category_id': None},
+        {'filename': 'Доступы_и_файлы', 'entity': 'item', 'entity_id': '165', 'category_id': None},
+        {'filename': 'Инфо', 'entity': 'item', 'entity_id': '141', 'category_id': None}
     ]
     companies = b.get_all('crm.company.list', {
-        'select': ['*', 'UF_*']
+        'select': ['*']
     })
+
     folder_path = f"/Бэкапы ЧДК/{datetime.now().strftime('%d.%m.%Y')}"
     y.mkdir(folder_path)
     for data_type in data_types:
