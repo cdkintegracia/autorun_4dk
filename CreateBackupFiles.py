@@ -102,13 +102,13 @@ def main(filename, entity, companies, entity_id, folder_path, category_id):
 
 def create_backup_files():
     data_types = [
-        {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
-        {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
-        {'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
-        {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
-        {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None},
-        {'filename': 'Проработка_по_сервисам', 'entity': 'item', 'entity_id': '150', 'category_id': None},
-        {'filename': 'Доступы_и_файлы', 'entity': 'item', 'entity_id': '165', 'category_id': None},
+        #{'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
+        #{'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
+        #{'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
+        #{'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
+        #{'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None},
+        #{'filename': 'Проработка_по_сервисам', 'entity': 'item', 'entity_id': '150', 'category_id': None},
+        #{'filename': 'Доступы_и_файлы', 'entity': 'item', 'entity_id': '165', 'category_id': None},
         {'filename': 'Инфо', 'entity': 'item', 'entity_id': '141', 'category_id': None}
     ]
     companies = b.get_all('crm.company.list', {
@@ -121,7 +121,7 @@ def create_backup_files():
         main(data_type['filename'], data_type['entity'], companies, data_type['entity_id'], folder_path, category_id=data_type['category_id'])
     b.call('im.notify.system.add', {
         'USER_ID': 1,
-        'MESSAGE': f'Копии созданы'})    
+        'MESSAGE': f'Копии созданы'})
 
 if __name__ == '__main__':
     create_backup_files()
