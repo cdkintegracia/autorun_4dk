@@ -14,10 +14,10 @@ def main():
         check_deal_stage()
     except:
         send_notification(['1'], 'Работа ночных процессов прервана на актуализации стадий сделок')
-    try:
-        update_deal_1c_code()
-    except:
-        send_notification(['1'], 'Работа ночных процессов прервана на обновлении "СлужКод1с"')
+   # try:
+   #     update_deal_1c_code()
+   # except:
+   #     send_notification(['1'], 'Работа ночных процессов прервана на обновлении "СлужКод1с"')
     try:
         fill_company_inn()
     except:
