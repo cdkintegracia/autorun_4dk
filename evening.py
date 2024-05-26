@@ -9,23 +9,23 @@ def main():
     try:
         clear_calls.main()
     except:
-        send_notification(['1'], 'Работа вечерних процессов прервана на завершении дел со звонками')
+        send_notification(['1','1391'], 'Работа вечерних процессов прервана на завершении дел со звонками')
     try:
         update_daily_task_statistic()
     except:
-        send_notification(['1'], 'Работа вечерних процессов прервана на обновлении отчета по задачам')
+        send_notification(['1','1391'], 'Работа вечерних процессов прервана на обновлении отчета по задачам')
     try:
         send_request_create_current_month_deals_data_file()
     except:
-        send_notification(['1'], 'Работа вечерних процессов прервана на выгрузке сделок для отчета')
+        send_notification(['1','1391'], 'Работа вечерних процессов прервана на выгрузке сделок для отчета')
     '''
     try:
         X_Report.main()
     except:
-        send_notification(['1'], 'Работа вечерних процессов прервана на обновлении X-отчета')
+        send_notification(['1','1391'], 'Работа вечерних процессов прервана на обновлении X-отчета')
     '''
     delete_dismissed_user_vacation()
-    send_notification(['1'], 'Автозапуск вечерних процессов завершен')
+    send_notification(['1','1391'], 'Автозапуск вечерних процессов завершен')
 
 
 main()

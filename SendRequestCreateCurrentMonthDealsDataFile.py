@@ -12,7 +12,7 @@ def send_request_create_current_month_deals_data_file():
     if datetime.now().day != month_days_range:
         return
     requests.get(url=f'{web_app_ip}/create_current_month_deals_data_file')
-    send_notification(['1'], 'Создан файл с информацией по сделкам для отчета по сумме сервисов')
+    send_notification(['1','1391'], 'Создан файл с информацией по сделкам для отчета по сумме сервисов')
 
 
 if __name__ == '__main__':

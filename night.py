@@ -13,7 +13,7 @@ def main():
     try:
         check_deal_stage()
     except:
-        send_notification(['1'], 'Работа ночных процессов прервана на актуализации стадий сделок')
+        send_notification(['1','1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
    # try:
    #     update_deal_1c_code()
    # except:
@@ -21,11 +21,11 @@ def main():
     try:
         fill_company_inn()
     except:
-        send_notification(['1'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
+        send_notification(['1','1391'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
     try:
         create_call_statistic_null_elements()
     except:
-        send_notification(['1'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
+        send_notification(['1','1391'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
     #create_revenue_list_elements({})
     '''
     try:
