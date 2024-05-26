@@ -1,4 +1,4 @@
-from time import time
+import time
 from datetime import datetime
 
 from fast_bitrix24 import Bitrix
@@ -195,7 +195,8 @@ def get_result_values(result: dict) -> dict:
 
 def get_info_from_checko():
     result_info = []
-    years = ['2021', '2022']
+    #years = ['2021', '2022']
+    years = ['2023']
     errors = []
     companies_info = b.get_all('crm.company.list', {
         'select': [
@@ -216,8 +217,9 @@ def get_info_from_checko():
         b24_list_elements = list(map(lambda x: list(x['PROPERTY_1631'].values())[0], b24_list_elements))
         companies = list(filter(lambda x: x['ID'] not in b24_list_elements and x['UF_CRM_1656070716'], companies_info))
         for company_info in companies:
-            if count == 25:
+            if count == 500:
                 break
+            time.sleep(1)
             revenue = -1
             for method in api_methods:
                 if method == 'entrepreneur' and len(company_info['UF_CRM_1656070716']) == 10:
@@ -232,7 +234,7 @@ def get_info_from_checko():
                         b.call('lists.element.add', {
                             'IBLOCK_TYPE_ID': 'lists',
                             'IBLOCK_ID': '257',
-                            'ELEMENT_CODE': time(),
+                            'ELEMENT_CODE': time.time(),
                             'fields': {
                                 'NAME': year,
                                 b24_list_element_fields['ОКВЭД (Код)']: values['ОКВЭД (Код)'],
@@ -262,7 +264,7 @@ def get_info_from_checko():
                         b.call('lists.element.add', {
                             'IBLOCK_TYPE_ID': 'lists',
                             'IBLOCK_ID': '257',
-                            'ELEMENT_CODE': time(),
+                            'ELEMENT_CODE': time.time(),
                             'fields': {
                                 'NAME': year,
                                 b24_list_element_fields['Выручка']: revenue,
@@ -337,7 +339,7 @@ def create_revenue_list_elements(req: dict):
     if 'process' in req and req['process'] == 'update_elements':
         update_elements(req['company_id'])
     else:
-        if datetime.today().isoweekday() in [6, 7]:
+        if datetime.today().isoweekday() in [6]:
             return
         get_info_from_checko()
 

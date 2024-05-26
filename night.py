@@ -26,7 +26,7 @@ def main():
         create_call_statistic_null_elements()
     except:
         send_notification(['1'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
-    create_revenue_list_elements({})
+    #create_revenue_list_elements({})
     '''
     try:
         update_user_activity_statistic()
