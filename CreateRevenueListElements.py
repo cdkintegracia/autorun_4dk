@@ -217,7 +217,7 @@ def get_info_from_checko():
         b24_list_elements = list(map(lambda x: list(x['PROPERTY_1631'].values())[0], b24_list_elements))
         companies = list(filter(lambda x: x['ID'] not in b24_list_elements and x['UF_CRM_1656070716'], companies_info))
         for company_info in companies:
-            if count == 500:
+            if count == 400:
                 break
             time.sleep(1)
             revenue = -1
