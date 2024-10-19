@@ -11,7 +11,8 @@ from authentication import authentication
 
 b = Bitrix(authentication('Bitrix'))
 checko_url = 'https://api.checko.ru/v2/'
-api_key = 'jMw7CIIIJtOKSNUb'
+
+api_key = authentication('Checko')
 api_methods = ['entrepreneur', 'finances', 'company']
 b24_list_element_fields = {
     'Выручка': 'PROPERTY_1621',
@@ -217,7 +218,7 @@ def get_info_from_checko():
         b24_list_elements = list(map(lambda x: list(x['PROPERTY_1631'].values())[0], b24_list_elements))
         companies = list(filter(lambda x: x['ID'] not in b24_list_elements and x['UF_CRM_1656070716'], companies_info))
         for company_info in companies:
-            if count == 400:
+            if count == 10:
                 break
             time.sleep(1)
             revenue = -1
@@ -339,7 +340,7 @@ def create_revenue_list_elements(req: dict):
     if 'process' in req and req['process'] == 'update_elements':
         update_elements(req['company_id'])
     else:
-        if datetime.today().isoweekday() in [6]:
+        if datetime.today().isoweekday() in [1]:
             return
         get_info_from_checko()
 
