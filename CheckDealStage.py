@@ -19,6 +19,7 @@ def check_deal_stage():
             'UF_CRM_1638958630625',
             'TYPE_ID',
         ], 'filter': {
+            '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8'],  # != Лицензия, Лицензия с купоном ИТС 2024-10-28 САА
             'STAGE_ID': [
                 'C1:NEW',
                 'C1:UC_0KJKTY',
