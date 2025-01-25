@@ -24,7 +24,7 @@ def main():
             b.get_all('crm.activity.update', {'id': activity['ID'], 'fields': {'COMPLETED': 'Y'}})
 
     activities_tasks_comments = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'TASKS_TASK_COMMENT', 'COMPLETED': 'N'}})
-    if len(activities) != 0:
+    if len(activities_tasks_comments) != 0:
         for activity in activities_tasks_comments:
             if count == 100:
                 break
