@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import clear_calls, X_Report
+import clear_comment_activitities
 from SendNotification import send_notification
 from SendRequestCreateCurrentMonthDealsDataFile import send_request_create_current_month_deals_data_file
 from UpdateDailyTaskStatistic import update_daily_task_statistic
@@ -10,6 +11,7 @@ def main():
         clear_calls.main()
     except:
         send_notification(['1','1391'], 'Работа вечерних процессов прервана на завершении дел со звонками')
+    clear_comment_activitities.main()
     try:
         update_daily_task_statistic()
     except:

@@ -457,7 +457,7 @@ report_types = {
 
 def main():
     notification_text = 'Элементы списка "Отчет по сервисам" обновлены'
-    if datetime.today().isoweekday() == 1:
+    if datetime.today().isoweekday() == 6:
         update_bitrix_list('ESS')
         send_notification(['1'], f'{notification_text} (Кабинет сотрудника)')
     else:
