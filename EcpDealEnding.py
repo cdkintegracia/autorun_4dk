@@ -48,7 +48,7 @@ def ecp_deal_ending():
 
         for deal in deals:
             company_name = list(filter(lambda x: x['ID'] == deal['COMPANY_ID'], companies))[0]['TITLE']
-            check_box_text = f'{company_name} https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/\n'
+            check_box_text = f'{company_name}. {deal["TITLE"]}: https://vc4dk.bitrix24.ru/crm/deal/details/{deal["ID"]}/\n'
             b.call('task.checklistitem.add', [task, {'TITLE': check_box_text}], raw=True)
 
 
