@@ -18,7 +18,8 @@ def prolongation_its():
     users_id = list(map(lambda x: x['ID'], users))
     users_id.append('109')
 
-    month = strftime('%m')
+    month = '05'
+    #month = strftime('%m')
     year = strftime('%Y')
     next_month = int(month) + 1
     next_year = int(year)
