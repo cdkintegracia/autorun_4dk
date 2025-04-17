@@ -28,7 +28,7 @@ def prolongation_its():
         next_year += 1
     first_date = f"{year}-{month}-01"
     second_date = f"{year}-{month}-{monthrange(int(year), int(month))[1]}"
-    third_date = f"{next_year}-{next_month:02d}-{monthrange(int(year), int(month))[1] - 1}"
+    third_date = f"{next_year}-{next_month:02d}-{monthrange(int(next_year), int(next_month))[1] - 1}"
     print(first_date)
     print(second_date)
     print(third_date)
