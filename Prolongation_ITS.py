@@ -42,8 +42,8 @@ def prolongation_its():
                                    'TYPE_ID',
                                ], 'filter': {
                                    'ASSIGNED_BY_ID': users_id,
-                                   '<=CLOSEDATE': first_date,
-                                   '>=CLOSEDATE': second_date,
+                                   '<=CLOSEDATE': second_date,
+                                   '>=CLOSEDATE': first_date,
                                    '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8'],  # != Лицензия, Лицензия с купоном ИТС
                                     'CATEGORY_ID': '1',
                                    '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
@@ -60,8 +60,8 @@ def prolongation_its():
                                    'TYPE_ID',
                                ], 'filter': {
                                    'ASSIGNED_BY_ID': users_id,
-                                   '<=UF_CRM_1638958630625': second_date,
-                                   '>=UF_CRM_1638958630625': third_date,
+                                   '<=UF_CRM_1638958630625': third_date,
+                                   '>=UF_CRM_1638958630625': second_date,
                                    '!TYPE_ID': ['UC_QQPYF0', 'UC_YIAJC8'],  # != Лицензия, Лицензия с купоном ИТС
                                    'CATEGORY_ID': '1',
                                    '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
