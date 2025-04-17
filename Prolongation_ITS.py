@@ -83,31 +83,30 @@ def prolongation_its():
             'fields':{
                 'TITLE': f'Продление сделки {company_name}',
                 'GROUP_ID': '179',
-                #'GROUP_ID': '23',
                 'CREATED_BY': '173',
                 'RESPONSIBLE_ID': '1391',
-                #'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
                 'DEADLINE': second_date,
-                #'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
             }
         }
                )
-        
+    '''    
     for deal in deals_sub:
-        company_name = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
-        b.call('tasks.task.add', {
-            'fields':{
-                'TITLE': f'Продление сделки {company_name}',
-                'GROUP_ID': '179',
-                'CREATED_BY': '173',
-                'RESPONSIBLE_ID': '1391',
-                #'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
-                'DEADLINE': third_date,
-                #'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
+        if deal not in deals_main:
+            company_name = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
+            b.call('tasks.task.add', {
+                'fields':{
+                    'TITLE': f'Продление сделки {company_name}',
+                    'GROUP_ID': '179',
+                    'CREATED_BY': '173',
+                    'RESPONSIBLE_ID': '1391',
+                    #'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
+                    'DEADLINE': third_date,
+                    #'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
+                }
             }
-        }
-                )     
-    
+                    )
+    '''     
+        
     users_id_notification = ['1391']
     #users_id_notification = ['1', '109']
     for user_id in users_id_notification:
