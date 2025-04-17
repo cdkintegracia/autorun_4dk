@@ -18,10 +18,12 @@ def main():
         send_deal_ending_message_bot()
     except:
         send_notification(['1','1391'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
+        '''
     try:
         prolongation_its()
     except:
         send_notification(['1','1391'], 'Работа утренних процессов прервана на создании задач "Пролонгация ИТС"')
+    '''
     try:
         tasks.main()
     except:
