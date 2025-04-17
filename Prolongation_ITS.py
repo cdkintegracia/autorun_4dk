@@ -12,14 +12,13 @@ b = Bitrix(authentication('Bitrix'))
 
 
 def prolongation_its():
-    #if datetime.now().day != 1:
-        #return
+    if datetime.now().day != 1:
+        return
     users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': '225'}})
     users_id = list(map(lambda x: x['ID'], users))
     users_id.append('109')
 
-    month = '05'
-    #month = strftime('%m')
+    month = strftime('%m')
     year = strftime('%Y')
     next_month = int(month) + 1
     next_year = int(year)
@@ -82,33 +81,31 @@ def prolongation_its():
         b.call('tasks.task.add', {
             'fields':{
                 'TITLE': f'Продление сделки {company_name}',
-                'GROUP_ID': '179',
+                'GROUP_ID': '23',
                 'CREATED_BY': '173',
-                'RESPONSIBLE_ID': '1391',
+                'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
                 'DEADLINE': second_date,
+                'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
             }
         }
                )
-    '''    
+        
     for deal in deals_sub:
         if deal not in deals_main:
             company_name = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
             b.call('tasks.task.add', {
                 'fields':{
                     'TITLE': f'Продление сделки {company_name}',
-                    'GROUP_ID': '179',
+                    'GROUP_ID': '23',
                     'CREATED_BY': '173',
-                    'RESPONSIBLE_ID': '1391',
-                    #'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
+                    'RESPONSIBLE_ID': deal['ASSIGNED_BY_ID'],
                     'DEADLINE': third_date,
-                    #'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
+                    'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
                 }
             }
-                    )
-    '''     
+                    ) 
         
-    users_id_notification = ['1391']
-    #users_id_notification = ['1', '109']
+    users_id_notification = ['1', '109', '1391']
     for user_id in users_id_notification:
         b.call('im.notify.system.add', {
             'USER_ID': user_id,
