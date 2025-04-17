@@ -50,7 +50,7 @@ def prolongation_its():
                                }
                                }
                                )
-    '''
+    
     deals_sub = b.get_all('crm.deal.list',
                                {'select': [
                                    'COMPANY_ID',
@@ -67,8 +67,7 @@ def prolongation_its():
                                    '!STAGE_ID': ['C1:WON', 'C1:LOSE'],
                                }
                                }
-                               )
-    '''                           
+                               )                           
     '''
     deals = []
     for deal in deals_main:
@@ -93,7 +92,7 @@ def prolongation_its():
             }
         }
                )
-    '''    
+        
     for deal in deals_sub:
         company_name = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
         b.call('tasks.task.add', {
@@ -107,8 +106,7 @@ def prolongation_its():
                 #'UF_CRM_TASK': ['D_' + deal['ID'], 'CO_' + deal['COMPANY_ID']],
             }
         }
-                )
-    '''     
+                )     
     
     users_id_notification = ['1391']
     #users_id_notification = ['1', '109']
