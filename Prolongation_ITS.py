@@ -12,8 +12,9 @@ b = Bitrix(authentication('Bitrix'))
 
 
 def prolongation_its():
-    if datetime.now().day != 1:
+    if datetime.now().day != 6:
         return
+    '''
     users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': '225'}})
     users_id = list(map(lambda x: x['ID'], users))
     users_id.append('109')
@@ -68,6 +69,7 @@ def prolongation_its():
                                }
                                )                           
     '''
+    '''
     deals = []
     for deal in deals_main:
         deals.append(deal)
@@ -75,7 +77,7 @@ def prolongation_its():
         if deal not in deals:
             deals.append(deal)
     '''
-    
+    '''
     for deal in deals_main:
         company_name = b.get_all('crm.company.list', {'filter': {'ID': deal['COMPANY_ID']}})[0]['TITLE']
         b.call('tasks.task.add', {
@@ -104,7 +106,7 @@ def prolongation_its():
                 }
             }
                     ) 
-        
+    '''    
     users_id_notification = ['1', '109', '1391']
     for user_id in users_id_notification:
         b.call('im.notify.system.add', {
