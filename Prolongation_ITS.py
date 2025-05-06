@@ -12,7 +12,7 @@ b = Bitrix(authentication('Bitrix'))
 
 
 def prolongation_its():
-    if datetime.now().day != 6:
+    if datetime.now().day != 1:
         return
     
     users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': '225'}})
