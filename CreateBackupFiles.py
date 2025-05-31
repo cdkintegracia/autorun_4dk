@@ -132,7 +132,7 @@ def create_backup_files():
         {'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
         {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
         {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None},
-        {'filename': 'Проработка_по_сервисам', 'entity': 'item', 'entity_id': '150', 'category_id': None},
+        #{'filename': 'Проработка_по_сервисам', 'entity': 'item', 'entity_id': '150', 'category_id': None},
         {'filename': 'Доступы_и_файлы', 'entity': 'item', 'entity_id': '165', 'category_id': None},
         {'filename': 'Инфо', 'entity': 'item', 'entity_id': '141', 'category_id': None},
         {'filename': 'Лиды Фреш 1С', 'entity': 'deal', 'entity_id': None, 'category_id': '25'}
