@@ -128,7 +128,7 @@ def main(filename, entity, companies, entity_id, folder_path, category_id):
 def create_backup_files():
     data_types = [
         {'filename': 'Сопровождение', 'entity': 'deal', 'entity_id': None, 'category_id': '1'},
-        {'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
+        #{'filename': 'Продажи', 'entity': 'deal', 'entity_id': None, 'category_id': '9'},
         {'filename': 'Адаптация', 'entity': 'deal', 'entity_id': None, 'category_id': '19'},
         {'filename': 'Источники_продаж', 'entity': 'item', 'entity_id': '133', 'category_id': None},
         {'filename': 'Досье_клиента', 'entity': 'item', 'entity_id': '186', 'category_id': None},

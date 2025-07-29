@@ -197,7 +197,7 @@ def get_result_values(result: dict) -> dict:
 def get_info_from_checko():
     result_info = []
     #years = ['2021', '2022']
-    years = ['2023']
+    years = ['2024']
     errors = []
     companies_info = b.get_all('crm.company.list', {
         'select': [
