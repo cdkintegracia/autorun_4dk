@@ -111,6 +111,7 @@ def get_report(report_number):
         report = get_report(report_number)  # Обновление статуса отчета
     if report['state'] == 'OK':     # Отчет готов
         print('Отчет получен, начинается обработка данных')
+        #print(report)
         return report
     else:
         print('Не удалось сформировать отчет', asctime())
@@ -239,9 +240,12 @@ def update_bitrix_list(report_type):
                 subscriberCode = element['subscriberCode']
 
                 # Если не найдена нужная услуга в отчете
-
-                if option['name'] not in report_types[report_type][3]:
+                opt_name = (option.get('name') or '').strip().lower()
+                allow_list = [s.lower() for s in report_types[report_type][3]]
+                if not any(allowed in opt_name for allowed in allow_list):
                     continue
+                #if option['name'] not in report_types[report_type][3]:
+                #   continue
 
                 # Услуга имеет счетчик количества использований
 
@@ -393,6 +397,7 @@ def delete_old_elements():
                                     'IBLOCK_ID': '169',
                                     'filter': {
                                         '<PROPERTY_1287': (datetime.now() - timedelta(days=14)).strftime('%d.%m.%Y'),
+
                                     }
                                 }
                                 )
@@ -419,6 +424,8 @@ report_types = {
             'Распознавание первичных документов',
             [
                 'Число страниц',
+                'количество страниц',
+                'первичные документы: количество страниц'
             ]
         ],
     'COUNTERAGENT': [
@@ -460,6 +467,12 @@ def main():
     if datetime.today().isoweekday() == 6:
         update_bitrix_list('ESS')
         send_notification(['1'], f'{notification_text} (Кабинет сотрудника)')
+    elif datetime.today().isoweekday() == 7:
+        update_bitrix_list('DOCUMENT_RECOGNITION')
+        send_notification(['1'], f'{notification_text} (РПД)')
+
+    #отключаем этот алгоритм и переходим к упрощеннному - только КС и РПД, но регулярно по выходным. Удаляем старые пока руками.
+    '''   
     else:
         with open('/root/autorun_4dk/its_update.txt', 'r') as file:
             day_code = int(file.read())
@@ -473,6 +486,7 @@ def main():
         day_code += 1
         with open('/root/autorun_4dk/its_update.txt', 'w') as file:
             file.write(str(day_code))
+    '''
 
     #delete_old_elements()
 
