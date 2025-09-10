@@ -22,20 +22,30 @@ def create_call_redirection_tasks():
         user_id = list(element['PROPERTY_1235'].values())[0]
         user_info = b.get_all('user.get', {'id': user_id})[0]
         user_name = f"{user_info['LAST_NAME']} {user_info['NAME']}"
-        department_info = b.get_all('department.get', {'ID': user_info['UF_DEPARTMENT'][0]})[0]
+        try:
+            work_phone = f"{user_info['WORK_PHONE']}"
+        except:
+            work_phone = ''
+
+        if user_info['UF_DEPARTMENT'][0] == 363:
+            depart_head = '159'
+        else:
+            department_info = b.get_all('department.get', {'ID': user_info['UF_DEPARTMENT'][0]})[0]
+            depart_head = department_info['UF_HEAD']
+            
         vacation_start = list(element['PROPERTY_1233'].values())[0]
         vacation_end = list(element['PROPERTY_1237'].values())[0]
+        
         b.call('tasks.task.add', {
             'fields': {
                 'TITLE': f"Переадресация с {user_name} {vacation_start} - {vacation_end}",
-                'DESCRIPTION': f"{user_name} уходит в отпуск с {vacation_start} по {vacation_end}. В связи с этим необходимо настроить переадресацию звонков с этого сотрудника на другого",
+                'DESCRIPTION': f"{user_name} уходит в отпуск с {vacation_start} по {vacation_end}. В связи с этим необходимо настроить переадресацию звонков с этого сотрудника на другого\n{work_phone}",
                 'CREATED_BY': '173',
-                'RESPONSIBLE_ID': department_info['UF_HEAD'],
+                'RESPONSIBLE_ID': depart_head,
                 'ACCOMPLICES': ['133', ],
                 'DEADLINE': datetime.now().strftime('%Y-%m-%d 19:00:00'),
             }
         })
-
 
 if __name__ == '__main__':
     create_call_redirection_tasks()
