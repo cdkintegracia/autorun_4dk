@@ -26,6 +26,7 @@ b24_list_element_fields = {
     'Ответственный за компанию': 'PROPERTY_1639',
     'Год': 'PROPERTY_1643',
     'Компания (название)': 'PROPERTY_1661',
+    'Спецрежим': 'PROPERTY_2085',
 }
 
 
@@ -194,6 +195,47 @@ def get_result_values(result: dict) -> dict:
     }
 
 
+
+def _normalize_special_regime(special) -> str:
+    if isinstance(special, list):
+        seen, out = set(), []
+        for x in special:
+            s = str(x).strip()
+            if s and s not in seen:
+                seen.add(s); out.append(s)
+        return ', '.join(out)
+    if isinstance(special, str):
+        return special.strip()
+    return ''
+
+def _which_method_by_inn(inn: str) -> str | None:
+    inn = (inn or '').strip()
+    if len(inn) == 10:
+        return 'company'
+    if len(inn) == 12:
+        return 'entrepreneur'
+    return None
+
+def get_special_regime_by_inn(inn: str) -> str:
+    """
+    Возвращает строку спецрежима (например 'УСН' или 'УСН, ПСН') только с корректного метода.
+    """
+    method = _which_method_by_inn(inn)
+    if not method:
+        return ''
+    try:
+        r = requests.get(f"{checko_url}{method}", params={'inn': inn, 'key': api_key}, timeout=25)
+        if r.status_code == 404:
+            return ''
+        r.raise_for_status()
+        data = r.json() or {}
+        node = (data.get('data') or data)  # у некоторых интеграций полезная часть лежит прямо в корне
+        taxes = (node or {}).get('Налоги') or {}
+        return _normalize_special_regime(taxes.get('ОсобРежим'))
+    except requests.RequestException:
+        return ''
+
+
 def get_info_from_checko():
     result_info = []
     #years = ['2021', '2022']
@@ -218,7 +260,7 @@ def get_info_from_checko():
         b24_list_elements = list(map(lambda x: list(x['PROPERTY_1631'].values())[0], b24_list_elements))
         companies = list(filter(lambda x: x['ID'] not in b24_list_elements and x['UF_CRM_1656070716'], companies_info))
         for company_info in companies:
-            if count == 300:
+            if count == 15:
                 break
             time.sleep(1)
             revenue = -1
@@ -230,6 +272,7 @@ def get_info_from_checko():
                 checko_request = requests.get(url=create_request(method, [f"inn={company_info['UF_CRM_1656070716']}"]))
                 if checko_request.status_code == 200:
                     result = checko_request.json()
+                    regime = get_special_regime_by_inn(company_info['UF_CRM_1656070716'])
                     if method == 'entrepreneur' and result['data']:
                         values = get_result_values(result)
                         b.call('lists.element.add', {
@@ -246,6 +289,7 @@ def get_info_from_checko():
                                 b24_list_element_fields['Ответственный за компанию']: company_info['ASSIGNED_BY_ID'],
                                 b24_list_element_fields['Год']: year,
                                 b24_list_element_fields['Компания (название)']: company_info['TITLE'],
+                                b24_list_element_fields['Спецрежим']: regime,
                             }
                         })
                         result_info.append([
@@ -279,7 +323,7 @@ def get_info_from_checko():
                                 b24_list_element_fields['Ответственный за компанию']: company_info['ASSIGNED_BY_ID'],
                                 b24_list_element_fields['Год']: year,
                                 b24_list_element_fields['Компания (название)']: company_info['TITLE'],
-
+                                b24_list_element_fields['Спецрежим']: regime,
                             }
                         })
                         result_info.append([
@@ -347,4 +391,3 @@ def create_revenue_list_elements(req: dict):
 
 if __name__ == '__main__':
     create_revenue_list_elements({})
-
