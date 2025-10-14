@@ -260,7 +260,7 @@ def get_info_from_checko():
         b24_list_elements = list(map(lambda x: list(x['PROPERTY_1631'].values())[0], b24_list_elements))
         companies = list(filter(lambda x: x['ID'] not in b24_list_elements and x['UF_CRM_1656070716'], companies_info))
         for company_info in companies:
-            if count == 15:
+            if count == 200:
                 break
             time.sleep(1)
             revenue = -1
@@ -384,7 +384,7 @@ def create_revenue_list_elements(req: dict):
     if 'process' in req and req['process'] == 'update_elements':
         update_elements(req['company_id'])
     else:
-        if datetime.today().isoweekday() in [1]:
+        if datetime.today().isoweekday() in [2]:
             return
         get_info_from_checko()
 
