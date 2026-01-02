@@ -18,10 +18,10 @@ def main():
    #     update_deal_1c_code()
    # except:
    #     send_notification(['1'], 'Работа ночных процессов прервана на обновлении "СлужКод1с"')
-    try:
-        fill_company_inn()
-    except:
-        send_notification(['1','1391'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
+   # try:
+   #     fill_company_inn()
+   # except:
+   #     send_notification(['1','1391'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
     try:
         create_call_statistic_null_elements()
     except:
