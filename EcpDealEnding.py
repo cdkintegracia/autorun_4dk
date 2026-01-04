@@ -41,7 +41,7 @@ def ecp_deal_ending():
                 'TITLE': f'Напомните клиентам о продлении ЭЦП {task_text}',
                 'GROUP_ID': '11',
                 'CREATED_BY': '173',
-                'RESPONSIBLE_ID': '91',
+                'RESPONSIBLE_ID': '173',
                 'DESCRIPTION': f'Дата окончания ЭЦП: {task_text}',
             }
         }, raw=True)['result']['task']['id']
