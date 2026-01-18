@@ -10,10 +10,10 @@ from FillCompanyInn import fill_company_inn
 
 
 def main():
-    #try:
-    #    check_deal_stage()
-    #except:
-    #    send_notification(['1','1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
+    try:
+        check_deal_stage()
+    except:
+        send_notification(['1','1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
    # try:
    #     update_deal_1c_code()
    # except:
