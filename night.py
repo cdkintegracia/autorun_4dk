@@ -10,10 +10,7 @@ from FillCompanyInn import fill_company_inn
 
 
 def main():
-    try:
-        check_deal_stage()
-    except:
-        send_notification(['1','1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
+
    # try:
    #     update_deal_1c_code()
    # except:
@@ -34,5 +31,9 @@ def main():
         send_notification(['1'], 'Работа ночных процессов прервана на обновлении отчета по активности пользователей')
     '''
     create_backup_files()
-
+    try:
+        check_deal_stage()
+    except:
+        send_notification(['1','1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
+   # try:
 main()
