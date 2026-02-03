@@ -123,13 +123,17 @@ def create_task(deals, task_type):
 
 
 def main():
+
+
     # Проверка на последний день месяца
     current_day = datetime.now().day
     current_month = datetime.now().month
     current_year = datetime.now().year
     last_day_current_month = monthrange(current_year, current_month)[1]
-    if current_day == last_day_current_month:
-        return
+    # ИБС 2026-02-06, убираем запрет на постановку задач в посл.день месяца, по задаче 523346
+    #if current_day == last_day_current_month:
+    #    return
+    #---
 
     week_day = datetime.today().isoweekday()
     if week_day in [6, 7]:  # Выходные
@@ -142,8 +146,10 @@ def main():
     no_weekend = False #>ibs предупреждаем создание задач, если на выходные приходится конец месяца
     date_end_filter_before = datetime.today() + timedelta(days=1)
     date_end_filter_before_str = date_end_filter_before.strftime('%Y-%m-%d')
-    if str(last_day_current_month) in date_end_filter_str or str(last_day_current_month) in date_end_filter_before_str:
-        no_weekend = True
+    #ИБС 2026-02-06, убираем запрет на постановку задач в посл.день месяца, по задаче 523346
+    #if str(last_day_current_month) in date_end_filter_str or str(last_day_current_month) in date_end_filter_before_str:
+    #    no_weekend = True
+    #---
     if week_day != 5 or no_weekend == True:  # Не Пятница ИЛИ пятница, но на выходных - конец месяца
 
         # Сделки ДК == сегодня
