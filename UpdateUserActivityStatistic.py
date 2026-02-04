@@ -45,7 +45,10 @@ def update_user_activity_statistic():
                 '139',  # Антон Степанов
                 '639', # Служба качества ЧДК
                 '313',
-                '297'
+                '297',
+                '4523',
+                '1427',
+                '6073'
             ],
             'ACTIVE': 'true'
         }})
@@ -68,6 +71,7 @@ def update_user_activity_statistic():
         for user in users:
             department_name = ''
             user_info = list(filter(lambda x: x['NAME'] == user[0].split()[0] and x['LAST_NAME'] == user[0].split()[1], users_info))[0]
+            print(user_info)
             if user_info['UF_DEPARTMENT']:
                 user_department = list(filter(lambda x: str(user_info['UF_DEPARTMENT'][0]) == str(x['ID']), departments))[0]
                 department_name = user_department['NAME']
