@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from fast_bitrix24 import Bitrix
+from SendNotification import send_notification
 
 from authentication import authentication
 
@@ -48,5 +49,8 @@ def check_deal_stage():
 
 
 if __name__ == '__main__':
-    check_deal_stage()
+    try:
+        check_deal_stage()
+    except:
+        send_notification(['1', '1391'], 'Работа ночных процессов прервана на актуализации стадий сделок')
 
