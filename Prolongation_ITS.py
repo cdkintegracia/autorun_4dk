@@ -15,7 +15,7 @@ def prolongation_its():
     if datetime.now().day != 1:
         return
     
-    users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': '225'}})
+    users = b.get_all('user.get', {'filter': {'UF_DEPARTMENT': ['225', '363']}})
     users_id = list(map(lambda x: x['ID'], users))
     #users_id.append('109')
 
