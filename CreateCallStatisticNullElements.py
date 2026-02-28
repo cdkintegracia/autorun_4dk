@@ -1,4 +1,5 @@
 from datetime import datetime
+from time import sleep
 
 from fast_bitrix24 import Bitrix
 
@@ -20,6 +21,7 @@ def create_call_statistic_null_elements():
     for company in companies:
         create_element(company['ID'], responsible=company['ASSIGNED_BY_ID'])
         count += 1
+        sleep(1)
         print(f'{count} | {len(companies)}')
 
 
