@@ -5,7 +5,7 @@ from authentication import authentication
 
 b = Bitrix(authentication('Bitrix'))
 
-def clear_title_company(req):
+def clear_title_company():
 
     if datetime.now().day != 1:
             users_id = ['1391', '1']
