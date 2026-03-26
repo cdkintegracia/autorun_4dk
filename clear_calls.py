@@ -17,7 +17,7 @@ def main():
         for activity in activities:
             b.get_all('crm.activity.update', {'id': activity['ID'], 'fields': {'COMPLETED': 'Y'}})
 
-    activities_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', 'COMPLETED': 'N'}})
+    activities_email = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL_COMPRESSED', 'COMPLETED': 'N'}})
 
     if len(activities_email) != 0:
         for activity in activities_email:

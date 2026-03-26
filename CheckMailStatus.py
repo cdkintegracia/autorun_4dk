@@ -23,7 +23,7 @@ def main():
     read_check_date = current_date.strftime('%Y-%m-%d')
 
 
-    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL', '>=CREATED': date_filter, 'DIRECTION': '2'}})
+    not_filtred_mails = b.get_all('crm.activity.list', {'filter': {'PROVIDER_TYPE_ID': 'EMAIL_COMPRESSED', '>=CREATED': date_filter, 'DIRECTION': '2'}})
     mails = []
     for mail in not_filtred_mails:
         if date_filter in mail['CREATED']:
