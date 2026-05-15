@@ -5,10 +5,12 @@ from authentication import authentication
 
 b = Bitrix(authentication('Bitrix'))
 
+
 def clear_city_phone_contact():
 
+    changed_contacts = []
 
-    # Получаем только контакты без компании И с заполненными телефонами
+    # Получаем только контакты без компании с заполненными телефонами
     contacts = b.get_all(
         'crm.contact.list',
         {
@@ -16,10 +18,7 @@ def clear_city_phone_contact():
                 'COMPANY_ID': False,
                 '!PHONE': False
             },
-            'select': [
-                'ID',
-                'PHONE',
-            ]
+            'select': ['ID', 'PHONE']
         }
     )
 
@@ -58,7 +57,6 @@ def clear_city_phone_contact():
             continue
 
         try:
-            '''
 
             # Обновляем телефоны контакта
             b.call(
@@ -73,7 +71,8 @@ def clear_city_phone_contact():
 
             # Добавляем комментарий в таймлайн
             comment_text = (
-                'Контакт был отвязан от компании. Из карточки удалены городские номера: '
+                'Контакт был отвязан от компании. '
+                'Из карточки удалены городские номера: '
                 + ', '.join(city_phones)
             )
 
@@ -87,27 +86,48 @@ def clear_city_phone_contact():
                     }
                 }
             )
-            '''
 
+            # Добавляем в список уведомления
+            changed_contacts.append({
+                'id': contact_id,
+                'phones': city_phones
+            })
 
-            #users_id = ['1391', '1']
-            users_id = ['1391']
-            for user_id in users_id:
-                b.call('im.notify.system.add', {
-                    'USER_ID': user_id,
-                    'MESSAGE': f'В контакте https://vc4dk.bitrix24.ru/crm/contact/details/{contact_id}/ удалены номера {city_phones}'
-                    })
+            print(
+                f'[OK] Контакт {contact_id}: '
+                f'удалены номера {city_phones}'
+            )
 
         except Exception as e:
+            print(f'[ERROR] Контакт {contact_id}: {e}')
 
+    # Формируем сообщение
+    if changed_contacts:
 
-            users_id = ['1391']
-            for user_id in users_id:
-                b.call('im.notify.system.add', {
-                    'USER_ID': user_id,
-                    'MESSAGE': f'[ERROR] Контакт {contact_id}: {e}'
-                    })
+        message_lines = ['В следующих контактах удалены городские номера:\n']
 
-        
+        for item in changed_contacts:
+
+            contact_link = (f'https://vc4dk.bitrix24.ru/crm/contact/details/{item["id"]}/')
+            phones = ', '.join(item['phones'])
+            message_lines.append(f'{contact_link} - {phones}')
+
+        message = '\n'.join(message_lines)
+
+    else:
+        message = ('Контактов без компании с городскими номерами найдено не было.')
+
+    # Отправляем уведомления
+    #users_id = ['1391', '1']
+    users_id = ['1391']
+    for user_id in users_id:
+        b.call(
+            'im.notify.system.add',
+            {
+                'USER_ID': user_id,
+                'MESSAGE': message
+            }
+        )
+
 if __name__ == '__main__':
     clear_city_phone_contact()
