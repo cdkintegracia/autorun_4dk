@@ -17,7 +17,7 @@ def calls_lk_limit():
     user_ids_lk = []
     for u in users:
         uid = int(u['ID'])
-        if uid != 19 and uid != 117: # исключаем СЮВ и РЕВ
+        if uid != 19 and uid != 117 and uid != 173: # исключаем СЮВ, РЕВ, Робот Задач
             user_ids_lk.append(uid)
 
     date_from = (datetime.now() - timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%S") # последние 5 часов для того, чтобы учесть длительные звонки
@@ -255,7 +255,7 @@ def get_active_user_ids():
     user_ids = []
     for u in users_cs:
         uid = int(u['ID'])
-        if uid != 91: # исключаем дежурного админа
+        if uid != 91 and uid != 173: # исключаем дежурного админа и робота задач
             user_ids.append(uid)
     
     #user_ids = 1391
