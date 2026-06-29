@@ -19,11 +19,11 @@ def main():
    #     fill_company_inn()
    # except:
    #     send_notification(['1','1391'], 'Работа ночных процессов прервана на заполнении поля "СлужИНН"')
-    try:
-        create_call_statistic_null_elements()
-    except:
-        send_notification(['1','1391'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
-    #create_revenue_list_elements({})
+   # try:
+   #     create_call_statistic_null_elements()
+   # except:
+   #     send_notification(['1','1391'], 'Работа ночных процессов прервана на создании нулевых элементов УС "Статистика звонков"')
+   #create_revenue_list_elements({})
     '''
     try:
         update_user_activity_statistic()
