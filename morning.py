@@ -37,11 +37,12 @@ def main():
         update_service_sales_report()
     except:
         send_notification(['1'], 'Работа утренних процессов прервана на обновлении отчета по сумме сервисов')
-    '''
+
     try:
         ecp_deal_ending()
     except:
         send_notification(['1','1391'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
+    '''
     create_call_redirection_tasks()
     '''
     try:
