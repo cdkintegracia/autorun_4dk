@@ -17,7 +17,7 @@ def main():
         ecp_deal_ending()
     except:
         send_notification(['1','1391'], 'Работа утренних процессов прервана на создании задачи об окончании ЭЦП')
-    
+
 
 
 main()
