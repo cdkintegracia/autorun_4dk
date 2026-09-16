@@ -20,7 +20,7 @@ from authentication import authentication
 
 DATA_AUTH = "Bitrix"
 NOTIFY_AUTH = "Bitrix"
-EXPECTED_NOTIFY_SENDER_ID = 1
+NOTIFY_SENDER_IDS = [1,157]
 NOTIFY_USER_ID = 1
 
 WINDOW_HOURS = 3
@@ -107,18 +107,21 @@ def b24_datetime(value: datetime) -> str:
 
 
 def send_notification(bitrix: Bitrix, text: str) -> None:
-    notification_id = raw_call(
-        bitrix,
-        "im.notify.personal.add",
-        {
-            "USER_ID": int(NOTIFY_USER_ID),
-            "MESSAGE": text,
-            "MESSAGE_OUT": text,
-        },
-    )
+    for user_id in NOTIFY_SENDER_IDS:
+        notification_id = raw_call(
+            bitrix,
+            "im.notify.personal.add",
+            {
+                "USER_ID": int(user_id),
+                "MESSAGE": text,
+                "MESSAGE_OUT": text,
+            },
+        )
 
-    if notification_id in (None, False):
-        raise RuntimeError("Битрикс24 не создал уведомление")
+        if notification_id in (None, False):
+            raise RuntimeError(
+                f"Битрикс24 не создал уведомление для пользователя {user_id}"
+            )
 
 
 def get_names(bitrix: Bitrix, employee_ids: Set[int]) -> Dict[int, str]:
@@ -454,10 +457,10 @@ def run(dry_run: bool = False, debug: bool = False) -> int:
     notify_b24 = Bitrix(notify_webhook, verbose=False)
 
     sender_id = webhook_owner_id(notify_webhook)
-    if sender_id is not None and sender_id != EXPECTED_NOTIFY_SENDER_ID:
+    if sender_id is not None and sender_id != NOTIFY_SENDER_IDS:
         raise RuntimeError(
             f"Вебхук уведомлений принадлежит пользователю {sender_id}, "
-            f"а должен принадлежать {EXPECTED_NOTIFY_SENDER_ID}"
+            f"а должен принадлежать {NOTIFY_SENDER_IDS}"
         )
 
     period_end = now
