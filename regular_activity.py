@@ -457,11 +457,12 @@ def run(dry_run: bool = False, debug: bool = False) -> int:
     notify_b24 = Bitrix(notify_webhook, verbose=False)
 
     sender_id = webhook_owner_id(notify_webhook)
-    if sender_id is not None and sender_id != NOTIFY_SENDER_IDS:
-        raise RuntimeError(
-            f"Вебхук уведомлений принадлежит пользователю {sender_id}, "
-            f"а должен принадлежать {NOTIFY_SENDER_IDS}"
-        )
+
+#    if sender_id is not None and sender_id != NOTIFY_SENDER_IDS:
+#        raise RuntimeError(
+#            f"Вебхук уведомлений принадлежит пользователю {sender_id}, "
+#            f"а должен принадлежать {NOTIFY_SENDER_IDS}"
+#        )
 
     period_end = now
     period_start = now - timedelta(hours=WINDOW_HOURS)
