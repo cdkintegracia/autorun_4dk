@@ -304,10 +304,24 @@ def collect_activity(
     )
     for task in created_tasks:
         user_id = field_id(task, "createdBy", "CREATED_BY")
+
+        title = str(task.get("title") or task.get("TITLE") or "").lower()
+
+        # Автоматические задачи телефонии не считаем активностью сотрудника.
+        if "пропущен звонок" in title or "пропущенный звонок" in title:
+            continue
+
         if user_id in employee_ids:
-            events[user_id]["created_tasks"].add(str(task.get("id") or task.get("ID")))
+            events[user_id]["created_tasks"].add(
+                str(task.get("id") or task.get("ID"))
+            )
+
             if debug:
-                logging.info("DEBUG создана задача: user=%s task=%s", user_id, task)
+                logging.info(
+                    "DEBUG создана задача: user=%s task=%s",
+                    user_id,
+                    task,
+                )
 
     # 2. Закрытые задачи из модуля задач.
     closed_tasks = bitrix.get_all(
