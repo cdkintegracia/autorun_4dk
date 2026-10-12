@@ -8,7 +8,7 @@ b = Bitrix(authentication('Bitrix'))
 def clear_title_company():
 
     if datetime.now().day != 1:
-            users_id = ['1391', '1']
+            users_id = ['1']
             #users_id = ['1391']
             for user_id in users_id:
                 b.call('im.notify.system.add', {
@@ -41,7 +41,7 @@ def clear_title_company():
             )
 
         else:
-            users_id = ['1391', '1']
+            users_id = ['1']
             #users_id = ['1391']
             for user_id in users_id:
                 b.call('im.notify.system.add', {

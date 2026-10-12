@@ -17,7 +17,7 @@ def main():
         sending_emails_plan()
         send_deal_ending_message_bot()
     except:
-        send_notification(['1','1391'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
+        send_notification(['1'], 'Работа утренних процессов прервана на отправке сообщений об окончании сделок')
         '''
     try:
         prolongation_its()
@@ -27,7 +27,7 @@ def main():
     try:
         tasks.main()
     except:
-        send_notification(['1','1391'], 'Работа утренних процессов прервана на создании задач о завершающихся сделках')
+        send_notification(['1'], 'Работа утренних процессов прервана на создании задач о завершающихся сделках')
     '''
     try:
         ClearListBP.clear_bp()

@@ -50,6 +50,8 @@ year_codes = {
     '2030': '2767'
 }
 
+FORCED_MONTH = '09'
+FORCED_YEAR = '2026'
 
 def sort_types(company_id):
     request_data = {
@@ -190,7 +192,8 @@ def sort_types(company_id):
 
 
 def create_element(company_id, outgoing_email=False, connect_treatment=False, call_duration=False, incoming_call=False, outgoing_call_other=False, responsible=None):
-    current_date = f'{month_string[strftime("%m")]} {strftime("%Y")}'
+    #current_date = f'{month_string[strftime("%m")]} {strftime("%Y")}'
+    current_date = f'{month_string[FORCED_MONTH]} {FORCED_YEAR}'
     if not responsible:
         request_data = {
             'select': ['ASSIGNED_BY_ID'],
@@ -212,8 +215,10 @@ def create_element(company_id, outgoing_email=False, connect_treatment=False, ca
             'PROPERTY_1303': string_call_duration,  # Продолжительность звонка
             'PROPERTY_1299': company_id,  # Привязка к компании
             'PROPERTY_1305': str(lk_call_count),  # Количество звонков
-            'PROPERTY_1339': month_codes[strftime("%m")],  # Месяц
-            'PROPERTY_1341': year_codes[strftime('%Y')],  # Год
+            #'PROPERTY_1339': month_codes[strftime("%m")],  # Месяц
+            'PROPERTY_1339': month_codes[FORCED_MONTH],  # Месяц
+            'PROPERTY_1341': year_codes[FORCED_YEAR],  # Год
+            #'PROPERTY_1341': year_codes[strftime('%Y')],  # Год
             'PROPERTY_1355': responsible,
             'PROPERTY_1359': int(outgoing_email),  # Исходящие письма
             'PROPERTY_1361': '0',  # Всего взаимодействий

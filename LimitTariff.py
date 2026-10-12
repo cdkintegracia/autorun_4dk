@@ -307,7 +307,7 @@ def get_new_elapsed_items(user_ids, last_id=None):
         page += 1
 
         if page > 100: # ограничение по кол-ву забираемых трудозатрат в 5000 штук
-            notification_users = ['1391'] #, '1']
+            notification_users = ['1']
             for user in notification_users:
                 b.call('im.notify.system.add', {
                                     'USER_ID': user,
@@ -490,7 +490,7 @@ def elapsed_times_lines():
     user_ids = get_active_user_ids() # достаем список активных сотрудников ЦС
 
     if not user_ids:
-        notification_users = ['1391'] #, '1']
+        notification_users = ['1']
         for user in notification_users:
             b.call('im.notify.system.add', {
                                 'USER_ID': user,
@@ -500,7 +500,7 @@ def elapsed_times_lines():
     elapsed_items = get_new_elapsed_items(user_ids, last_id) # возвращаем список новых трудозатрат
 
     if not elapsed_items:
-        notification_users = ['1391'] #, '1']
+        notification_users = ['1']
         for user in notification_users:
             b.call('im.notify.system.add', {
                                 'USER_ID': user,
@@ -528,7 +528,7 @@ def elapsed_times_lines():
         raw=True,
     )
 
-    notification_users = ['1391'] #, '1']
+    notification_users = ['1']
     for user in notification_users:
         b.call('im.notify.system.add', {
                             'USER_ID': user,

@@ -441,7 +441,7 @@ def main():
 
     print(f"ИТОГО. Создано: {total_created}, пропущено: {total_skipped}, ошибок: {total_errors}")
     notification_text = f"Загрузка данных по RA 1С-Коннект. Создано: {total_created}, пропущено: {total_skipped}, ошибок: {total_errors}"
-    send_notification(['1', '1391'], notification_text)
+    send_notification(['1'], notification_text)
 
 if __name__ == "__main__":
     main()
